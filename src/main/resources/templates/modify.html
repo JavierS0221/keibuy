@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Data of Person</title>
+</head>
+<body>
+    <h1>Data of Person</h1>
+    <a th:href="@{/}">Return</a>
+    <br/>
+    <form th:action="@{/save}" method="post" th:object="${user}">
+        <label for="name">Name:</label>
+        <input type="text" name="name" th:field="*{name}"/>
+    </form>
+</body>
+</html>
