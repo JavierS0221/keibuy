@@ -17,22 +17,22 @@ import java.util.List;
 public class ControllerHome {
 
     @Autowired
-    private UserService userService;
+//    private UserService userService;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home() {
 
-        List<User> listUsers = userService.listPersons();
-        log.info("cantidad: " + listUsers.size());
+//        List<User> listUsers = userService.listPersons();
+//        log.info("cantidad: " + listUsers.size());
         log.info("Ejecutando el controlador rest");
-        model.addAttribute("listUsers", listUsers);
+//        model.addAttribute("listUsers", listUsers);
         return "index";
     }
 
     @GetMapping("/add")
     public String add(User user) {
 
-        List<User> listUsers = userService.listPersons();
+//        List<User> listUsers = userService.listPersons();
         Report report = new Report();
 
         User newUser = new User();
@@ -45,14 +45,14 @@ public class ControllerHome {
 
         report.setType(1);
         report.setMessage("test");
-        report.setReportedUserId(listUsers.get(0).getId());
+//        report.setReportedUserId(listUsers.get(0).getId());
 
         List<Report> listReports = newUser.getReportsCreated();
         if(listReports == null) listReports = new ArrayList<Report>();
         listReports.add(report);
         newUser.setReportsCreated(listReports);
 
-        userService.save(newUser);
+//        userService.save(newUser);
         return "modify";
     }
 }
