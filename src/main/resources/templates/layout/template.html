@@ -10,7 +10,18 @@
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    <style>
+        .navbar-brand__img {
+            width: 50px;
+        }
+    </style>
 </head>
 <body>
+<header th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <img src="../img/logo.svg" alt="We share" class="navbar-brand__img"/>
+    </nav>
+</header>
 </body>
 </html>
