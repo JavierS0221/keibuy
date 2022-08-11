@@ -33,26 +33,15 @@ public class ControllerHome {
     public String add(User user) {
 
         List<User> listUsers = userService.listPersons();
+        User reporter = listUsers.get(1);
+        User reported = listUsers.get(0);
         Report report = new Report();
-
-        User newUser = new User();
-        newUser.setUsername("j3");
-        newUser.setName("hola2");
-        newUser.setLastName("adios3");
-        newUser.setEmail("holaa12dios@gmail.com");
-        newUser.setPhone("998884552");
-
-
         report.setType(1);
         report.setMessage("test");
-        report.setReportedUserId(listUsers.get(0).getId());
+        report.setReportedUser(reported);
+        reporter.addReport(report);
 
-        List<Report> listReports = newUser.getReportsCreated();
-        if(listReports == null) listReports = new ArrayList<Report>();
-        listReports.add(report);
-        newUser.setReportsCreated(listReports);
-
-        userService.save(newUser);
+        userService.save(reporter);
         return "modify";
     }
 }
