@@ -17,42 +17,31 @@ import java.util.List;
 public class ControllerHome {
 
     @Autowired
-//    private UserService userService;
+    private UserService userService;
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
 
-//        List<User> listUsers = userService.listPersons();
-//        log.info("cantidad: " + listUsers.size());
+        List<User> listUsers = userService.listPersons();
+        log.info("cantidad: " + listUsers.size());
         log.info("Ejecutando el controlador rest");
-//        model.addAttribute("listUsers", listUsers);
+        model.addAttribute("listUsers", listUsers);
         return "index";
     }
 
     @GetMapping("/add")
     public String add(User user) {
 
-//        List<User> listUsers = userService.listPersons();
+        List<User> listUsers = userService.listPersons();
+        User reporter = listUsers.get(1);
+        User reported = listUsers.get(0);
         Report report = new Report();
-
-        User newUser = new User();
-        newUser.setUsername("j3");
-        newUser.setName("hola2");
-        newUser.setLastName("adios3");
-        newUser.setEmail("holaa12dios@gmail.com");
-        newUser.setPhone("998884552");
-
-
         report.setType(1);
         report.setMessage("test");
-//        report.setReportedUserId(listUsers.get(0).getId());
+        report.setReportedUser(reported);
+        reporter.addReport(report);
 
-        List<Report> listReports = newUser.getReportsCreated();
-        if(listReports == null) listReports = new ArrayList<Report>();
-        listReports.add(report);
-        newUser.setReportsCreated(listReports);
-
-//        userService.save(newUser);
+        userService.save(reporter);
         return "modify";
     }
 }

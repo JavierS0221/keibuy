@@ -1,34 +1,42 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/template :: head">
     <title>ProjectAuction</title>
 </head>
 <body>
-    <h1>Home</h1>
-    <a th:href="@{/add}">Add Monfdongo</a>
-<div th:if="${listUsers != null and !listUsers.isEmpty()}">
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>LastName</th>
-            <th>Email</th>
-            <th>Phone</th>
-        </tr>
-        <tr th:each="user : ${listUsers}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.phone}"></td>
-        </tr>
-    </table>
-</div>
+<img th:src="@{~/resources/templates/img/logo.png}"/>
+<img th:src="@{templates/img/logo.png}"/>
+<img th:src="@{resources/templates/img/logo.png}"/>
+<img th:src="@{~/templates/img/logo.png}"/>
+<img src="logo.png"/>
+<header th:replace="layout/template :: header"></header>
+<!--    <h1>Home</h1>-->
+<!--    <a th:href="@{/add}">Add MONDONGO</a>-->
+<!--<div th:if="${listUsers != null and !listUsers.isEmpty()}">-->
+<!--    <table border="1">-->
+<!--        <tr>-->
+<!--            <th>ID</th>-->
+<!--            <th>Name</th>-->
+<!--            <th>LastName</th>-->
+<!--            <th>Email</th>-->
+<!--            <th>Phone</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="user : ${listUsers}">-->
+<!--            <td th:text="${user.id}"></td>-->
+<!--            <td th:text="${user.name}"></td>-->
+<!--            <td th:text="${user.lastName}"></td>-->
+<!--            <td th:text="${user.email}"></td>-->
+<!--            <td th:text="${user.phone}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
 
-<div th:if="${listUsers == null or listUsers.isEmpty()}">
-    La lista esta vacia
-</div>
+<!--<div th:if="${listUsers == null or listUsers.isEmpty()}">-->
+<!--    La lista esta vacia-->
+<!--</div>-->
 <!--    <p th:text="${message}"></p>-->
 <!--    <br/>-->
 <!--    ID: <span th:text="${user.id}"></span>-->
