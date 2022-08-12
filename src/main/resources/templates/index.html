@@ -3,11 +3,34 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="layout/template :: head">
-    <title>ProjectAuction</title>
+<head th:replace="layout/template :: head"></head>
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/loaderStyle.css}"/>
 </head>
-<body>
-<header th:replace="layout/template :: header"></header>
+<div class="loader-container">
+    <div>
+    <img th:src="@{/images/logo2.png}"
+         alt=""
+         class="navbar-brand__img"/>
+    </div>
+    <div id="loader-container-message">
+        <div>
+    <h2>Cargando...</h2>
+        </div>
+    </div>
+</div>
+
+<body class="position-relative" data-th-span="scroll" data-bs-target="#navbar-scrollspy">
+
+<div class="container-fluid sticky-top" style="background-color: #404eed;">
+    <header th:replace="layout/template :: header"></header>
+</div>
+<section class="jumbotron text-center bg-white" id="home">
+    <h2>Home</h2>
+</section>
+<div class="row text-center bg-light vh-100" id="contact">
+    <h2 class="col-12 pt-5 mt-5">Contact</h2>
+</div>
 <!--    <h1>Home</h1>-->
 <!--    <a th:href="@{/add}">Add MONDONGO</a>-->
 <!--<div th:if="${listUsers != null and !listUsers.isEmpty()}">-->
@@ -43,5 +66,6 @@
 <!--    Email: <span th:text="${user.email}"></span>-->
 <!--    <br/>-->
 <!--    Phone: <span th:text="${user.phone}"></span>-->
+<script th:src="@{/js/scriptLoader.js}"></script>
 </body>
 </html>
