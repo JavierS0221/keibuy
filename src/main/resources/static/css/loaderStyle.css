@@ -12,22 +12,6 @@
     animation: move 3s;
     animation-iteration-count: infinite;
 }
-.loader-container h2 {
-    justify-content: left;
-    align-items: normal;
-    position: relative;
-    margin-top: 14rem;
-    font-size: 1.5rem;
-
-    width: 12ch;
-    animation-delay: 2s;
-    animation: typing 3s steps(12), blink .5s;
-    animation-iteration-count: infinite;
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 1px solid;
-    font-family: monospace;
-}
 
 .loader-container {
     background-color: #f3f3f3;
@@ -38,29 +22,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-}
-
-.loader-container #loader-container-message {
-    position: fixed;
-    width: 12ch;
-    height: 20vh;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-.loader-container #loader-container-message div {
-
-    width: 12ch;
-    margin-right: 6ch;
-    height: 20vh;
-    position: fixed;
-    display: block;
-    align-items: baseline;
-    justify-content: left;
-    text-align: left;
 
 }
 
@@ -76,23 +37,5 @@
     100% {
         opacity: 30%;
         width: 12rem;
-    }
-}
-
-@keyframes typing {
-    0% {
-        width: 12ch;
-    }
-    50% {
-        width: 0;
-    }
-    100% {
-        width: 12ch;
-    }
-}
-
-@keyframes blink {
-    50% {
-        border-color: transparent
     }
 }
