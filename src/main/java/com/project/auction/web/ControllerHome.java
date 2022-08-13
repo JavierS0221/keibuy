@@ -2,7 +2,6 @@ package com.project.auction.web;
 
 import com.project.auction.model.Category;
 import com.project.auction.model.Report;
-import com.project.auction.model.User;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,19 +35,19 @@ public class ControllerHome {
         return "index";
     }
 
-    @GetMapping("/add")
-    public String add(User user) {
-
-        List<User> listUsers = userService.listPersons();
-        User reporter = listUsers.get(1);
-        User reported = listUsers.get(0);
-        Report report = new Report();
-        report.setType(1);
-        report.setMessage("test");
-        report.setReportedUser(reported);
-        reporter.addReport(report);
-
-        userService.save(reporter);
-        return "modify";
-    }
+//    @GetMapping("/add")
+//    public String add(User user) {
+//
+//        List<User> listUsers = userService.listPersons();
+//        User reporter = listUsers.get(1);
+//        User reported = listUsers.get(0);
+//        Report report = new Report();
+//        report.setType(1);
+//        report.setMessage("test");
+//        report.setReportedUser(reported);
+//        reporter.addReport(report);
+//
+//        userService.save(reporter);
+//        return "modify";
+//    }
 }
