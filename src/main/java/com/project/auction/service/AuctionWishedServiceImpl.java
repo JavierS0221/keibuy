@@ -35,6 +35,6 @@ public class AuctionWishedServiceImpl implements AuctionWishedService {
     @Override
     @Transactional(readOnly = true)
     public AuctionWished getAuctionWished(AuctionWished auctionWished) {
-        return auctionWishedDao.findById(auctionWished.getUser().getId()).orElse(null);
+        return auctionWishedDao.findById(auctionWished.getPerson().getId()).orElse(null);
     }
 }

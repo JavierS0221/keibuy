@@ -20,8 +20,8 @@ public class AuctionOffer implements Serializable {
     private long id;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="user_id", nullable = false)
-    private User user;
+    @JoinColumn(name="person_id", nullable = false)
+    private Person person;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="item_id", nullable = false)

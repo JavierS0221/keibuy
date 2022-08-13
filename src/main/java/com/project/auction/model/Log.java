@@ -21,8 +21,8 @@ public class Log implements Serializable {
     private long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="user_id", nullable = false)
-    private User user;
+    @JoinColumn(name="person_id", nullable = false)
+    private Person person;
 
     @Column(name = "message", length = 250, nullable = false)
     private String message;

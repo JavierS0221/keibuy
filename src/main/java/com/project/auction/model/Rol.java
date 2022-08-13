@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "auction_wished")
-public class AuctionWished implements Serializable {
+@Table(name = "rol")
+public class Rol implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -20,10 +20,9 @@ public class AuctionWished implements Serializable {
     private long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="person_id", nullable = false)
+    @JoinColumn(name="user_id", nullable = false)
     private Person person;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="item_id", nullable = false)
-    private Item item;
+    @Column(name = "name", length = 45, nullable = false)
+    private String name;
 }

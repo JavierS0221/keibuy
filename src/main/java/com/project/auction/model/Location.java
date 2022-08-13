@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @Entity
@@ -21,8 +20,8 @@ public class Location implements Serializable {
     private long id;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="user_id", nullable = false)
-    private User user;
+    @JoinColumn(name="person_id", nullable = false)
+    private Person person;
 
     @Column(name = "location", length = 45, nullable = false)
     private String location;

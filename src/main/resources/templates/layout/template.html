@@ -3,16 +3,22 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
+    <title>ProjectAuction</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
-    <title>ProjectAuction</title>
-
     <style>
+
+        #btn-back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+
         .navbar-brand {
             font-family: "Arial Black";
         }
@@ -29,7 +35,8 @@
 </head>
 <body>
 <header th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-dark justify-content-between" id="#navbar-scrollspy" style="background-color: #404eed;">
+    <nav class="navbar navbar-expand-lg navbar-dark justify-content-between" id="#navbar-scrollspy"
+         style="background-color: #404eed;">
         <!-- Brand -->
         <a href="#" class="navbar-brand">
             <img th:src="@{/images/logo2.svg}"
@@ -51,24 +58,34 @@
         <div class="collapse navbar-collapse flex-grow-0" id="content-nav">
             <ul class="navbar-nav">
                 <!-- Categories -->
-                <li class="nav-item dropdown">
-                    <!-- BTN -->
-                    <a href="#"
-                       class="nav-link dropdown-toggle"
-                       id="btn-dropdown-categories"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false"
-                    >
+
+                <div th:if="${listTopCategories != null and !listTopCategories.isEmpty()}">
+                    <li class="nav-item dropdown">
+                        <!-- BTN -->
+                        <a href="#"
+                           class="nav-link dropdown-toggle"
+                           id="btn-dropdown-categories"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false"
+                        >
+                            Categories
+                        </a>
+                        <!-- Contain -->
+                        <ul class="dropdown-menu" aria-labelledby="btn-dropdown-categories">
+                            <tr th:each="category : ${listTopCategories}">
+                                <li><a href="#" class="dropdown-item" th:text="${category.name}"></a></li>
+                            </tr>
+                        </ul>
+                    </li>
+                </div>
+                <div th:if="${listTopCategories == null or listTopCategories.isEmpty()}">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link" disabled="true" style="color: #2e2e2e">
                         Categories
-                    </a>
-                    <!-- Contain -->
-                    <ul class="dropdown-menu" aria-labelledby="btn-dropdown-categories">
-                        <li><a href="#" class="dropdown-item">C1</a></li>
-                        <li><a href="#" class="dropdown-item">C2</a></li>
-                        <li><a href="#" class="dropdown-item">C3</a></li>
-                    </ul>
-                </li>
+                        </a>
+                    </li>
+                </div>
                 <!-- Frequently asked -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -82,19 +99,6 @@
                     </a>
                 </li>
 
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-
                 <!-- Form -->
                 <li>
                     <form action="#" class="d-flex">
@@ -104,9 +108,19 @@
                         </button>
                     </form>
                 </li>
+
+
+<!--                <form method="post" th:action="@{/logout}">-->
+<!--                    <b>User: </b> <span sec:authentication="name">Usuario que hizo login</span> |-->
+<!--                    <b>Roles: </b> <span sec:authentication="principal.authorities">Roles</span>-->
+<!--                    <a href="#" onclick="this.parentNode.submit();">Logout</a>-->
+<!--                </form>-->
+
+<!--                <li><a th:href="@{/profile/} + ${person.id}"/>Profile</li>-->
             </ul>
         </div>
     </nav>
+
 </header>
 </body>
 </html>

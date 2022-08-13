@@ -8,8 +8,8 @@
 .loader-container img {
     width: 1.2rem;
     opacity: 30%;
-    animation-delay: 3s;
-    animation: move 3s;
+    animation-delay: 2.5s;
+    animation: move 2.5s;
     animation-iteration-count: infinite;
 }
 

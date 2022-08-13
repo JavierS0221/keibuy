@@ -35,6 +35,6 @@ public class AuctionOfferServiceImpl implements AuctionOfferService {
     @Override
     @Transactional(readOnly = true)
     public AuctionOffer getAuctionOffer(AuctionOffer auctionOffer) {
-        return auctionOfferDao.findById(auctionOffer.getUser().getId()).orElse(null);
+        return auctionOfferDao.findById(auctionOffer.getPerson().getId()).orElse(null);
     }
 }

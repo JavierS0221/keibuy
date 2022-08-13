@@ -1,7 +1,6 @@
 package com.project.auction.model;
 
 import lombok.Data;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -29,8 +28,8 @@ public class Item implements Serializable {
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="person_id")
+    private Person person;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="category_id")

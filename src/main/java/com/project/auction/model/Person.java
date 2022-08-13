@@ -11,8 +11,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "user")
-public class User implements Serializable {
+@Table(name = "person")
+public class Person implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -31,6 +31,9 @@ public class User implements Serializable {
     @Column(name = "last_name", length = 45, nullable = false)
     private String lastName;
 
+    @Column(name = "password", length = 500, nullable = false)
+    private String password;
+
     @Column(name = "email", length = 80, nullable = false)
     private String email;
 
@@ -40,26 +43,26 @@ public class User implements Serializable {
     @Column(name = "birth_date")
     private Date birthDate;
 
-    @Column(name = "permission_level")
-    private int permissionLevel;
-
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Report> reportsCreated;
 
-    @OneToMany(mappedBy = "reportedUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    private List<Rol> roles;
+
+    @OneToMany(mappedBy = "reportedPerson", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Report> reportsReceived;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<AuctionOffer> auctionOffers;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Item> listItems;
+    @OneToMany(mappedBy = "person", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Item> items;
 
 
 
     public void addReport(Report report) {
         if (this.reportsCreated == null) this.reportsCreated = new ArrayList<>();
         this.reportsCreated.add(report);
-        report.setUser(this);
+        report.setPerson(this);
     }
 }

@@ -21,12 +21,12 @@ public class Report implements Serializable {
     private long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="user_id", nullable = false)
-    private User user;
+    @JoinColumn(name="person_id", nullable = false)
+    private Person person;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="reported_user_id", nullable = false)
-    private User reportedUser;
+    @JoinColumn(name="reported_person_id", nullable = false)
+    private Person reportedPerson;
 
     @Column(name = "type")
     private int type;

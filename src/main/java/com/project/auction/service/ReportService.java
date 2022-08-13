@@ -1,7 +1,6 @@
 package com.project.auction.service;
 
 import com.project.auction.model.Report;
-import com.project.auction.model.User;
 
 import java.util.List;
 
