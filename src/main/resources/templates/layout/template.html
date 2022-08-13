@@ -3,15 +3,31 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
-    <title>Template</title>
+    <title>ProjectAuction</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
     <style>
+
+        #btn-back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+
+        .navbar-brand {
+            font-family: "Arial Black";
+        }
+
+        .navbar {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
         .navbar-brand__img {
             width: 50px;
         }
@@ -19,10 +35,91 @@
 </head>
 <body>
 <header th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-        <img th:src="@{/img/logo.png}"/>
-    <img th:src="@{/resources/templates/img/logo.png}" alt="We share" class="navbar-brand__img"/>
+    <nav class="navbar navbar-expand-lg navbar-dark justify-content-between" id="#navbar-scrollspy"
+         style="background-color: #404eed;">
+        <!-- Brand -->
+        <a href="#" class="navbar-brand">
+            <img th:src="@{/images/logo2.svg}"
+                 alt=""
+                 class="navbar-brand__img"
+            />
+            MONDONGO
+        </a>
+        <!-- Button collapse -->
+        <button class="navbar-toggler"
+                data-bs-toggle="collapse"
+                data-bs-target="#content-nav"
+                aria-controls="content-nav"
+                aria-expanded="false"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Nav content -->
+        <div class="collapse navbar-collapse flex-grow-0" id="content-nav">
+            <ul class="navbar-nav">
+                <!-- Categories -->
+
+                <div th:if="${listTopCategories != null and !listTopCategories.isEmpty()}">
+                    <li class="nav-item dropdown">
+                        <!-- BTN -->
+                        <a href="#"
+                           class="nav-link dropdown-toggle"
+                           id="btn-dropdown-categories"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false"
+                        >
+                            Categories
+                        </a>
+                        <!-- Contain -->
+                        <ul class="dropdown-menu" aria-labelledby="btn-dropdown-categories">
+                            <tr th:each="category : ${listTopCategories}">
+                                <li><a href="#" class="dropdown-item" th:text="${category.name}"></a></li>
+                            </tr>
+                        </ul>
+                    </li>
+                </div>
+                <div th:if="${listTopCategories == null or listTopCategories.isEmpty()}">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link" disabled="true" style="color: #2e2e2e">
+                        Categories
+                        </a>
+                    </li>
+                </div>
+                <!-- Frequently asked -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        Frequently asked
+                    </a>
+                </li>
+                <!-- Contact -->
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">
+                        Contact
+                    </a>
+                </li>
+
+                <!-- Form -->
+                <li>
+                    <form action="#" class="d-flex">
+                        <input type="search" placeholder="Search by Name/ID" class="form-control me-3">
+                        <button type="submit" class="btn btn-success">
+                            Search
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </nav>
+    <!-- Back to top button -->
+    <button
+            type="button"
+            class="btn btn-danger btn-floating btn-lg"
+            id="btn-back-to-top"
+    >
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script th:src="@{/js/scriptBtnBackToTop.js}"></script>
 </header>
 </body>
 </html>

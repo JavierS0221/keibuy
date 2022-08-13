@@ -1,7 +1,9 @@
 package com.project.auction.web;
 
+import com.project.auction.model.Category;
 import com.project.auction.model.Report;
 import com.project.auction.model.User;
+import com.project.auction.service.CategoryService;
 import com.project.auction.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,19 @@ public class ControllerHome {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("/")
     public String home(Model model) {
+        List<Category> listCategories = categoryService.listCategories();
 
-        List<User> listUsers = userService.listPersons();
-        log.info("cantidad: " + listUsers.size());
-        log.info("Ejecutando el controlador rest");
-        model.addAttribute("listUsers", listUsers);
+        List<Category> listTopCategories = categoryService.listCategories();
+        if(listTopCategories.size() > 10) {
+            listTopCategories.subList(0, 11);
+        }
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("listTopCategories", listTopCategories);
         return "index";
     }
 
