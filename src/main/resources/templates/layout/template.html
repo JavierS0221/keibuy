@@ -108,19 +108,18 @@
                         </button>
                     </form>
                 </li>
-
-
-<!--                <form method="post" th:action="@{/logout}">-->
-<!--                    <b>User: </b> <span sec:authentication="name">Usuario que hizo login</span> |-->
-<!--                    <b>Roles: </b> <span sec:authentication="principal.authorities">Roles</span>-->
-<!--                    <a href="#" onclick="this.parentNode.submit();">Logout</a>-->
-<!--                </form>-->
-
-<!--                <li><a th:href="@{/profile/} + ${person.id}"/>Profile</li>-->
             </ul>
         </div>
     </nav>
-
+    <!-- Back to top button -->
+    <button
+            type="button"
+            class="btn btn-danger btn-floating btn-lg"
+            id="btn-back-to-top"
+    >
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script th:src="@{/js/scriptBtnBackToTop.js}"></script>
 </header>
 </body>
 </html>
