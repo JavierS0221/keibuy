@@ -35,6 +35,21 @@ public class ControllerHome {
         return "index";
     }
 
+    @GetMapping("/register")
+    public String register(Model model) {
+        return "pages/register";
+    }
+
+    @GetMapping("/forgot")
+    public String forgot(Model model) {
+        return "pages/forgot";
+    }
+
+    @GetMapping("/reset")
+    public String reset(Model model) {
+        return "pages/reset";
+    }
+
 //    @GetMapping("/add")
 //    public String add(User user) {
 //

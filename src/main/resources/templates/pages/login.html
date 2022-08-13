@@ -1,22 +1,86 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-    xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Login</title>
-        <meta charset="UTF-8"/>
-    </head>
-    <body>
-        <h1>Login</h1>
-        
-        <form method="POST" th:action="@{/login}">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username"/>
-            <br/>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password"/>
-            <br/>
-            <input type="submit" value="Login"/>
-        </form>
-        
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login - Mondongo</title>
+    <th:block th:include="layout/template :: head"/>
+</head>
+<body>
+<div class="text-end fixed-bottom my-2 mx-2 dropup">
+    <button class=" btn btn-outline-dark btn-sm bg-light text-decoration-none text-black dropdown-toggle" href="#" id="btn-dropdown-lang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img th:src="@{/images/lang_en.png}" alt="logo" width="25" style=""> Language
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="btn-dropdown-lang">
+        <li><a class="dropdown-item" href="#">Acción</a></li>
+        <li><a class="dropdown-item" href="#">Otra acción</a></li>
+        <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
+    </ul>
+</div>
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row justify-content-sm-center h-100">
+            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+                <div class="text-center mt-5 mb-3">
+                    <img th:src="@{/images/logo2.png}" alt="logo" width="100" style="">
+                </div>
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
+                        <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="email">E-Mail Address</label>
+                                <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
+                                <div class="invalid-feedback">
+                                    Email is invalid
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="mb-2 w-100">
+                                    <label class="text-muted" for="password">Password</label>
+                                    <a th:href="@{/forgot}" class="float-end">
+                                        Forgot Password?
+                                    </a>
+                                </div>
+                                <input id="password" type="password" class="form-control" name="password" required>
+                                <div class="invalid-feedback">
+                                    Password is required
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <div class="form-check">
+                                    <input type="checkbox" name="remember" id="remember" class="form-check-input">
+                                    <label for="remember" class="form-check-label">Remember Me</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary ms-auto">
+                                    Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer py-3 border-0">
+                        <div class="text-center">
+                            Don't have an account? <a th:href="@{/register}" class="text-dark">Create One</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-5 text-muted">
+                    Copyright &copy; 666AC - 2069 &mdash; Mondongo Company
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed egestas porttitor tortor, in rutrum arcu lacinia sed. Mauris et sem non leo euismod finibus in quis tortor. Nulla malesuada tristique augue quis finibus. Fusce interdum lacus ac neque fringilla, vitae fringilla dolor ornare. Nulla facilisi. Quisque elit dolor, mollis eu suscipit sed, ornare non eros. Praesent a turpis vel sem dignissim aliquet a ac sapien. Etiam ultricies ipsum eget augue maximus, aliquet scelerisque arcu commodo. Suspendisse viverra metus eu magna condimentum facilisis. Nullam a rutrum lectus.
+
+    Suspendisse dapibus dolor vel dolor pretium ultricies. Sed blandit ut quam eu tempor. Ut hendrerit condimentum massa eget efficitur. Maecenas eget diam vitae lectus dapibus scelerisque. Etiam porttitor erat et iaculis maximus. Aliquam porttitor mattis odio sed congue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean non ante eget risus porttitor ullamcorper. Etiam nibh lorem, iaculis ac varius vel, condimentum nec diam. Vivamus porta aliquam nisi eget venenatis. Duis eget arcu elit. Sed auctor consectetur mi ac vulputate. Mauris aliquam pellentesque augue sit amet semper. Nunc nec efficitur ipsum. Proin scelerisque diam ac odio pulvinar pharetra.
+
+    Quisque aliquet, enim id ullamcorper tincidunt, felis ligula tempus enim, in pharetra nisl libero eu libero. Pellentesque efficitur elementum est quis venenatis. Sed facilisis erat lacus, eget volutpat ante mollis a. Pellentesque convallis suscipit erat. Curabitur tempor turpis id hendrerit fermentum. Praesent commodo sodales ex, eu pulvinar velit porttitor sed. Nulla et fermentum dolor. Nullam sit amet enim faucibus ligula congue fringilla in nec est. Quisque sed convallis velit, et tristique dolor. Mauris pharetra dignissim bibendum. Ut urna dui, feugiat ut hendrerit ut, elementum at risus.
+
+    Vestibulum consectetur at nulla nec luctus. Cras aliquam libero justo, ut congue nisi viverra eget. Duis eget ipsum pellentesque, luctus odio eu, lobortis ipsum. In lacinia consectetur leo et scelerisque. Nunc eget sapien quam. Sed imperdiet enim non est fringilla congue. Pellentesque interdum pharetra semper. Fusce id condimentum lectus. Proin consectetur diam at ex imperdiet tempor. Phasellus quam sem, porttitor ac risus sit amet, facilisis semper sapien. Aenean non imperdiet felis. Nunc volutpat nunc id nisl fringilla vulputate. Vestibulum scelerisque magna a turpis laoreet, fringilla gravida turpis gravida. Morbi non dui quis dui tristique egestas. Aenean suscipit justo et erat elementum bibendum.
+
+    Phasellus tincidunt eu eros eget molestie. Nunc vulputate elementum maximus. Aenean felis urna, convallis eget placerat vel, rhoncus ac sem. Maecenas sed risus consequat, tincidunt tortor eget, eleifend purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin et libero a nisi fringilla consequat. Pellentesque fringilla sed ex quis euismod.</p>
+<script th:src="@{/js/scriptLogin.js}"></script>
+</body>
 </html>
