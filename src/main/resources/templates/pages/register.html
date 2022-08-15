@@ -18,10 +18,34 @@
                         <h1 class="fs-4 card-title fw-bold mb-4">Register</h1>
                         <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
                             <div class="mb-3">
+                                <label class="mb-2 text-muted" for="username">Username</label>
+                                <input id="username" type="text" class="form-control" name="username" value="" required autofocus>
+                                <div class="invalid-feedback">
+                                    Username is required
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
                                 <label class="mb-2 text-muted" for="name">Name</label>
-                                <input id="name" type="text" class="form-control" name="name" value="" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="" required>
                                 <div class="invalid-feedback">
                                     Name is required
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="last-name">Last Name</label>
+                                <input id="last-name" type="text" class="form-control" name="last-name" value="" required>
+                                <div class="invalid-feedback">
+                                    Last Name is required
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="birth-date">Birth Date</label>
+                                <input id="birth-date" type="date" class="form-control" name="birth-date" value="" required>
+                                <div class="invalid-feedback">
+                                    Birth Date is required
                                 </div>
                             </div>
 
@@ -30,6 +54,14 @@
                                 <input id="email" type="email" class="form-control" name="email" value="" required>
                                 <div class="invalid-feedback">
                                     Email is invalid
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="telephone">Telephone</label>
+                                <input id="telephone" type="email" class="form-control" name="telephone" value="" required>
+                                <div class="invalid-feedback">
+                                    Telephone is invalid
                                 </div>
                             </div>
 
@@ -64,6 +96,7 @@
             </div>
         </div>
     </div>
+    <th:block th:insert="layout/template :: language-bottom"/>
 </section>
 <script th:src="@{/js/scriptLogin.js}"></script>
 </body>

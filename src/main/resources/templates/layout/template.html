@@ -121,5 +121,16 @@
     </button>
     <script th:src="@{/js/scriptBtnBackToTop.js}"></script>
 </header>
+
+<!-- Language picker buttom -->
+<div class="text-end fixed-bottom my-2 mx-2 dropup" th:fragment="language-bottom">
+    <button class=" btn btn-outline-dark btn-sm bg-light text-decoration-none text-black dropdown-toggle" href="#" id="btn-dropdown-lang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img th:src="@{${'/images/lang_' + #locale.language +'.png'}}" alt="logo" width="25" style="" th:text="' '+#{template.language}">
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="btn-dropdown-lang" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+        <li><a class="dropdown-item" th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'en').toUriString()}"><img th:src="@{/images/lang_en.png}" alt="EN" width="20" style=""> English</a></li>
+        <li><a class="dropdown-item" th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'es').toUriString()}"><img th:src="@{/images/lang_es.png}" alt="ES" width="20" style=""> Spanish</a></li>
+    </ul>
+</div>
 </body>
 </html>
