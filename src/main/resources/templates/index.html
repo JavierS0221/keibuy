@@ -123,12 +123,9 @@
 <!--    Phone: <span th:text="${user.phone}"></span>-->
 
 <!-- Back to top button -->
-<button
-        type="button"
-        class="btn btn-danger btn-floating btn-lg"
-        id="btn-back-to-top">
-    <i class="fas fa-arrow-up"></i>
-</button>
+<a id="back-to-top" href="#" class="btn btn-danger rounded-circle btn-sm back-to-top" role="button">
+    <i class="fas fa-chevron-up"></i>
+</a>
 <th:block th:insert="layout/template :: language-bottom"/>
 
 <script th:src="@{/js/scriptBtnBackToTop.js}"></script>

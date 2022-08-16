@@ -9,14 +9,10 @@
 
 <!-- Modal Terms And Conditions-->
 <div class="modal fade" id="termsAndConditions100real" tabindex="-1" role="dialog" aria-labelledby="termsAndConditions100realLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button onclick="pauseVideo()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             <div class="modal-body">
                 <div class="ratio ratio-16x9">
-<!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lXY0pGYJdaw" id="iframeVideo"></iframe>-->
                     <video id="rrvideo" loop class="embed-responsive-item">
                         <source th:src="@{/images/rr.mp4}" type=video/mp4>
                     </video>
@@ -29,13 +25,17 @@
 
 <script>
     var video = document.getElementById("rrvideo");
-    function playVideo() {
-        video.play();
-    }
+    var myModalEl = document.getElementById("termsAndConditions100real");
 
-    function pauseVideo() {
+    myModalEl.addEventListener('shown.bs.modal', function (event) {
+        video.currentTime = 0;
+        video.play();
+    })
+
+    myModalEl.addEventListener('hidden.bs.modal', function (event) {
         video.pause();
-    }
+    })
+
 </script>
 
 <section class="h-100">
@@ -106,7 +106,7 @@
                             </div>
 
                             <p class="form-text text-muted mb-3">
-                                By registering you agree with our <a onclick="playVideo()" type="button" class="" data-bs-toggle="modal" data-bs-target="#termsAndConditions100real">terms and condition</a>.
+                                By registering you agree with our <a type="button" class="" data-bs-toggle="modal" data-bs-target="#termsAndConditions100real">terms and condition</a>.
                             </p>
 
 

@@ -10,6 +10,10 @@
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/scriptBtnLang.js}"></script>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <style>
 
         #btn-back-to-top {
@@ -34,6 +38,8 @@
     </style>
 </head>
 <body>
+
+
 <header th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-dark justify-content-between" id="#navbar-scrollspy"
          style="background-color: #404eed;">
@@ -123,14 +129,26 @@
 </header>
 
 <!-- Language picker buttom -->
-<div class="text-end fixed-bottom my-2 mx-2 dropup" th:fragment="language-bottom">
-    <button class=" btn btn-outline-dark btn-sm bg-light text-decoration-none text-black dropdown-toggle" href="#" id="btn-dropdown-lang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img th:src="@{${'/images/lang_' + #locale.language +'.png'}}" alt="logo" width="25" style="" th:text="' '+#{template.language}">
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="btn-dropdown-lang" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
-        <li><a class="dropdown-item" th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'en').toUriString()}"><img th:src="@{/images/lang_en.png}" alt="EN" width="20" style=""> English</a></li>
-        <li><a class="dropdown-item" th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'es').toUriString()}"><img th:src="@{/images/lang_es.png}" alt="ES" width="20" style=""> Spanish</a></li>
-    </ul>
+<div class="text-start fixed-bottom my-2 mx-2 dropup" th:fragment="language-bottom">
+    <a href="#" class="text-decoration-none text-dark" >
+        <i onclick="toggleVisibilityLang()" id="btn-visibility-language-hide" class="fa-solid fa-circle-arrow-left text-decoration-none text-dark position-absolute my-2"></i>
+        <i onclick="toggleVisibilityLang()" id="btn-visibility-language-show" class="fa-solid fa-circle-arrow-right text-decoration-none text-dark position-absolute my-2" style="visibility: hidden"></i>
+    </a>
+        <button class="btn btn-outline-dark btn-sm rounded-pill bg-light text-decoration-none text-black dropdown-toggle mx-4"
+                href="#" id="btn-dropdown-lang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img th:src="@{${'/images/lang_' + #locale.language +'.png'}}" alt="logo" width="25" style=""
+                 th:text="' '+#{template.language}">
+        </button>
+        <ul id="dropdown-language" class="dropdown-menu" aria-labelledby="btn-dropdown-lang"
+            th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+            <li><a class="dropdown-item"
+                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'en').toUriString()}"><img
+                    th:src="@{/images/lang_en.png}" alt="EN" width="20" style=""> English</a></li>
+            <li><a class="dropdown-item"
+                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'es').toUriString()}"><img
+                    th:src="@{/images/lang_es.png}" alt="ES" width="20" style=""> Spanish</a></li>
+        </ul>
+    <script th:src="@{/js/scriptBtnLang.js}"></script>
 </div>
 </body>
 </html>
