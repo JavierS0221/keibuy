@@ -6,7 +6,40 @@
     <th:block th:include="layout/template :: head"/>
 </head>
 <body>
+
+<!-- Modal Terms And Conditions-->
+<div class="modal fade" id="termsAndConditions100real" tabindex="-1" role="dialog" aria-labelledby="termsAndConditions100realLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="pauseVideo()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="ratio ratio-16x9">
+<!--                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lXY0pGYJdaw" id="iframeVideo"></iframe>-->
+                    <video id="rrvideo" loop class="embed-responsive-item">
+                        <source th:src="@{/images/rr.mp4}" type=video/mp4>
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var video = document.getElementById("rrvideo");
+    function playVideo() {
+        video.play();
+    }
+
+    function pauseVideo() {
+        video.pause();
+    }
+</script>
+
 <section class="h-100">
+
     <div class="container h-100">
         <div class="row justify-content-sm-center h-100">
             <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
@@ -15,13 +48,12 @@
                 </div>
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
-                        <h1 class="fs-4 card-title fw-bold mb-4">Register</h1>
+                        <h1 class="fs-4 card-title fw-bold mb-4" th:text="#{register}"></h1>
                         <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="username">Username</label>
+                                <label class="mb-2 text-muted" for="username" th:text="#{username}"></label>
                                 <input id="username" type="text" class="form-control" name="username" value="" required autofocus>
-                                <div class="invalid-feedback">
-                                    Username is required
+                                <div class="invalid-feedback" th:text="#{error.username-required}">
                                 </div>
                             </div>
 
@@ -74,8 +106,10 @@
                             </div>
 
                             <p class="form-text text-muted mb-3">
-                                By registering you agree with our terms and condition.
+                                By registering you agree with our <a onclick="playVideo()" type="button" class="" data-bs-toggle="modal" data-bs-target="#termsAndConditions100real">terms and condition</a>.
                             </p>
+
+
 
                             <div class="align-items-center d-flex">
                                 <button type="submit" class="btn btn-primary ms-auto">

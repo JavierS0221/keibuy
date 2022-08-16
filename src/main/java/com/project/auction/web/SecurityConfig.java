@@ -52,6 +52,10 @@ public class SecurityConfig {
                 .permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/errors/403");
+
+        http.authorizeRequests()
+                .antMatchers("/", "/images/**", "/js/**", "/css/**", "/video/**").permitAll();
+
         return http.build();
     }
 

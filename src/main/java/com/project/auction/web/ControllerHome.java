@@ -37,8 +37,8 @@ public class ControllerHome {
     }
 
     @GetMapping("/register")
-    public String register(Model model, @RequestParam(value="lang", required=false) String lang) {
-        return "pages/register" + ((lang == null)?"lang":"");
+    public String register(Model model) {
+        return "pages/register";
     }
 
     @GetMapping("/forgot")
