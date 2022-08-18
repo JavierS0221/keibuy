@@ -4,6 +4,8 @@
 <head>
     <title>Register - Mondongo</title>
     <th:block th:include="layout/template :: head"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/api/intl-tel-input-17.0.18/css/intlTelInput.css}"/>
+    <script th:src="@{/api/intl-tel-input-17.0.18/js/intlTelInput.min.js}"></script>
 </head>
 <body>
 
@@ -49,7 +51,7 @@
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
                         <h1 class="fs-4 card-title fw-bold mb-4" th:text="#{register}"></h1>
-                        <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
+                        <form id="form1" method="POST" class="needs-validation" novalidate="" autocomplete="off">
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="username" th:text="#{username}"></label>
                                 <input id="username" type="text" class="form-control" name="username" value="" required autofocus>
@@ -89,11 +91,18 @@
                                 </div>
                             </div>
 
+<!--                            Telephone-->
+<!--                            <div class="mb-3">-->
+<!--                                <label class="mb-2 text-muted" for="telephone">Telephone</label>-->
+<!--                                <input id="telephone" type="email" class="form-control" name="telephone" value="" required>-->
+<!--                                <div class="invalid-feedback">-->
+<!--                                    Telephone is invalid-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="telephone">Telephone</label>
-                                <input id="telephone" type="email" class="form-control" name="telephone" value="" required>
-                                <div class="invalid-feedback">
-                                    Telephone is invalid
+                                <input id="telephone" type="tel" class="form-control" name="telephone" style=".input-group .form-control, .intl-tel-input { width: 100%; }" required>
+                                <div id="telephone-warn-msg" class="text-danger small">
                                 </div>
                             </div>
 
@@ -133,5 +142,6 @@
     <th:block th:insert="layout/template :: language-bottom"/>
 </section>
 <script th:src="@{/js/scriptLogin.js}"></script>
+<script th:src="@{/js/scriptRegisterPhone.js}"></script>
 </body>
 </html>
