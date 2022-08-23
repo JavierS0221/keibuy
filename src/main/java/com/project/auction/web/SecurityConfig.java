@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/profile")
                 .hasRole("USER")
-                .antMatchers("/", "/profile/**", "register")
+                .antMatchers("/", "/profile/**", "register", "email/**")
                 .permitAll()
                 .and()
                 .formLogin()

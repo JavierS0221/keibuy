@@ -34,7 +34,7 @@ public class Person implements Serializable {
     @Column(name = "password", length = 500, nullable = false)
     private String password;
 
-    @Column(name = "email", length = 80, nullable = false)
+    @Column(name = "email", length = 80, nullable = false, unique = true)
     private String email;
 
     @Column(name = "phone", length = 15)
@@ -59,6 +59,7 @@ public class Person implements Serializable {
     private List<Item> items;
 
 
+    private boolean accountVerified;
 
     public void addReport(Report report) {
         if (this.reportsCreated == null) this.reportsCreated = new ArrayList<>();

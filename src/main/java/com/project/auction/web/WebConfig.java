@@ -13,21 +13,21 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer{
-    
+
     @Bean
     public LocaleResolver localeResolver(){
         var slr = new SessionLocaleResolver();
         slr.setDefaultLocale(new Locale("en"));
         return slr;
     }
-    
+
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor(){
         var lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         return lci;
     }
-    
+
     @Override
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(localeChangeInterceptor());
@@ -42,6 +42,7 @@ public class WebConfig implements WebMvcConfigurer{
         registry.addViewController("/reset").setViewName("/pages/reset");
         registry.addViewController("/profile").setViewName("/pages/profile");
         registry.addViewController("/errors/403").setViewName("/errors/403");
+        registry.addViewController("/email").setViewName("email");
     }
 
 }
