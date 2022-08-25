@@ -74,6 +74,7 @@
                            role="button"
                            data-bs-toggle="dropdown"
                            aria-expanded="false"
+                           th:text="#{categories}"
                         >
                             Categories
                         </a>
@@ -87,21 +88,19 @@
                 </div>
                 <div th:if="${listTopCategories == null or listTopCategories.isEmpty()}">
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link" disabled="true" style="color: #2e2e2e">
-                        Categories
+                        <a href="#" class="nav-link" disabled="true" style="color: #2e2e2e" th:text="#{categories}">
                         </a>
                     </li>
                 </div>
                 <!-- Frequently asked -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" th:text="#{frequently_asked}">
                         Frequently asked
                     </a>
                 </li>
                 <!-- Contact -->
                 <li class="nav-item">
-                    <a href="#contact" class="nav-link">
-                        Contact
+                    <a href="#contact" class="nav-link" th:text="#{contact}">
                     </a>
                 </li>
 
