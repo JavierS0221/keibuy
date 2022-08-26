@@ -1,25 +1,22 @@
-package com.project.auction.web;
+package com.project.auction.controller;
 
 import com.project.auction.model.Category;
-import com.project.auction.model.Report;
 import com.project.auction.service.CategoryService;
-import com.project.auction.service.UserService;
+import com.project.auction.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @Slf4j
-public class ControllerHome {
+public class HomeController {
 
     @Autowired
-    private UserService userService;
+    private PersonService personService;
     @Autowired
     private CategoryService categoryService;
 
@@ -36,10 +33,20 @@ public class ControllerHome {
         return "index";
     }
 
-    @GetMapping("/register")
-    public String register(Model model) {
-        return "pages/register";
+    @GetMapping("/login")
+    public String login() {
+        return "pages/login";
     }
+//
+//    @PostMapping("/register")
+//    public String validRegister(@Validated Person person, Errors errors) {
+//        if(errors.hasErrors()) {
+//            return "pages/register";
+//        }
+//
+//        personService.save(person);
+//        return "redirect:/";
+//    }
 
     @GetMapping("/forgot")
     public String forgot(Model model) {

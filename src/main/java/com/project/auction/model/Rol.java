@@ -19,10 +19,6 @@ public class Rol implements Serializable {
     @Column(name = "id")
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id", nullable = false)
-    private Person person;
-
     @Column(name = "name", length = 45, nullable = false)
     private String name;
 }

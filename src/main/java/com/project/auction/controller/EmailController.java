@@ -26,7 +26,7 @@ public class EmailController {
     ResponseEntity<String> sendSimpleEmail(@PathVariable("user-email") String email) {
 
         try {
-            emailService.sendSimpleEmail(email, "Bienvenido a MondongoSubastas", "Bienvenido, espero que con suerte solo te roben ;)");
+            emailService.sendSimpleEmail(email, "Bienvenido a MondongoSubastas", "Bienvenido, ojala no te estafen =)");
         } catch (MailException mailException) {
             LOG.error("Error while sending out email..{}", mailException.getStackTrace());
             LOG.error("Error while sending out email..{}", mailException.fillInStackTrace());

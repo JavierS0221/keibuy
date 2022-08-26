@@ -1,21 +1,19 @@
 package com.project.auction.model;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "person")
-public class Person implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+@Table(name = "person", uniqueConstraints = @UniqueConstraint(columnNames = {"username","email"}))
+public class Person  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +32,7 @@ public class Person implements Serializable {
     @Column(name = "password", length = 500, nullable = false)
     private String password;
 
-    @Column(name = "email", length = 80, nullable = false, unique = true)
+    @Column(name = "email", length = 80, nullable = false)
     private String email;
 
     @Column(name = "phone", length = 15)
@@ -44,19 +42,26 @@ public class Person implements Serializable {
     private Date birthDate;
 
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Report> reportsCreated;
+    private Collection<Report> reportsCreated;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
-    private List<Rol> roles;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "person_rol",
+            joinColumns =  @JoinColumn(
+                    name = "person_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
+
+    )
+    private Collection<Rol> roles;
 
     @OneToMany(mappedBy = "reportedPerson", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Report> reportsReceived;
+    private Collection<Report> reportsReceived;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<AuctionOffer> auctionOffers;
+    private Collection<AuctionOffer> auctionOffers;
 
     @OneToMany(mappedBy = "person", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Item> items;
+    private Collection<Item> items;
 
 
     private boolean accountVerified;
