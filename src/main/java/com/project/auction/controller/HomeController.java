@@ -37,6 +37,12 @@ public class HomeController {
     public String login() {
         return "pages/login";
     }
+
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "pages/profile";
+    }
 //
 //    @PostMapping("/register")
 //    public String validRegister(@Validated Person person, Errors errors) {
