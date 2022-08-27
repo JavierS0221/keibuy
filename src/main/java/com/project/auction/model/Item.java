@@ -1,10 +1,12 @@
 package com.project.auction.model;
 
+import com.project.auction.model.relation.AuctionOffer;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +32,6 @@ public class Item implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="person_id")
     private Person person;
-
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="category_id")
-    private Category category;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "start_date", nullable = false)
@@ -61,4 +59,17 @@ public class Item implements Serializable {
 
     @OneToMany(mappedBy = "item", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<AuctionOffer> auctionOffers;
+
+    @OneToMany(mappedBy = "item", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private Collection<AuctionOffer> images;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinTable(
+            name = "item_category",
+            joinColumns =  @JoinColumn(
+                    name = "item_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+
+    )
+    private Collection<Category> categories;
 }

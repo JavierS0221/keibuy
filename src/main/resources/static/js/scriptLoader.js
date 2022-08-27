@@ -1,5 +1,5 @@
 window.addEventListener('load', () => {
-    sleep(1700).then(()=>{
+    sleep(1).then(()=>{
     const loaderContainer = document.querySelector('.loader-container');
     loaderContainer.style.opacity = 0;
     loaderContainer.style.visibility = 'hidden'

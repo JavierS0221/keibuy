@@ -51,7 +51,7 @@
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
                         <h1 class="fs-4 card-title fw-bold mb-4" th:text="#{register}"></h1>
-                        <form th:action="@{/register}" th:object="${person}" method="post" autocomplete="off">
+                        <form th:action="@{/register}" th:object="${person}" method="post">
                             <div class="mb-3 form-group">
                                 <label class="mb-2 text-muted" for="username" th:text="#{username}"></label>
                                 <input id="username" type="text" class="form-control" th:field="*{username}" required autofocus>

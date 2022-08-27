@@ -1,9 +1,10 @@
-package com.project.auction.model;
+package com.project.auction.model.relation;
 
+import com.project.auction.model.Item;
+import com.project.auction.model.Person;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serial;
 import java.io.Serializable;
 
 @Data
@@ -11,20 +12,17 @@ import java.io.Serializable;
 @Table(name = "auction_offer")
 public class AuctionOffer implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @EmbeddedId
+    private AuctionOfferPK id;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="person_id", nullable = false)
+    @MapsId("personId") //This is the name of attr in AuctionOfferPK class
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="item_id", nullable = false)
+    @MapsId("itemId") //This is the name of attr in AuctionOfferPK class
+    @JoinColumn(name = "item_id")
     private Item item;
 
     @Column(name = "offer")

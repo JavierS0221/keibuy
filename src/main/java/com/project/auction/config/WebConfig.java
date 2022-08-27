@@ -1,8 +1,11 @@
 package com.project.auction.config;
 
 import java.util.Locale;
+
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -15,22 +18,30 @@ public class WebConfig implements WebMvcConfigurer{
 
     @Bean
     public LocaleResolver localeResolver(){
-        var slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(new Locale("en"));
-        return slr;
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.ENGLISH);
+        return  localeResolver;
     }
 
     @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor(){
-        var lci = new LocaleChangeInterceptor();
-        lci.setParamName("lang");
-        return lci;
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        return localeChangeInterceptor;
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry){
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
     }
+
+    @Bean
+    public LocalValidatorFactoryBean validator(MessageSource messageSource) {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource);
+        return bean;
+    }
+
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry){

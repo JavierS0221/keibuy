@@ -1,12 +1,9 @@
 package com.project.auction.model;
 
+import com.project.auction.model.relation.AuctionOffer;
 import lombok.*;
-import org.hibernate.Hibernate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.*;
 
 @Getter
@@ -44,7 +41,7 @@ public class Person  {
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<Report> reportsCreated;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(
             name = "person_rol",
             joinColumns =  @JoinColumn(
@@ -53,6 +50,16 @@ public class Person  {
 
     )
     private Collection<Rol> roles;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinTable(
+            name = "auction_wished",
+            joinColumns =  @JoinColumn(
+                    name = "person_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id")
+
+    )
+    private Collection<Item> auctionsWished;
 
     @OneToMany(mappedBy = "reportedPerson", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<Report> reportsReceived;

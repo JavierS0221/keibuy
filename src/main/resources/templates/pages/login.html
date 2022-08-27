@@ -1,22 +1,43 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+        lang="en">
 <head>
     <title>Login - Mondongo</title>
     <th:block th:include="layout/template :: head"/>
 </head>
 <body>
+
 <section class="h-100">
     <div class="container h-100">
         <div class="row d-flex align-items-center justify-content-center h-100">
             <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
                 <div class="text-center mt-5 mb-3 user-select-none">
-                    <img th:src="@{/images/logo2.png}" alt="logo" width="100" style="">
+                    <div th:if="${param.error!=null}">
+                        <img th:src="@{/images/logo2Err.png}" alt="logo" width="100" style="">
+                    </div>
+                    <div th:if="${param.error==null}">
+                        <img th:src="@{/images/logo2.png}" alt="logo" width="100" style="">
+                    </div>
                 </div>
                 <div class="card shadow-lg">
                     <div class="card-body p-5 pb-3">
                         <h1 class="fs-4 card-title fw-bold mb-4" th:text="#{login}"></h1>
                         <form method="POST" autocomplete="off" th:action="@{/login}">
+<!--                            <div th:if="${param.error!=null and accountLocked !=true}">-->
+<!--                            <div class="alert alert-danger">-->
+<!--                                <span th:text="#{login.error}"/>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                            <div th:if="${param.error!=null and accountLocked ==true}">-->
+                            <div th:if="${param.error!=null}">
+                                <div class="alert alert-danger" th:if="${accountLocked != null}">
+                                    <div>
+                                        <span th:text="#{user.account.locked}"/>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="username" th:text="#{email}"></label>
                                 <input id="username" type="text" class="form-control" name="username" value="" required autofocus>
@@ -26,7 +47,7 @@
                             <div class="mb-3">
                                 <div class="mb-2 w-100">
                                     <label class="text-muted" for="password" th:text="#{password}"></label>
-                                    <a th:href="@{/forgot}" class="float-end">
+                                    <a th:href="@{/forgot}" class="float-end" th:text="#{forgot}">
                                         Forgot Password?
                                     </a>
                                 </div>
@@ -38,7 +59,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="form-check">
                                     <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                                    <label for="remember" class="form-check-label">Remember Me</label>
+                                    <label for="remember" class="form-check-label"  th:text="#{remember}">Remember Me</label>
                                 </div>
                                 <button type="submit" class="btn btn-primary ms-auto" th:text="#{action.login}">
                                 </button>

@@ -1,6 +1,6 @@
 package com.project.auction.service;
 
-import com.project.auction.dao.LogDao;
+import com.project.auction.repository.LogRepository;
 import com.project.auction.model.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,29 +12,29 @@ import java.util.List;
 public class LogServiceImpl implements LogService {
 
     @Autowired
-    private LogDao logDao;
+    private LogRepository logRepository;
 
     @Override
     @Transactional(readOnly = true)
     public List<Log> listLogs() {
-        return (List<Log>) logDao.findAll();
+        return (List<Log>) logRepository.findAll();
     }
 
     @Override
     @Transactional
     public void save(Log log) {
-        logDao.save(log);
+        logRepository.save(log);
     }
 
     @Override
     @Transactional
     public void delete(Log log) {
-        logDao.delete(log);
+        logRepository.delete(log);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Log getLog(Log log) {
-        return logDao.findById(log.getId()).orElse(null);
+        return logRepository.findById(log.getId()).orElse(null);
     }
 }

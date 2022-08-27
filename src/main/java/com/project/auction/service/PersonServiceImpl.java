@@ -1,10 +1,18 @@
 package com.project.auction.service;
 
-import com.project.auction.dao.PersonDao;
+import com.project.auction.email.context.AccountVerificationEmailContext;
+import com.project.auction.exception.EmailAlreadyExistException;
+import com.project.auction.exception.InvalidTokenException;
+import com.project.auction.exception.UsernameAlreadyExistException;
+import com.project.auction.model.SecureToken;
+import com.project.auction.repository.PersonRepository;
 import com.project.auction.dto.PersonDto;
 import com.project.auction.model.Person;
 import com.project.auction.model.Rol;
+import com.project.auction.repository.SecureTokenRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,31 +22,53 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonServiceImpl implements PersonService {
+    @Value("${site.base.url.https}")
+    private String baseURL;
+    @Resource
+    private EmailService emailService;
 
-    private PersonDao personDao;
-    @Autowired
+    private PersonRepository personRepository;
+    private RolService rolService;
+    private SecureTokenService secureTokenService;
     private BCryptPasswordEncoder passwordEncoder;
 
-    public PersonServiceImpl(PersonDao personDao) {
-        this.personDao = personDao;
+    @Autowired
+    public PersonServiceImpl(PersonRepository personRepository, RolService rolService, SecureTokenService secureTokenService, BCryptPasswordEncoder passwordEncoder) {
+        this.personRepository = personRepository;
+        this.rolService = rolService;
+        this.secureTokenService = secureTokenService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Person> listPersons() {
-        return (List<Person>) personDao.findAll();
+        return (List<Person>) personRepository.findAll();
     }
 
     @Override
     @Transactional
-    public void save(PersonDto personDto) {
-        Rol defaultRol = new Rol();
-        defaultRol.setName("ROLE_USER");
+    public void save(PersonDto personDto) throws UsernameAlreadyExistException, EmailAlreadyExistException {
+
+        if(checkIfPersonExistByUsername(personDto.getUsername())){
+            throw new UsernameAlreadyExistException("User already exists for this username");
+        }
+        if(checkIfPersonExistByEmail(personDto.getEmail())){
+            throw new EmailAlreadyExistException("User already exists for this email");
+        }
+
+        String defaultRolName = "ROLE_USER";
+        Rol defaultRol = rolService.getRol(defaultRolName);
+
+        if(defaultRol == null) {
+            defaultRol = new Rol();
+            defaultRol.setName(defaultRolName);
+        }
 
         Person person = new Person();
         person.setUsername(personDto.getUsername());
@@ -50,28 +80,74 @@ public class PersonServiceImpl implements PersonService {
         person.setBirthDate(personDto.getBirthDate());
         person.setAccountVerified(personDto.isAccountVerified());
         person.setRoles(List.of(defaultRol));
-        personDao.save(person);
+        personRepository.save(person);
+        sendRegistrationConfirmationEmail(person);
     }
 
     @Override
     @Transactional
     public void delete(PersonDto personDto) {
         Person person = this.getPerson(personDto);
-        personDao.delete(person);
+        personRepository.delete(person);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Person getPerson(PersonDto personDto) {
-        return personDao.findById(personDto.getId()).orElse(null);
+        return personRepository.findById(personDto.getId()).orElse(null);
     }
+
+    @Override
+    public boolean checkIfPersonExistByEmail(String email) {
+        return personRepository.findByEmail(email) != null;
+    }
+    @Override
+    public boolean checkIfPersonExistByUsername(String username) {
+        return personRepository.findByUsername(username) != null;
+    }
+
+    @Override
+    public void sendRegistrationConfirmationEmail(Person person) {
+        SecureToken secureToken = secureTokenService.createSecureToken();
+        secureToken.setPerson(person);
+        secureTokenService.saveSecureToken(secureToken);
+        AccountVerificationEmailContext emailContext = new AccountVerificationEmailContext();
+        emailContext.init(person);
+        emailContext.setToken(secureToken.getToken());
+        emailContext.buildVerificationUrl(baseURL, secureToken.getToken());
+        try {
+            emailService.sendMail(emailContext);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public boolean verifyPerson(String token) throws InvalidTokenException {
+        SecureToken secureToken = secureTokenService.findByToken(token);
+        if(Objects.isNull(secureToken) || !StringUtils.equals(token, secureToken.getToken()) || secureToken.isExpired()){
+            throw new InvalidTokenException("Token is not valid");
+        }
+
+        Person person = personRepository.getReferenceById(secureToken.getPerson().getId());
+        if(Objects.isNull(person)){
+            return false;
+        }
+        person.setAccountVerified(true);
+        personRepository.save(person);
+
+        secureTokenService.removeToken(secureToken);
+        return true;
+    }
+
     @Override
     @Transactional(readOnly=true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = personDao.findByUsername(username);
+        Person person = personRepository.findByUsername(username);
 
         if(person == null) {
-            person = personDao.findByEmail(username);
+            person = personRepository.findByEmail(username);
         }
 
         if(person == null){
