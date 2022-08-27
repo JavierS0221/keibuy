@@ -53,7 +53,6 @@ public class WebConfig implements WebMvcConfigurer{
         registry.addViewController("/profile").setViewName("/pages/profile");
         registry.addViewController("/errors/403").setViewName("/errors/403");
         registry.addViewController("/email").setViewName("email");
-        registry.addViewController("/profile").setViewName("/pages/profile");
     }
 
 }

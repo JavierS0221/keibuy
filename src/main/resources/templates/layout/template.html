@@ -35,6 +35,11 @@
         .navbar-brand__img {
             width: 50px;
         }
+
+        #account {
+            font-family: "Arial";
+            margin: auto;
+        }
     </style>
 </head>
 <body>
@@ -63,6 +68,13 @@
         <!-- Nav content -->
         <div class="collapse navbar-collapse flex-grow-0" id="content-nav">
             <ul class="navbar-nav">
+                <!--Form-->
+                <div class="input-group d-flex mb-3" style="margin-top: 16px; margin-right: 30px">
+                    <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2"><img src="https://www.pngmart.com/files/8/Search-Button-PNG-HD-Quality.png" height="20px" width="20px"></button>
+                </div>
+
+
                 <!-- Categories -->
 
                 <div th:if="${listTopCategories != null and !listTopCategories.isEmpty()}">
@@ -104,15 +116,32 @@
                     </a>
                 </li>
 
-                <!-- Form -->
-                <li>
-                    <form action="#" class="d-flex">
-                        <input type="search" placeholder="Search by Name/ID" class="form-control me-3">
-                        <button type="submit" class="btn btn-success">
-                            Search
+                <a class="navbar-brand" href="#">
+                    <div class="btn-group dropstart" id="account">
+                        <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img th:src="@{/images/logo.svg}" style="width:40px;" class="rounded-pill">
                         </button>
-                    </form>
-                </li>
+                        <ul class="dropdown-menu">
+                            <li>Perfil</li>
+                            <li>Prueba2</li>
+                            <li>Prueba3</li>
+                            <li>Cerrar seción</li>
+                        </ul>
+                    </div>
+                </a>
+
+                <!-- Form -->
+<!--                <li>-->
+<!--                    <form action="#" class="d-flex">-->
+<!--                        <input type="search" placeholder="Search by Name/ID" class="form-control me-3">-->
+<!--                        <button type="submit" class="btn btn-success">-->
+<!--                            Search-->
+<!--                        </button>-->
+<!--                        <a class="navbar-brand" href="#">-->
+<!--                            <img th:src="@{/images/logo.svg}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">-->
+<!--                        </a>-->
+<!--                    </form>-->
+<!--                </li>-->
             </ul>
         </div>
     </nav>
