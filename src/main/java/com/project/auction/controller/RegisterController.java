@@ -42,7 +42,7 @@ public class RegisterController {
     }
 
     @GetMapping
-    public String getRegisterForm() {
+    public String register(){
         return "pages/register";
     }
 
@@ -74,7 +74,6 @@ public class RegisterController {
             redirAttr.addFlashAttribute("tokenError", messageSource.getMessage("user.registration.verification.invalid.token", null,LocaleContextHolder.getLocale()));
             return REDIRECT_LOGIN;
         }
-
         redirAttr.addFlashAttribute("verifiedAccountMsg", messageSource.getMessage("user.registration.verification.success", null,LocaleContextHolder.getLocale()));
         return REDIRECT_LOGIN;
     }
