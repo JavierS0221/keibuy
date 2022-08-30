@@ -24,9 +24,9 @@
             margin: auto;
             width: 75%;
         }
-        .wrapper2 {
-            margin: 2rem;
-            width: 95%;
+
+        .pub {
+            text-align: center;
         }
     </style>
 
@@ -205,6 +205,7 @@
 </div>
 
 <!--publicaciones-->
+<div class="pub" th:text="#{publications}">Publications</div>
 <div class="wrapper">
     <div class="your-class">
         <div>
@@ -282,17 +283,15 @@
     </div>
 </div>
 
-<!--Script publicaciones-->
+<!--Carrusel-->
 <script>
     $(document).ready(function () {
-        $('.single-item').slick({
-            dots: true,
-        })
 
         $('.your-class').slick({
             dots: false,
             infinite: false,
             speed: 300,
+            slidesPerRow: 4,
             slidesToShow: 4,
             slidesToScroll: 1,
             responsive: [{
@@ -320,9 +319,13 @@
                         dots: false,
                     }
                 }
+                // You can unslick at a given breakpoint now by adding:
+                // settings: "unslick"
+                // instead of a settings object
             ]
         });
     });
+</script>
 
 <!-- Back to top button -->
 <a id="back-to-top" href="#" class="btn btn-danger rounded-circle btn-sm back-to-top" role="button">

@@ -1,6 +1,6 @@
 package com.project.auction.service;
 
-import com.project.auction.dao.ItemDao;
+import com.project.auction.repository.ItemRepository;
 import com.project.auction.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,29 +12,29 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
 
     @Autowired
-    private ItemDao itemDao;
+    private ItemRepository itemRepository;
 
     @Override
     @Transactional(readOnly = true)
     public List<Item> listItems() {
-        return (List<Item>) itemDao.findAll();
+        return (List<Item>) itemRepository.findAll();
     }
 
     @Override
     @Transactional
     public void save(Item item) {
-        itemDao.save(item);
+        itemRepository.save(item);
     }
 
     @Override
     @Transactional
     public void delete(Item item) {
-        itemDao.delete(item);
+        itemRepository.delete(item);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Item getItem(Item item) {
-        return itemDao.findById(item.getId()).orElse(null);
+        return itemRepository.findById(item.getId()).orElse(null);
     }
 }

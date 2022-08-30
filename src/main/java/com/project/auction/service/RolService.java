@@ -9,4 +9,5 @@ public interface RolService {
     public void save(Rol rol);
     public void delete(Rol rol);
     public Rol getRol(Rol rol);
+    public Rol getRol(String name);
 }

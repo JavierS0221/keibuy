@@ -33,12 +33,6 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "pages/login";
-    }
-
-
     @GetMapping("/profile")
     public String profile() {
         return "pages/profile";

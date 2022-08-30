@@ -10,10 +10,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "category")
-public class Category implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +22,6 @@ public class Category implements Serializable {
 
     @Column(name = "description", length = 250, nullable = false)
     private String description;
-
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Item> listItems;
 
 
 }

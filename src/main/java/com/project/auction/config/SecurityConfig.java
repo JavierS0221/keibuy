@@ -1,5 +1,6 @@
 package com.project.auction.config;
 
+import com.project.auction.security.authentication.CustomAuthenticationProvider;
 import com.project.auction.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,22 +31,27 @@ public class SecurityConfig {
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
+
+    @Bean
+    public CustomAuthenticationProvider authProvider() {
+        CustomAuthenticationProvider authenticationProvider = new CustomAuthenticationProvider();
+        return authenticationProvider;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .cors().and()
             .csrf().disable()
+                .authenticationProvider(authProvider())
             .authorizeRequests().antMatchers(
-            "/register**",
-            "/js/**",
-            "/css/**",
-            "/images/**",
-            "/videos/**").permitAll()
-            .antMatchers("/profile", "/")
+            "/register**", "/js/**", "/css/**", "/images/**", "/videos/**").permitAll()
+
+            .antMatchers("/profile/**")
             .hasRole("USER")
             .and()
             .formLogin()
-            .loginPage("/login")
+            .loginPage("/login").failureUrl("/login?error=true")
             .permitAll()
             .and()
             .logout()

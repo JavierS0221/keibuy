@@ -18,7 +18,7 @@ public class Image implements Serializable {
     @Column(name = "file_name", length = 45, nullable = false)
     private String fileName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="item_id", nullable = false)
     private Item item;
 }
