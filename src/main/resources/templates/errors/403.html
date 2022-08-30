@@ -7,9 +7,14 @@
         <th:block th:include="layout/template :: head"/>
     </head>
     <body>
-        <div>Acceso denegado. 
+        <div class="text-center mt-5 mb-3 user-select-none">
+         <img th:src="@{/images/errorLogo.png}">
+        </div>
+        <div class="text-center" style="color: #dc3545; font-family: Arial; font-size: 20px" >Acceso denegado.
             NO tienes permisos para ver esta página o ejecutar esta acción
-            <a th:href="@{/}" >[[#{accion.regresar}]]</a>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-outline-danger" th:href="@{/}" th:text="#{action.back}">Back</a>
         </div>
     </body>
 </html>
