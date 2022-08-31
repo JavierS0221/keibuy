@@ -26,6 +26,10 @@ import java.util.*;
 public class PersonServiceImpl implements PersonService {
     @Value("${site.base.url.https}")
     private String baseURL;
+
+    @Value("${project.testing.mode}")
+    private boolean projectTestingMode;
+
     @Resource
     private EmailService emailService;
 
@@ -52,17 +56,17 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public void save(PersonDto personDto) throws UsernameAlreadyExistException, EmailAlreadyExistException {
 
-        if(checkIfPersonExistByUsername(personDto.getUsername())){
+        if (checkIfPersonExistByUsername(personDto.getUsername())) {
             throw new UsernameAlreadyExistException("User already exists for this username");
         }
-        if(checkIfPersonExistByEmail(personDto.getEmail())){
+        if (checkIfPersonExistByEmail(personDto.getEmail())) {
             throw new EmailAlreadyExistException("User already exists for this email");
         }
 
         String defaultRolName = "ROLE_USER";
         Rol defaultRol = rolService.getRol(defaultRolName);
 
-        if(defaultRol == null) {
+        if (defaultRol == null) {
             defaultRol = new Rol();
             defaultRol.setName(defaultRolName);
         }
@@ -92,10 +96,31 @@ public class PersonServiceImpl implements PersonService {
     @Transactional(readOnly = true)
     public Person getPerson(PersonDto personDto) throws UnkownIdentifierException {
         Person person = personRepository.findById(personDto.getId()).orElse(null);
-        if(person != null){
-            if(!person.isAccountVerified()) {
-                throw new UnkownIdentifierException("unable to find account or account is not active");
-            }
+        if (person == null) {
+            throw new UnkownIdentifierException("unable to find account");
+        }
+        return person;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Person getPersonById(long id) throws UnkownIdentifierException {
+        Person person = personRepository.findById(id).orElse(null);
+        if (person == null) {
+            throw new UnkownIdentifierException("unable to find account");
+        }
+        return person;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Person getPersonByNameOrEmail(String nameOrEmail) throws UnkownIdentifierException {
+        Person person = personRepository.findByUsername(nameOrEmail);
+        if (person == null) {
+            person = personRepository.findByEmail(nameOrEmail);
+        }
+        if (person == null) {
+            throw new UnkownIdentifierException("unable to find account");
         }
         return person;
     }
@@ -104,6 +129,7 @@ public class PersonServiceImpl implements PersonService {
     public boolean checkIfPersonExistByEmail(String email) {
         return personRepository.findByEmail(email) != null;
     }
+
     @Override
     public boolean checkIfPersonExistByUsername(String username) {
         return personRepository.findByUsername(username) != null;
@@ -118,10 +144,13 @@ public class PersonServiceImpl implements PersonService {
         emailContext.init(person);
         emailContext.setToken(secureToken.getToken());
         emailContext.buildVerificationUrl(baseURL, secureToken.getToken());
-        try {
-            emailService.sendMail(emailContext);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        if (!projectTestingMode) {
+            try {
+                emailService.sendMail(emailContext);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -129,12 +158,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public boolean verifyPerson(String token) throws InvalidTokenException {
         SecureToken secureToken = secureTokenService.findByToken(token);
-        if(Objects.isNull(secureToken) || !StringUtils.equals(token, secureToken.getToken()) || secureToken.isExpired()){
+        if (Objects.isNull(secureToken) || !StringUtils.equals(token, secureToken.getToken()) || secureToken.isExpired()) {
             throw new InvalidTokenException("Token is not valid");
         }
 
         Person person = personRepository.getReferenceById(secureToken.getPerson().getId());
-        if(Objects.isNull(person)){
+        if (Objects.isNull(person)) {
             return false;
         }
         person.setAccountVerified(true);
@@ -145,21 +174,21 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personRepository.findByUsername(username);
 
-        if(person == null) {
+        if (person == null) {
             person = personRepository.findByEmail(username);
         }
 
-        if(person == null){
+        if (person == null) {
             throw new UsernameNotFoundException(username);
         }
 
         var roles = new ArrayList<GrantedAuthority>();
 
-        for(Rol rol: person.getRoles()){
+        for (Rol rol : person.getRoles()) {
             roles.add(new SimpleGrantedAuthority(rol.getName()));
         }
 

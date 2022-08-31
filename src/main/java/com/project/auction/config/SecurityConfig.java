@@ -24,26 +24,29 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(personService);
-        auth.setPasswordEncoder(passwordEncoder());
-        return auth;
-    }
 
     @Bean
-    public CustomAuthenticationProvider authProvider() {
-        CustomAuthenticationProvider authenticationProvider = new CustomAuthenticationProvider();
-        return authenticationProvider;
+    public CustomAuthenticationProvider myAuthProvider() throws Exception {
+        CustomAuthenticationProvider provider = new CustomAuthenticationProvider();
+        provider.setUserDetailsService(personService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
+
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+//        auth.setUserDetailsService(personService);
+//        auth.setPasswordEncoder(passwordEncoder());
+//        return auth;
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .cors().and()
             .csrf().disable()
-                .authenticationProvider(authProvider())
+                .authenticationProvider(myAuthProvider())
             .authorizeRequests().antMatchers(
             "/register**", "/js/**", "/css/**", "/images/**", "/videos/**").permitAll()
 

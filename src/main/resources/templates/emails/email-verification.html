@@ -224,7 +224,7 @@
                                         font-size: 18px;
                                         font-weight: 400;
                                         line-height: 25px;">
-                                        <p th:text="${verificationURL}">https://example.com/register/verify?code</p>
+                                        <a th:href="${verificationURL}" th:text="${verificationURL} ">https://example.com/register/verify?code</a>
                                     </td>
                                 </tr>
                             </table>

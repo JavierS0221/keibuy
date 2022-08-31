@@ -2,6 +2,7 @@ package com.project.auction.config;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer{
+
+    @Value("${project.testing.mode}")
+    private boolean projectTestingMode;
 
     @Bean
     public LocaleResolver localeResolver(){
@@ -53,7 +57,10 @@ public class WebConfig implements WebMvcConfigurer{
         registry.addViewController("/profile").setViewName("/pages/profile");
         registry.addViewController("/errors/403").setViewName("/errors/403");
         registry.addViewController("/errors/404").setViewName("/errors/404");
-        registry.addViewController("/email").setViewName("/emails/email-verification");
+        if(projectTestingMode) {
+            registry.addViewController("/email").setViewName("/emails/email-verification");
+        }
+
     }
 
 }

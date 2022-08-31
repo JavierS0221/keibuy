@@ -15,6 +15,8 @@ public interface PersonService extends UserDetailsService{
     public void save(PersonDto personDto) throws UsernameAlreadyExistException, EmailAlreadyExistException;
     public void delete(PersonDto personDto) throws UnkownIdentifierException;
     public Person getPerson(PersonDto personDto) throws UnkownIdentifierException;
+    public Person getPersonById(long id) throws UnkownIdentifierException;
+    public Person getPersonByNameOrEmail(String nameOrEmail) throws UnkownIdentifierException;
     public boolean checkIfPersonExistByEmail(String email);
     public boolean checkIfPersonExistByUsername(String username);
     public void sendRegistrationConfirmationEmail(Person person);

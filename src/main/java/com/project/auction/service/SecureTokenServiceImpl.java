@@ -1,6 +1,10 @@
 package com.project.auction.service;
 
+import com.project.auction.dto.PersonDto;
+import com.project.auction.exception.UnkownIdentifierException;
+import com.project.auction.model.Person;
 import com.project.auction.model.SecureToken;
+import com.project.auction.repository.PersonRepository;
 import com.project.auction.repository.SecureTokenRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,9 @@ public class SecureTokenServiceImpl implements SecureTokenService {
     private static final BytesKeyGenerator DEFAULT_TOKEN_GENERATOR = KeyGenerators.secureRandom(15);
     private static final Charset US_ASCII = StandardCharsets.US_ASCII;
 
+    @Autowired
+    private PersonRepository personRepository;
+
     @Value("${jdj.secure.token.validity}")
     private int tokenValidityInSeconds;
 
@@ -30,7 +37,7 @@ public class SecureTokenServiceImpl implements SecureTokenService {
     }
 
     @Override
-    public SecureToken createSecureToken(){
+    public SecureToken createSecureToken() {
         String tokenValue = new String(Base64.encodeBase64URLSafe(DEFAULT_TOKEN_GENERATOR.generateKey()), US_ASCII); // this is a sample, you can adapt as per your security need
         SecureToken secureToken = new SecureToken();
         secureToken.setToken(tokenValue);
@@ -47,6 +54,16 @@ public class SecureTokenServiceImpl implements SecureTokenService {
     @Override
     public SecureToken findByToken(String token) {
         return secureTokenRepository.findByToken(token);
+    }
+
+    @Override
+    public SecureToken findByPersonId(long personId) {
+        SecureToken token = null;
+        if (personRepository.existsById(personId)) {
+            Person person = personRepository.getReferenceById(personId);
+            token = secureTokenRepository.findByPerson(person);
+        }
+        return token;
     }
 
     @Override

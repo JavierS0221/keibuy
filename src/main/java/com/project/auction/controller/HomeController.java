@@ -1,13 +1,20 @@
 package com.project.auction.controller;
 
+import com.project.auction.dto.PersonDto;
+import com.project.auction.exception.UnkownIdentifierException;
 import com.project.auction.model.Category;
+import com.project.auction.model.Person;
+import com.project.auction.model.SecureToken;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.PersonService;
+import com.project.auction.service.SecureTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -15,8 +22,6 @@ import java.util.List;
 @Slf4j
 public class HomeController {
 
-    @Autowired
-    private PersonService personService;
     @Autowired
     private CategoryService categoryService;
 
@@ -37,6 +42,7 @@ public class HomeController {
     public String profile() {
         return "pages/profile";
     }
+
 //
 //    @PostMapping("/register")
 //    public String validRegister(@Validated Person person, Errors errors) {
