@@ -118,19 +118,26 @@
                     </a>
                 </li>
 
-                <a class="navbar-brand" href="#">
-                    <div class="btn-group dropstart" id="account">
-                        <button type="button" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img th:src="@{/images/logo.svg}" style="width:40px;" class="rounded-pill">
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item">Perfil</a></li>
-                            <li><a class="dropdown-item">Prueba2</a></li>
-                            <li><a class="dropdown-item">Prueba3</a></li>
-                            <li><a class="dropdown-item">Cerrar seción</a></li>
-                        </ul>
-                    </div>
-                </a>
+
+                <li class="nav-item dropdown">
+                    <!-- BTN -->
+                    <a href="#"
+                       class="nav-link dropdown-toggle"
+                       id="btn-dropdown-profile"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                    >
+                        <img th:src="@{/images/logo.svg}" style="width:40px;" class="rounded-pill">
+                    </a>
+                    <!-- Contain -->
+                    <ul class="dropdown-menu" aria-labelledby="btn-dropdown-profile">
+                        <tr>
+                            <li><a href="#" class="dropdown-item">Profile</a></li>
+                            <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
+                        </tr>
+                    </ul>
+                </li>
 
                 <!-- Form -->
 <!--                <li>-->

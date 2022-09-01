@@ -30,6 +30,7 @@ public class SecurityConfig {
         CustomAuthenticationProvider provider = new CustomAuthenticationProvider();
         provider.setUserDetailsService(personService);
         provider.setPasswordEncoder(passwordEncoder());
+        provider.setHideUserNotFoundExceptions(false) ;
         return provider;
     }
 

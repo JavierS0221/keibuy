@@ -1,8 +1,9 @@
 package com.project.auction.controller;
 
-import com.project.auction.security.authentication.CustomAuthenticationProvider;
+import com.project.auction.exception.AccountNotConfirmedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,27 +17,36 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/login")
 public class LoginController {
 
-//    @GetMapping
-//    public String login() {
-//
-//        System.out.println("Test 1");
-//        return "pages/login";
-//    }
     @GetMapping()
     public String loginError(HttpServletRequest request, Model model) {
-        System.out.println("Test 2");
         HttpSession session = request.getSession(false);
         String errorMessage = null;
+        boolean usernameNotFound = false;
+        boolean accountNotConfirmed = false;
+
         if (session != null) {
             AuthenticationException ex = (AuthenticationException) session
                     .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-//            System.out.println(ex.getClass().getSimpleName());
-//            System.out.println(CustomAuthenticationProvider.AccountNotConfirmedException.class.getSimpleName().equals(ex.getClass().getSimpleName()));
-            if (ex != null) {
+
+
+            if(ex != null) {
                 errorMessage = ex.getMessage();
+
+                String classSimpleName = ex.getClass().getSimpleName();
+                String usernameNotFoundName = UsernameNotFoundException.class.getSimpleName();
+                String accountNotConfirmedName = AccountNotConfirmedException.class.getSimpleName();
+
+
+                if (classSimpleName.equals(usernameNotFoundName)) {
+                    usernameNotFound = true;
+                } else if (classSimpleName.equals(accountNotConfirmedName)) {
+                    accountNotConfirmed = true;
+                }
             }
         }
         model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("usernameNotFound", usernameNotFound);
+        model.addAttribute("accountNotConfirmed", accountNotConfirmed);
         return "pages/login";
     }
 }

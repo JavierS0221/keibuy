@@ -31,9 +31,8 @@
                         <h1 class="fs-4 card-title fw-bold mb-4" th:text="#{login}"></h1>
                         <form method="POST" th:action="@{/login}">
                             <div th:if="${param.error!=null}">
-                                <div class="alert alert-danger">
-                                    <span>Credenciales no  válidas</span>
-                                    <span th:if="${errorMessage != null}" th:text="${errorMessage}"></span>
+                                <div class="alert alert-danger" th:if="${errorMessage != null}" >
+                                    <span th:text="${errorMessage}"></span>
                                 </div>
                             </div>
 
@@ -49,7 +48,7 @@
                                         Forgot Password?
                                     </a>
                                 </div>
-                                <input id="password" type="password" class="form-control" th:classappend="${(param.error != null  ? 'is-invalid' : '')}" name="password" required>
+                                <input id="password" type="password" class="form-control" th:classappend="${(param.error != null and (!accountNotConfirmed and !usernameNotFound) ? 'is-invalid' : '')}" name="password" required>
                             </div>
 
                             <div class="d-flex align-items-center">

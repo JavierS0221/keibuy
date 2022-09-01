@@ -183,7 +183,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (person == null) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException("Not found account '"+username+"'");
         }
 
         var roles = new ArrayList<GrantedAuthority>();
