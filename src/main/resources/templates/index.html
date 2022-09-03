@@ -48,6 +48,9 @@
 <div class="container-fluid sticky-top" style="background-color: #404eed;">
     <header th:replace="layout/template :: header"></header>
 </div>
+<div sec:authorize="hasRole('ADMIN')">
+<p>pitos</p>
+</div>
 
 <!--Trend-->
 <div class="wrapper2">
