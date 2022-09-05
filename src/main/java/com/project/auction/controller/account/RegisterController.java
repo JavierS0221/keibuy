@@ -1,4 +1,4 @@
-package com.project.auction.controller;
+package com.project.auction.controller.account;
 
 import com.project.auction.dto.PersonDto;
 import com.project.auction.exception.EmailAlreadyExistException;

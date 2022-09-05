@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ *  email controller
+ *
+ */
 @Slf4j
 @Controller
 @RequestMapping("/email")

@@ -10,6 +10,8 @@ import com.project.auction.service.PersonService;
 import com.project.auction.service.SecureTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +26,18 @@ public class HomeController {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private PersonService personService;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, @AuthenticationPrincipal User user) {
+        Person person = null;
+        if(user != null) {
+            try {
+                person = personService.getPersonByNameOrEmail(user.getUsername());
+            } catch (UnkownIdentifierException ignored) {
+            }
+        }
         List<Category> listCategories = categoryService.listCategories();
 
         List<Category> listTopCategories = categoryService.listCategories();
@@ -35,6 +46,8 @@ public class HomeController {
         }
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("listTopCategories", listTopCategories);
+        model.addAttribute("user", user);
+        model.addAttribute("person", person);
         return "index";
     }
 

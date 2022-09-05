@@ -1,4 +1,4 @@
-package com.project.auction.controller;
+package com.project.auction.controller.account;
 
 import com.project.auction.exception.AccountNotConfirmedException;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +17,15 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/login")
 public class LoginController {
 
+    /**
+     * Displays login page passing authentication errors
+     *
+     * @param request The request object.
+     * @param model This is the model that will be passed to the view.
+     * @return A String
+     */
     @GetMapping()
-    public String loginError(HttpServletRequest request, Model model) {
+    public String login(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         String errorMessage = null;
         boolean usernameNotFound = false;

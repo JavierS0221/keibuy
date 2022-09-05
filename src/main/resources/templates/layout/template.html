@@ -12,7 +12,8 @@
     <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/scriptBtnLang.js}"></script>
 
-    <meta name="viewport" content="width=device-width,initial-scale=1"> <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Forcing initial-scale shouldn't be necessary -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
     <meta name="x-apple-disable-message-reformatting">
 
@@ -48,113 +49,191 @@
 
 
 <header th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-dark justify-content-between" id="#navbar-scrollspy"
-         style="background-color: #404eed;">
-        <!-- Brand -->
-        <a href="#" class="navbar-brand">
-            <img th:src="@{/images/logo2.svg}"
-                 alt=""
-                 class="navbar-brand__img"
-            />
-            MONDONGO
-        </a>
-        <!-- Button collapse -->
-        <button class="navbar-toggler"
-                data-bs-toggle="collapse"
-                data-bs-target="#content-nav"
-                aria-controls="content-nav"
-                aria-expanded="false"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- Nav content -->
-        <div class="collapse navbar-collapse flex-grow-0" id="content-nav">
-            <ul class="navbar-nav">
-                <!--Form-->
-                <div class="input-group d-flex mb-3" style="margin-top: 16px; margin-right: 30px">
-                    <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2"><img src="https://www.pngmart.com/files/8/Search-Button-PNG-HD-Quality.png" height="20px" width="20px"></button>
-                </div>
+
+<!--    &lt;!&ndash;Main Navigation&ndash;&gt;-->
+<!--    <header>-->
+<!--        &lt;!&ndash; Navbar&ndash;&gt;-->
+<!--        <nav class="navbar navbar-expand-lg fixed-top navbar-light p-0 shadow bg-light">-->
+<!--            <div class="container-fluid justify-content-center justify-content-md-between">-->
+<!--                <div class="d-flex my-2 my-sm-0">-->
+<!--                    <a class="navbar-brand d-flex justify-content-center pb-0 pt-1" href="#">-->
+<!--                        &lt;!&ndash;                        <img th:src="@{/images/logo2.svg}"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                             alt=""&ndash;&gt;-->
+<!--                        &lt;!&ndash;                             class="navbar-brand__img"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                        />&ndash;&gt;-->
+<!--                        <img th:src="@{/images/logo2.png}" alt="" class="mb-1 navbar-brand__img"-->
+<!--                             loading="lazy"/>-->
+<!--                    </a>-->
+
+<!--                    &lt;!&ndash; Search form &ndash;&gt;-->
+<!--                    <form class="d-flex input-group w-auto my-auto">-->
+<!--                        <input autocomplete="off" type="search" class="form-control rounded" placeholder="Search"-->
+<!--                               style="min-width: 125px"/>-->
+<!--                        <span class="input-group-text border-0 d-none d-md-flex"><i class="fas fa-search"></i></span>-->
+<!--                    </form>-->
+<!--                </div>-->
+
+<!--                <ul class="navbar-nav flex-row">-->
+<!--                    &lt;!&ndash; Notification dropdown &ndash;&gt;-->
+<!--                    <li class="nav-item dropdown me-3 me-lg-0">-->
+<!--                        <a type="button" class="btn position-relative px-1 py-0 m-auto">-->
+<!--                            -->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink1">-->
+<!--                            <li><a class="dropdown-item" href="#">Some news</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#">Another news</a></li>-->
+<!--                            <li>-->
+<!--                                <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item me-3 me-lg-0">-->
+<!--                        <a class="nav-link" href="#">-->
+<!--                            <span class="d-none d-lg-inline-block">Contact</span>-->
+<!--                            <i class="fas fa-envelope d-inline-block d-lg-none"></i>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item me-3 me-lg-0">-->
+<!--                        <a class="nav-link" href="#">-->
+<!--                            <span class="d-none d-lg-inline-block">Shop</span>-->
+<!--                            <i class="fas fa-shopping-bag d-inline-block d-lg-none"></i>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    &lt;!&ndash; Avatar &ndash;&gt;-->
+<!--                    <li class="nav-item dropdown">-->
+<!--                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"-->
+<!--                           id="navbarDropdownMenuLink"-->
+<!--                           role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                            <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle"-->
+<!--                                 height="22"-->
+<!--                                 alt="" loading="lazy"/>-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">-->
+<!--                            <li><a class="dropdown-item" href="#">My profile</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#">Settings</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#">Logout</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </nav>-->
+<!--        &lt;!&ndash; Navbar &ndash;&gt;-->
+<!--    </header>-->
+<!--    &lt;!&ndash;Main Navigation&ndash;&gt;-->
+
+        <nav class="navbar navbar-expand-lg navbar-dark justify-content-between" id="#navbar-scrollspy"
+             style="background-color: #404eed;">
+            <!-- Brand -->
+            <a href="#" class="navbar-brand">
+                <img th:src="@{/images/logo2.svg}"
+                     alt=""
+                     class="navbar-brand__img"
+                />
+                MONDONGO
+            </a>
+            <!-- Button collapse -->
+            <button class="navbar-toggler"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#content-nav"
+                    aria-controls="content-nav"
+                    aria-expanded="false"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Nav content -->
+            <div class="collapse navbar-collapse flex-grow-0" id="content-nav">
+                <ul class="navbar-nav">
+                    <!--Form-->
+                    <div class="input-group d-flex mb-3" style="margin-top: 16px; margin-right: 30px">
+                        <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2"><img src="https://www.pngmart.com/files/8/Search-Button-PNG-HD-Quality.png" height="20px" width="20px"></button>
+                    </div>
 
 
-                <!-- Categories -->
+                    <!-- Categories -->
 
-                <div th:if="${listTopCategories != null and !listTopCategories.isEmpty()}">
-                    <li class="nav-item dropdown">
+                    <div th:if="${listTopCategories != null and !listTopCategories.isEmpty()}">
+                        <li class="nav-item dropdown">
+                            <!-- BTN -->
+                            <a href="#"
+                               class="nav-link dropdown-toggle"
+                               id="btn-dropdown-categories"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false"
+                               th:text="#{categories}"
+                            >
+                                Categories
+                            </a>
+                            <!-- Contain -->
+                            <ul class="dropdown-menu" aria-labelledby="btn-dropdown-categories">
+                                <tr th:each="category : ${listTopCategories}">
+                                    <li><a href="#" class="dropdown-item" th:text="${category.name}"></a></li>
+                                </tr>
+                            </ul>
+                        </li>
+                    </div>
+                    <div th:if="${listTopCategories == null or listTopCategories.isEmpty()}">
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link" disabled="true" style="color: #2e2e2e" th:text="#{categories}">
+                            </a>
+                        </li>
+                    </div>
+                    <!-- Frequently asked -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" th:text="#{frequently_asked}">
+                            Frequently asked
+                        </a>
+                    </li>
+                    <!-- Contact -->
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link" th:text="#{contact}">
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item dropdown m-auto">
                         <!-- BTN -->
                         <a href="#"
                            class="nav-link dropdown-toggle"
-                           id="btn-dropdown-categories"
+                           id="btn-dropdown-profile"
                            role="button"
                            data-bs-toggle="dropdown"
                            aria-expanded="false"
-                           th:text="#{categories}"
                         >
-                            Categories
+                            <i class="fa-solid fa-user"></i>
+    <!--                        <img th:src="@{/images/logo.svg}" style="width:40px;" class="rounded-pill">-->
                         </a>
                         <!-- Contain -->
-                        <ul class="dropdown-menu" aria-labelledby="btn-dropdown-categories">
-                            <tr th:each="category : ${listTopCategories}">
-                                <li><a href="#" class="dropdown-item" th:text="${category.name}"></a></li>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btn-dropdown-profile">
+                            <tr>
+                                <th:block th:if="${user != null}">
+                                <li><a th:href="@{/profile}" class="dropdown-item">Profile</a></li>
+                                <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
+                                </th:block>
+                                <th:block th:if="${user == null}">
+                                    <li><a th:href="@{/login}" class="dropdown-item">Login</a></li>
+                                </th:block>
                             </tr>
                         </ul>
                     </li>
-                </div>
-                <div th:if="${listTopCategories == null or listTopCategories.isEmpty()}">
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link" disabled="true" style="color: #2e2e2e" th:text="#{categories}">
-                        </a>
-                    </li>
-                </div>
-                <!-- Frequently asked -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" th:text="#{frequently_asked}">
-                        Frequently asked
-                    </a>
-                </li>
-                <!-- Contact -->
-                <li class="nav-item">
-                    <a href="#contact" class="nav-link" th:text="#{contact}">
-                    </a>
-                </li>
 
-
-                <li class="nav-item dropdown">
-                    <!-- BTN -->
-                    <a href="#"
-                       class="nav-link dropdown-toggle"
-                       id="btn-dropdown-profile"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false"
-                    >
-                        <img th:src="@{/images/logo.svg}" style="width:40px;" class="rounded-pill">
-                    </a>
-                    <!-- Contain -->
-                    <ul class="dropdown-menu" aria-labelledby="btn-dropdown-profile">
-                        <tr>
-                            <li><a href="#" class="dropdown-item">Profile</a></li>
-                            <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
-                        </tr>
-                    </ul>
-                </li>
-
-                <!-- Form -->
-<!--                <li>-->
-<!--                    <form action="#" class="d-flex">-->
-<!--                        <input type="search" placeholder="Search by Name/ID" class="form-control me-3">-->
-<!--                        <button type="submit" class="btn btn-success">-->
-<!--                            Search-->
-<!--                        </button>-->
-<!--                        <a class="navbar-brand" href="#">-->
-<!--                            <img th:src="@{/images/logo.svg}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">-->
-<!--                        </a>-->
-<!--                    </form>-->
-<!--                </li>-->
-            </ul>
-        </div>
-    </nav>
-    <!-- Back to top button -->
+                    <!-- Form -->
+    <!--                <li>-->
+    <!--                    <form action="#" class="d-flex">-->
+    <!--                        <input type="search" placeholder="Search by Name/ID" class="form-control me-3">-->
+    <!--                        <button type="submit" class="btn btn-success">-->
+    <!--                            Search-->
+    <!--                        </button>-->
+    <!--                        <a class="navbar-brand" href="#">-->
+    <!--                            <img th:src="@{/images/logo.svg}" alt="Avatar Logo" style="width:40px;" class="rounded-pill">-->
+    <!--                        </a>-->
+    <!--                    </form>-->
+    <!--                </li>-->
+                </ul>
+            </div>
+        </nav>
+     Back to top button
     <button
             type="button"
             class="btn btn-danger btn-floating btn-lg"
@@ -167,24 +246,27 @@
 
 <!-- Language picker buttom -->
 <div class="text-start fixed-bottom my-2 mx-2 dropup" th:fragment="language-bottom">
-    <a href="#" class="text-decoration-none text-dark" >
-        <i onclick="toggleVisibilityLang()" id="btn-visibility-language-hide" class="fa-solid fa-circle-arrow-left text-decoration-none text-dark position-absolute my-2"></i>
-        <i onclick="toggleVisibilityLang()" id="btn-visibility-language-show" class="fa-solid fa-circle-arrow-right text-decoration-none text-dark position-absolute my-2" style="visibility: hidden"></i>
+    <a href="#" class="text-decoration-none text-dark">
+        <i onclick="toggleVisibilityLang()" id="btn-visibility-language-hide"
+           class="fa-solid fa-circle-arrow-left text-decoration-none text-dark position-absolute my-2"></i>
+        <i onclick="toggleVisibilityLang()" id="btn-visibility-language-show"
+           class="fa-solid fa-circle-arrow-right text-decoration-none text-dark position-absolute my-2"
+           style="visibility: hidden"></i>
     </a>
-        <button class="btn btn-outline-dark btn-sm rounded-pill bg-light text-decoration-none text-black dropdown-toggle mx-4"
-                href="#" id="btn-dropdown-lang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img th:src="@{${'/images/lang_' + #locale.language +'.png'}}" alt="logo" width="25" style=""
-                 th:text="' '+#{template.language}">
-        </button>
-        <ul id="dropdown-language" class="dropdown-menu" aria-labelledby="btn-dropdown-lang"
-            th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
-            <li><a class="dropdown-item"
-                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'en').toUriString()}"><img
-                    th:src="@{/images/lang_en.png}" alt="EN" width="20" style=""> English</a></li>
-            <li><a class="dropdown-item"
-                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'es').toUriString()}"><img
-                    th:src="@{/images/lang_es.png}" alt="ES" width="20" style=""> Spanish</a></li>
-        </ul>
+    <button class="btn btn-outline-dark btn-sm rounded-pill bg-light text-decoration-none text-black dropdown-toggle mx-4"
+            href="#" id="btn-dropdown-lang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img th:src="@{${'/images/lang_' + #locale.language +'.png'}}" alt="logo" width="25" style=""
+             th:text="' '+#{template.language}">
+    </button>
+    <ul id="dropdown-language" class="dropdown-menu" aria-labelledby="btn-dropdown-lang"
+        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+        <li><a class="dropdown-item"
+               th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'en').toUriString()}"><img
+                th:src="@{/images/lang_en.png}" alt="EN" width="20" style=""> English</a></li>
+        <li><a class="dropdown-item"
+               th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('lang', 'es').toUriString()}"><img
+                th:src="@{/images/lang_es.png}" alt="ES" width="20" style=""> Spanish</a></li>
+    </ul>
     <script th:src="@{/js/scriptBtnLang.js}"></script>
 </div>
 </body>
