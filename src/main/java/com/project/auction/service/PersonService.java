@@ -13,8 +13,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface PersonService extends UserDetailsService{
     public List<Person> listPersons();
     public void save(PersonDto personDto) throws UsernameAlreadyExistException, EmailAlreadyExistException;
+    public void update(PersonDto personDto) throws UnkownIdentifierException;
     public void delete(PersonDto personDto) throws UnkownIdentifierException;
     public Person getPerson(PersonDto personDto) throws UnkownIdentifierException;
+    public PersonDto getPersonDto(long id) throws UnkownIdentifierException;
     public Person getPersonById(long id) throws UnkownIdentifierException;
     public Person getPersonByNameOrEmail(String nameOrEmail) throws UnkownIdentifierException;
     public boolean checkIfPersonExistByEmail(String email);

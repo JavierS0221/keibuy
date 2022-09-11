@@ -3,8 +3,10 @@ package com.project.auction.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
@@ -36,8 +38,11 @@ public class PersonDto implements Serializable {
     private String phone;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotEmpty
+    @NotNull
     private Date birthDate;
+
+    private MultipartFile avatar;
+    private String pathAvatar;
 
     private boolean accountVerified;
 

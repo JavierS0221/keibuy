@@ -87,6 +87,23 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional
+    public void update(PersonDto personDto) throws UnkownIdentifierException {
+        Person person = this.getPerson(personDto);
+        if(person != null) {
+            person.setUsername(personDto.getUsername());
+            person.setName(personDto.getName());
+            person.setLastName(personDto.getLastName());
+            person.setPassword(personDto.getPassword());
+            person.setEmail(personDto.getEmail());
+            person.setPhone(personDto.getPhone());
+            person.setBirthDate(personDto.getBirthDate());
+            person.setAccountVerified(personDto.isAccountVerified());
+            personRepository.save(person);
+        }
+    }
+
+    @Override
+    @Transactional
     public void delete(PersonDto personDto) throws UnkownIdentifierException {
         Person person = this.getPerson(personDto);
         personRepository.delete(person);
@@ -110,6 +127,27 @@ public class PersonServiceImpl implements PersonService {
             throw new UnkownIdentifierException("unable to find account");
         }
         return person;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PersonDto getPersonDto(long id) throws UnkownIdentifierException {
+        Person person = personRepository.findById(id).orElse(null);
+        if (person == null) {
+            throw new UnkownIdentifierException("unable to find account");
+        }
+        PersonDto personDto = new PersonDto();
+        personDto.setId(person.getId());
+        personDto.setUsername(person.getUsername());
+        personDto.setName(person.getName());
+        personDto.setLastName(person.getLastName());
+        personDto.setEmail(person.getEmail());
+        personDto.setPhone(person.getPhone());
+        personDto.setPassword(person.getPassword());
+        personDto.setBirthDate(person.getBirthDate());
+        personDto.setAccountVerified(person.isAccountVerified());
+//        personDto.setPathAvatar(person.getPathAvatar());
+        return personDto;
     }
 
     @Override

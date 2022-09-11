@@ -4,13 +4,16 @@ import com.project.auction.model.relation.AuctionOffer;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "person", uniqueConstraints = @UniqueConstraint(columnNames = {"username","email"}))
-public class Person  {
+@Table(name = "person", uniqueConstraints = @UniqueConstraint(columnNames = {"username", "email"}))
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +47,7 @@ public class Person  {
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(
             name = "person_rol",
-            joinColumns =  @JoinColumn(
+            joinColumns = @JoinColumn(
                     name = "person_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
 
@@ -54,7 +57,7 @@ public class Person  {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinTable(
             name = "auction_wished",
-            joinColumns =  @JoinColumn(
+            joinColumns = @JoinColumn(
                     name = "person_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id")
 
@@ -77,5 +80,34 @@ public class Person  {
         if (this.reportsCreated == null) this.reportsCreated = new ArrayList<>();
         this.reportsCreated.add(report);
         report.setPerson(this);
+    }
+
+
+    public boolean hasAvatar() {
+        File f = new File("assets\\" + this.id);
+        File[] files = f.listFiles((dir1, name) -> name.startsWith("avatar"));
+        if (files != null) {
+            List<File> avatars = Arrays.stream(files).toList();
+            return !avatars.isEmpty();
+        } else {
+            return false;
+        }
+    }
+
+    public String getAvatarPath() {
+//        System.out.println(Paths.get("assets").resolve(id+"").toString());
+        File f = new File("assets\\" + this.id);
+
+        File[] files = f.listFiles((dir1, name) -> name.startsWith("avatar"));
+
+        String path = "DefaultAvatar.jpg";
+        if (files != null) {
+            List<File> avatars = Arrays.stream(files).toList();
+            if (!avatars.isEmpty()) {
+                path = avatars.get(0).getPath();
+                path = path.substring(path.indexOf("\\") + 1).replace("\\", "/");
+            }
+        }
+        return path;
     }
 }

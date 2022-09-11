@@ -4,14 +4,61 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Data of Person</title>
+    <th:block th:include="layout/template :: head"/>
 </head>
 <body>
     <h1>Data of Person</h1>
     <a th:href="@{/}">Return</a>
     <br/>
-    <form th:action="@{/save}" method="post" th:object="${user}">
-        <label for="name">Name:</label>
-        <input type="text" name="name" th:field="*{name}"/>
+    <form th:action="@{/modify}" method="post" th:object="${personDto}" enctype="multipart/form-data">
+
+        <div class="form-group row">
+            <input type="hidden" name="id" th:field="*{id}"/>
+            <input type="hidden" name="id" th:field="*{username}"/>
+            <input type="hidden" name="id" th:field="*{password}"/>
+            <input type="hidden" name="id" th:field="*{phone}"/>
+            <input type="hidden" name="id" th:field="*{birthDate}"/>
+            <div id="details">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">
+<!--                                    <h4>[[#{accion.editar}]]</h4>-->
+                                <h4>Editar</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name"
+                                               required="true" th:field="*{name}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">lastName</label>
+                                        <input type="text" class="form-control" name="lastName"
+                                               required="true" th:field="*{lastName}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">email</label>
+                                        <input type="email" class="form-control" name="email"
+                                               required="true" th:field="*{email}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="avatar">avatar</label>
+                                        <input type="file" class="form-control" name="avatar" th:field="*{avatar}" step="any"/>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-success btn-block">
+                                            <i class="fas fa-check"></i> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 </body>
 </html>
