@@ -16,7 +16,9 @@ public interface PersonService extends UserDetailsService{
     public void update(PersonDto personDto) throws UnkownIdentifierException;
     public void delete(PersonDto personDto) throws UnkownIdentifierException;
     public Person getPerson(PersonDto personDto) throws UnkownIdentifierException;
-    public PersonDto getPersonDto(long id) throws UnkownIdentifierException;
+    public PersonDto getPersonDto(Person person);
+    public PersonDto getPersonDtoById(long id) throws UnkownIdentifierException;
+    public PersonDto getPersonDtoByNameOrEmail(String nameOrEmail) throws UnkownIdentifierException;
     public Person getPersonById(long id) throws UnkownIdentifierException;
     public Person getPersonByNameOrEmail(String nameOrEmail) throws UnkownIdentifierException;
     public boolean checkIfPersonExistByEmail(String email);

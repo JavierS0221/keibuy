@@ -42,7 +42,6 @@ public class PersonDto implements Serializable {
     private Date birthDate;
 
     private MultipartFile avatar;
-    private String pathAvatar;
 
     private boolean accountVerified;
 

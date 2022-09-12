@@ -1,21 +1,14 @@
 package com.project.auction.controller;
 
 import com.project.auction.dto.PersonDto;
-import com.project.auction.exception.EmailAlreadyExistException;
 import com.project.auction.exception.UnkownIdentifierException;
-import com.project.auction.exception.UsernameAlreadyExistException;
 import com.project.auction.model.Category;
 import com.project.auction.model.Person;
-import com.project.auction.model.SecureToken;
-import com.project.auction.repository.PersonRepository;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.PersonService;
-import com.project.auction.service.SecureTokenService;
 import com.project.auction.service.StorageService;
-import com.project.auction.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -23,16 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @Slf4j
@@ -70,17 +57,56 @@ public class HomeController {
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal User user) {
+
         Person person = null;
+        PersonDto personDto = new PersonDto();
         if(user != null) {
             try {
                 person = personService.getPersonByNameOrEmail(user.getUsername());
+                personDto = personService.getPersonDto(person);
             } catch (UnkownIdentifierException ignored) {
             }
         }
 
         model.addAttribute("user", user);
         model.addAttribute("person", person);
+        model.addAttribute("personDto", personDto);
         return "pages/profile";
+    }
+
+    @PostMapping("/profile")
+    public String modifyProfile(@AuthenticationPrincipal User user, @Validated PersonDto personDto, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            System.out.println("Existieron errores: "+ result.getAllErrors().toString());
+            model.addAttribute("person", personDto);
+            return "pages/profile";
+        }
+        try {
+            Person person = personService.getPerson(personDto);
+
+            List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
+            if(!personDto.getAvatar().isEmpty()) {
+                String contentType = personDto.getAvatar().getContentType();
+                if(!contentTypes.contains(contentType)) {
+                    System.out.println("ERROR TIPO NO VALIDO");
+                    model.addAttribute("person", person);
+                    model.addAttribute("personDto", personDto);
+                    return "pages/profile";
+                }
+
+                if(person.hasAvatar()) {
+                    storageService.deleteFile(person.getAvatarPath());
+                }
+
+                String path = personDto.getId()+"/avatar."+ Objects.requireNonNull(personDto.getAvatar().getContentType()).split("/")[1];
+                storageService.storeFile(personDto.getAvatar(), path);
+            }
+            personService.update(personDto);
+        } catch (UnkownIdentifierException e) {
+            System.out.println("ERROR FINAL");
+            e.printStackTrace();
+        }
+        return "redirect:/profile";
     }
 
 //
@@ -109,7 +135,7 @@ public class HomeController {
     public String editar(@PathVariable Integer id, Model model){
         PersonDto personDto = new PersonDto();
         try {
-            personDto = personService.getPersonDto(id);
+            personDto = personService.getPersonDtoById(id);
         } catch (UnkownIdentifierException e) {
             e.printStackTrace();
         }

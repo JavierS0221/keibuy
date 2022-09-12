@@ -99,8 +99,7 @@ public class Person {
         File f = new File("assets\\" + this.id);
 
         File[] files = f.listFiles((dir1, name) -> name.startsWith("avatar"));
-
-        String path = "DefaultAvatar.jpg";
+        String path = null;
         if (files != null) {
             List<File> avatars = Arrays.stream(files).toList();
             if (!avatars.isEmpty()) {

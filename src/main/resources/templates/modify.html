@@ -14,10 +14,10 @@
 
         <div class="form-group row">
             <input type="hidden" name="id" th:field="*{id}"/>
-            <input type="hidden" name="id" th:field="*{username}"/>
-            <input type="hidden" name="id" th:field="*{password}"/>
-            <input type="hidden" name="id" th:field="*{phone}"/>
-            <input type="hidden" name="id" th:field="*{birthDate}"/>
+            <input type="hidden" name="username" th:field="*{username}"/>
+            <input type="hidden" name="password" th:field="*{password}"/>
+            <input type="hidden" name="phone" th:field="*{phone}"/>
+            <input type="hidden" name="birthDate" th:field="*{birthDate}"/>
             <div id="details">
                 <div class="container">
                     <div class="row">
@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="avatar">avatar</label>
-                                        <input type="file" class="form-control" name="avatar" th:field="*{avatar}" step="any"/>
+                                        <input type="file" class="form-control" name="avatar" th:field="*{avatar}" accept="image/*"/>
                                     </div>
                                     <div class="col-md-3">
                                         <button type="submit" class="btn btn-success btn-block">

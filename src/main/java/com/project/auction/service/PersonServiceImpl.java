@@ -130,12 +130,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public PersonDto getPersonDto(long id) throws UnkownIdentifierException {
-        Person person = personRepository.findById(id).orElse(null);
-        if (person == null) {
-            throw new UnkownIdentifierException("unable to find account");
-        }
+    public PersonDto getPersonDto(Person person) {
         PersonDto personDto = new PersonDto();
         personDto.setId(person.getId());
         personDto.setUsername(person.getUsername());
@@ -146,8 +141,32 @@ public class PersonServiceImpl implements PersonService {
         personDto.setPassword(person.getPassword());
         personDto.setBirthDate(person.getBirthDate());
         personDto.setAccountVerified(person.isAccountVerified());
-//        personDto.setPathAvatar(person.getPathAvatar());
         return personDto;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PersonDto getPersonDtoById(long id) throws UnkownIdentifierException {
+        Person person = personRepository.findById(id).orElse(null);
+        if (person == null) {
+            throw new UnkownIdentifierException("unable to find account");
+        }
+        return this.getPersonDto(person);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PersonDto getPersonDtoByNameOrEmail(String nameOrEmail) throws UnkownIdentifierException {
+
+        Person person = personRepository.findByUsername(nameOrEmail);
+        if (person == null) {
+            person = personRepository.findByEmail(nameOrEmail);
+        }
+        if (person == null) {
+            throw new UnkownIdentifierException("unable to find account");
+        }
+
+        return this.getPersonDto(person);
     }
 
     @Override

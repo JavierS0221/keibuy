@@ -139,8 +139,11 @@
                                 <th:block th:if="${user != null}">
 <!--                                    <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22"-->
 <!--                                         alt="" loading="lazy" />-->
-                                    <img th:src="@{/assets/{path} (path=${person.getAvatarPath()})}" class="rounded-circle" width="30" height="30"
-                                         alt="" loading="lazy" />
+
+<!--                                    <img th:src="@{/assets/{path} (path=${person.getAvatarPath()})}" class="rounded-circle border border-secondary" width="30" height="30"-->
+<!--                                         alt="" loading="lazy" />-->
+
+                                    <img th:src="${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png'" class="rounded-circle border border-secondary" width="30" height="30" alt="avatar" loading="lazy" />
                                 </th:block>
                                 <th:block th:if="${user == null}">
                                     <i class="fa-solid fa-user text-white mt-1"></i>
