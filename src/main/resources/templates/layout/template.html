@@ -23,7 +23,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap" rel="stylesheet">
 
+
     <style>
+    :root {
+        --primary-color: #404eed;
+
+    }
+    </style>
+
+    <style th:include="layout/navbar :: style">
 
         #btn-back-to-top {
             position: fixed;
@@ -37,9 +45,6 @@
         }
 
 
-        a {
-            text-decoration: none;
-        }
 
         .navbar_item {
             font-family: 'Roboto Slab', serif;
@@ -86,110 +91,8 @@
 
 
 
-    <!-- Jumbotron -->
-    <div class="text-center bg-blue mb-3">
-        <div class="container-fluid m-auto">
-            <div class="row">
-                <div class="col-md-4 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0 mt-3">
-                    <a href="#" class="ms-md-2 navbar-brand text-white fs-3">
-                        <img th:src="@{/images/logo2.svg}"
-                             alt=""
-                             class="logo navbar-brand__img"
-                             height="50"
-                        />
-                        MONDONGO
-                    </a>
-                </div>
 
-                <div class="col-md-4 mt-3">
-                    <form class="d-flex input-group w-auto my-auto mb-3 mb-md-0">
-                        <input autocomplete="off" type="search" class="form-control shadow-none" placeholder="Search" />
-                        <button class="btn btn-secondary shadow-none" type="button" id="button-search"><i class="fas fa-search"></i></button>
-                    </form>
-                </div>
-<!--                <div class="input-group mb-3">-->
-<!--                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">-->
-<!--                    <button class="btn btn-outline-secondary" type="button" id="button-addon3">Button</button>-->
-<!--                </div>-->
-
-
-                <div class="col-md-4 d-flex justify-content-center justify-content-md-end align-items-center">
-                    <div class="d-flex">
-
-                        <!-- Notification -->
-                        <div class="dropdown mt-1">
-                            <a class="me-3 dropdown" href="#" id="navbarDropdownMenuLink2"
-                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-bell text-white"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink2">
-                                <li><a class="dropdown-item" href="#">Some news</a></li>
-                                <li><a class="dropdown-item" href="#">Another news</a></li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- User -->
-                        <div class="dropdown" th:classappend="${(user == null  ? 'mt-1' : '')}">
-                            <a class="dropdown d-flex align-items-center" href="#"
-                               id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-
-                                <th:block th:if="${user != null}">
-<!--                                    <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22"-->
-<!--                                         alt="" loading="lazy" />-->
-
-<!--                                    <img th:src="@{/assets/{path} (path=${person.getAvatarPath()})}" class="rounded-circle border border-secondary" width="30" height="30"-->
-<!--                                         alt="" loading="lazy" />-->
-
-                                    <img th:src="${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png'" class="rounded-circle border border-secondary" width="30" height="30" alt="avatar" loading="lazy" />
-                                </th:block>
-                                <th:block th:if="${user == null}">
-                                    <i class="fa-solid fa-user text-white mt-1"></i>
-                                </th:block>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                                <tr>
-                                    <th:block th:if="${user != null}">
-                                        <li class="dropdown-item user-select-none" th:text="${user.username}">Username</li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a th:href="@{/profile}" class="dropdown-item" >Profile</a></li>
-                                        <li><a href="#!" class="dropdown-item">My Auctions</a></li>
-                                        <li><a href="#!" class="dropdown-item">Admin</a></li>
-                                        <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
-                                    </th:block>
-                                    <th:block th:if="${user == null}">
-                                        <li><a th:href="@{/login}" class="dropdown-item">Login</a></li>
-                                    </th:block>
-                                </tr>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Container wrapper -->
-        <div class="container-fluid m-auto">
-            <!-- Left links -->
-            <div class="col-md-4 d-flex justify-content-center justify-content-md-center align-items-center m-auto">
-                <a class="navbar_item text-white me-2" href="#">
-                    Auctions
-                </a>
-                <a class="navbar_item text-white me-2" href="#">
-                    En vivo
-                </a>
-                <a class="navbar_item text-white me-2" href="#">
-                    Ofertas
-                </a>
-                <a class="navbar_item text-white me-2" href="#">
-                    Subastar
-                </a>
-            </div>
-        </div>
-        <!-- Container wrapper -->
-    </div>
-
+    <th:block th:include="layout/navbar :: navbar"/>
 
     <!--        <nav class="navbar navbar-expand-lg navbar-dark justify-content-between p-0" id="#navbar-scrollspy"-->
 <!--             style="background-color: #404eed;">-->

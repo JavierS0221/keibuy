@@ -220,12 +220,8 @@ public class PersonServiceImpl implements PersonService {
         }
 
         Person person = personRepository.getReferenceById(secureToken.getPerson().getId());
-        if (Objects.isNull(person)) {
-            return false;
-        }
         person.setAccountVerified(true);
         personRepository.save(person);
-
         secureTokenService.removeToken(secureToken);
         return true;
     }

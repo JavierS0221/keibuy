@@ -4,8 +4,8 @@
 <head>
     <title>Register - Mondongo</title>
     <th:block th:include="layout/template :: head"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/api/intl-tel-input-17.0.18/css/intlTelInput.css}"/>
-    <script th:src="@{/api/intl-tel-input-17.0.18/js/intlTelInput.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{plugin}"/>
+    <script th:src="@{plugin}"></script>
 </head>
 <body>
 
@@ -102,8 +102,9 @@
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="telephone">Telephone</label>
                                 <input id="telephone" type="tel" class="form-control"  th:field="*{phone}" style=".input-group .form-control, .intl-tel-input { width: 100%; }" required>
-                                <div id="telephone-warn-msg" class="text-danger small">
-                                </div>
+                                <p id="telephone-warn-msg" class="text-danger small">
+
+                                </p>
                             </div>
 
                             <div class="mb-3">

@@ -1,4 +1,4 @@
-var utilsPath = "/api/intl-tel-input-17.0.18/js/utils.js"
+var utilsPath = "/plugin/intl-tel-input-17.0.18/js/utils.js"
 const phoneInputField = document.querySelector("#telephone");
 const telephoneWarnMsg = document.querySelector("#telephone-warn-msg");
 

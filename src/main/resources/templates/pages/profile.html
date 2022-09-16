@@ -96,12 +96,18 @@
             opacity: 1;
         }
 
+        .rol {
+            position: relative;
+            top: -8px;
+            font-size: 10px;
+        }
+
     </style>
 
     <!--Slick Carousel Slider-->
-    <link rel="stylesheet" type="text/css" th:href="@{/api/slick/slick-theme.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/api/slick/slick.css}"/>
-    <script th:src="@{/api/slick/slick.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{plugin}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{plugin}"/>
+    <script th:src="@{plugin}"></script>
 </head>
 <body class="position-relative bg-light" data-th-span="scroll" data-bs-target="#navbar-scrollspy">
 
@@ -119,23 +125,17 @@
 
 
 <!--Modal avatar-->
-<div class="alert fade alert-danger alert-fixed" id="alert-danger" role="alert" data-mdb-color="danger" data-mdb-position="top-right" data-mdb-stacking="true" data-mdb-width="535px" data-mdb-append-to-body="true" data-mdb-hidden="true" data-mdb-autohide="true" data-mdb-delay="2000" style="display: block; width: 535px; top: 10px; right: 10px; bottom: unset; left: unset; transform: unset;">
-    A simple danger alert with
-    <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
-</div>
-
 <div class="modal fade" id="changeAvatarModal" tabindex="-1" aria-labelledby="changeAvatarModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="changeAvatarModalLabel">Change avatar</h5>
-                <div class="alert alert-danger" role="alert">
-                    Formato de imagen inválido
-                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body m-auto">
+            <div class="modal-body m-auto text-center">
+                <p id="image-warn-msg" class="text-danger small mb-2">
+                </p>
                 <img id="frame"
                      th:src="${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png'"
                      class="rounded-circle border border-secondary" width="150" height="150" alt="avatar"
@@ -169,10 +169,122 @@
     </div>
 </div>
 
+<!--Edit Profile Modal-->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="changeAvatarModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Change avatar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-auto text-center">
+
+            </div>
+            <div class="modal-footer m-auto">
+                <form th:action="@{/profile}" method="post" th:object="${personDto}" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <input type="hidden" name="id" th:field="*{id}"/>
+                        <input type="hidden" name="accountVerified" th:field="*{accountVerified}"/>
+                        <input type="hidden" name="birthDate" th:field="*{birthDate}"/>
+                        <input type="hidden" name="email" th:field="*{email}"/>
+                        <input type="hidden" name="lastName" th:field="*{lastName}"/>
+                        <input type="hidden" name="name" th:field="*{name}"/>
+                        <input type="hidden" name="password" th:field="*{password}"/>
+                        <input type="hidden" name="phone" th:field="*{phone}"/>
+                        <input type="hidden" name="username" th:field="*{username}"/>
+
+                        <input type="file" class="form-control form-control-sm" name="avatar" th:field="*{avatar}" accept="image/*"/>
+                        <div class="col-12 text-center pt-3">
+                            <button id="submitProfile" type="submit" class="btn btn-outline-primary rounded-0 btn-sm"
+                                    style="display: none">
+                                <i class="fas fa-check"></i> Aplicar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!---->
+
+<!-- Edit Info Modal -->
+<div class="modal fade" id="editInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editInfoModalLabel">Change avatar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-auto text-center">
+
+            </div>
+            <div class="modal-footer m-auto">
+                <form th:action="@{/profile}" method="post" th:object="${personDto}" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <div class="card-header">
+                            <!--                                    <h4>[[#{accion.editar}]]</h4>-->
+                            <h4>Editar</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="username">username</label>
+                                <input type="email" class="form-control" name="username"
+                                       required="true" th:field="*{username}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" name="name"
+                                       required="true" th:field="*{name}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">lastName</label>
+                                <input type="text" class="form-control" name="lastName"
+                                       required="true" th:field="*{lastName}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="birthDate">Birth Date</label>
+                                <input type="birthDate" class="form-control" name="birthDate"
+                                       required="true" th:field="*{birthDate}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">email</label>
+                                <input type="email" class="form-control" name="email"
+                                       required="true" th:field="*{email}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="telephone">telephone</label>
+                                <input type="telephone" class="form-control" name="phone"
+                                       required="true" th:field="*{phone}"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" name="avatar" th:field="*{avatar}" accept="image/*"/>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-success btn-block">
+                                    <i class="fas fa-check"></i> Save
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center pt-3">
+                            <button id="submitInfo" type="submit" class="btn btn-outline-primary rounded-0 btn-sm"
+                                    style="display: none">
+                                <i class="fas fa-check"></i> Aplicar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:inline="javascript">
 
     $('#formFile').on("change", function (e) {
         const submitAvatar = document.getElementById('submitAvatar');
+        const imageWarnMsg = document.getElementById('image-warn-msg');
         const frame = document.getElementById('frame');
         const fileInput = document.getElementById('formFile');
         let filePath = fileInput.value;
@@ -180,7 +292,9 @@
         let allowedExtensions = /(\.png|\.jpg|\.jpeg|\.gif)$/i;
         if (!allowedExtensions.exec(filePath)) {
             if(filePath.length > 0) {
-                alert("Formato de imágen inválido...")
+                imageWarnMsg.innerText = "Formato de imágen inválido..."
+            } else {
+                imageWarnMsg.innerText = ""
             }
             fileInput.value = '';
             frame.src = /*[[${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png']]*/ null;
@@ -225,87 +339,30 @@
                             </th:block>
                             <!--                            <img th:src="@{/assets/{path} (path=${person.getAvatarPath()})}" class="rounded-circle" alt="Admin" width="150">-->
                             <div class="mt-3">
-                                <h4>Nombre Apellido</h4>
-                                <p class="text-secondary mb-1">Profesión</p>
-                                <p class="text-muted font-size-sm">Dirección</p>
-                                <button class="btn btn-outline-primary" th:text="#{message}"></button>
+                                <h4 th:text="${person != null ? person.getUsername() : 'Username'}"></h4>
+                                <small class="badge text-danger border rounded-1 rol">Rol1</small>
+                                <small class="badge text-secondary border rounded-1 rol">Rol2</small>
+                                <small class="badge text-warning border rounded-1 rol">Rol3</small>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card mt-3">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                </svg>
-                                Website
-                            </h6>
-                            <span class="text-secondary">website.com</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info">
-                                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                                </svg>
-                                Twitter
-                            </h6>
-                            <span class="text-secondary">@twitter</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round"
-                                     class="feather feather-instagram mr-2 icon-inline text-danger">
-                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                </svg>
-                                Instagram
-                            </h6>
-                            <span class="text-secondary">instagram</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round"
-                                     class="feather feather-facebook mr-2 icon-inline text-primary">
-                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                                </svg>
-                                Facebook
-                            </h6>
-                            <span class="text-secondary">facceboock</span>
-                        </li>
-                    </ul>
                 </div>
             </div>
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0" th:text="#{username}">Username</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                Nombre de usuario
-                            </div>
-                        </div>
-                        <hr>
+
+                        <!-- Edit Info Modal Button-->
+
+                            <i class="fa-regular fa-pen-to-square position-absolute top-0 end-0 m-2 btn btn-circle" data-bs-toggle="modal" data-bs-target="#editInfoModal"></i>
+
+
                         <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0" th:text="#{name}">Name</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Nombre
+                                <p th:text="${person.getName()}">name</p>
                             </div>
                         </div>
                         <hr>
@@ -314,7 +371,7 @@
                                 <h6 class="mb-0" th:text="#{last-name}">Lastname</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Apellido
+                                <p th:text="${person.getLastName()}">last name</p>
                             </div>
                         </div>
                         <hr>
@@ -323,7 +380,7 @@
                                 <h6 class="mb-0" th:text="#{birth-date}">Birth Date</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Fecha de nacimiento
+                                <p th:text="${#dates.format(person.getBirthDate(), 'dd-MM-yyyy')}">birth date</p>
                             </div>
                         </div>
                         <hr>
@@ -332,7 +389,7 @@
                                 <h6 class="mb-0" th:text="#{email}">E-Mail Address</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                email@website.com
+                                <p th:text="${person.getEmail()}">email@example.com</p>
                             </div>
                         </div>
                         <hr>
@@ -341,40 +398,22 @@
                                 <h6 class="mb-0" th:text="#{telephone}">Telephone</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                (+598) 099 se me para y se me mueve
+                                <p th:text="${person.getPhone()}">telephone</p>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0" th:text="#{address}">Adress</h6>
+                                <h6 class="mb-0">Ubicacion</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Dirección
+                                Uruguay
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-12">
                                 <a class="btn btn-info " target="__blank" href="#">Edit</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row gutters-sm">
-                    <div class="col-sm-6 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5>Como es este subastador</h5>
-                                <div>
-                                    <h6>Productos subastados: </h6>
-                                    <div>
-                                        <i class="fa-regular fa-comments"></i>
-                                        <div>Atención</div>
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
                     </div>
