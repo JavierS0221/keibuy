@@ -7,7 +7,7 @@
     <th:block th:include="layout/template :: head"/>
 </head>
 <body>
-
+<th:block th:include="layout/template :: dependencies-js"/>
 <section class="vh-100">
     <div class="container h-100">
         <div class="row d-flex align-items-center justify-content-center h-100">
@@ -35,20 +35,38 @@
                                     <span th:text="${errorMessage}"></span>
                                 </div>
                             </div>
-
-                            <div class="mb-3">
-                                <label class="mb-2 text-muted" for="username" th:text="#{username}"></label>
-                                <input id="username" type="text" class="form-control" th:classappend="${(param.error != null  ? 'is-invalid' : '')}" name="username" required autofocus>
+                            <div class="form-outline mb-3">
+                                <input type="text" id="username" class="form-control" th:classappend="${(param.error != null  ? 'is-invalid' : '')}" name="username" required autofocus>
+                                <label class="form-label mb-2"
+                                       for="username"
+                                       style="margin-left: 0;"
+                                       th:text="#{username}">Username
+                                </label>
+                                <div class="form-notch">
+                                    <div class="form-notch-leading" style="width: 9px;"></div>
+                                    <div class="form-notch-middle" style="width: 88.8px;"></div>
+                                    <div class="form-notch-trailing"></div>
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <div class="mb-2 w-100">
-                                    <label class="text-muted" for="password" th:text="#{password}"></label>
-                                    <a th:href="@{/forgot}" class="float-end" th:text="#{forgot}">
-                                        Forgot Password?
-                                    </a>
+                            <div class="text-end">
+                                <a th:href="@{/forgot}" th:text="#{forgot}">
+                                    Forgot Password?
+                                </a>
+                            </div>
+
+                            <div class="form-outline mb-3">
+                                <input type="password" id="password" class="form-control" th:classappend="${(param.error != null and (!accountNotConfirmed and !usernameNotFound) ? 'is-invalid' : '')}" name="password" required>
+                                <label class="form-label mb-2"
+                                       for="password"
+                                       style="margin-left: 0;"
+                                       th:text="#{password}">Password
+                                </label>
+                                <div class="form-notch">
+                                    <div class="form-notch-leading" style="width: 9px;"></div>
+                                    <div class="form-notch-middle" style="width: 88.8px;"></div>
+                                    <div class="form-notch-trailing"></div>
                                 </div>
-                                <input id="password" type="password" class="form-control" th:classappend="${(param.error != null and (!accountNotConfirmed and !usernameNotFound) ? 'is-invalid' : '')}" name="password" required>
                             </div>
 
                             <div class="d-flex align-items-center">

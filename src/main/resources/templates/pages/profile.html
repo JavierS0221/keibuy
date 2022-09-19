@@ -5,7 +5,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:include="layout/template :: head"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/loaderStyle.css}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,14 +12,6 @@
           rel="stylesheet">
 
     <style>
-        #btn-back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: none;
-        }
-
-
         .slick-prev:before,
         .slick-next:before {
             color: red !important;
@@ -103,25 +94,13 @@
         }
 
     </style>
-
-    <!--Slick Carousel Slider-->
-    <link rel="stylesheet" type="text/css" th:href="@{plugin}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{plugin}"/>
-    <script th:src="@{plugin}"></script>
 </head>
 <body class="position-relative bg-light" data-th-span="scroll" data-bs-target="#navbar-scrollspy">
 
-<div class="loader-container">
-    <div>
-        <img th:src="@{/images/logo2.png}"
-             alt=""
-             class="navbar-brand__img"/>
-    </div>
-</div>
+<th:block th:include="layout/template :: dependencies-js"/>
 
-<div class="container-fluid sticky-top" style="background-color: #404eed;">
-    <header th:replace="layout/template :: header"></header>
-</div>
+
+<th:block th:include="layout/navbar :: navbar"/>
 
 
 <!--Modal avatar-->
@@ -153,7 +132,7 @@
                         <input type="hidden" name="password" th:field="*{password}"/>
                         <input type="hidden" name="phone" th:field="*{phone}"/>
                         <input type="hidden" name="username" th:field="*{username}"/>
-
+                        <hr>
                         <input type="file" class="form-control form-control-sm" name="avatar" th:field="*{avatar}"
                                id="formFile" accept="image/*"/>
                         <div class="col-12 text-center pt-3">
@@ -193,9 +172,10 @@
                         <input type="hidden" name="password" th:field="*{password}"/>
                         <input type="hidden" name="phone" th:field="*{phone}"/>
                         <input type="hidden" name="username" th:field="*{username}"/>
-
+                        <hr>
                         <input type="file" class="form-control form-control-sm" name="avatar" th:field="*{avatar}" accept="image/*"/>
                         <div class="col-12 text-center pt-3">
+                            <hr>
                             <button id="submitProfile" type="submit" class="btn btn-outline-primary rounded-0 btn-sm"
                                     style="display: none">
                                 <i class="fas fa-check"></i> Aplicar
@@ -425,10 +405,8 @@
 </div>
 
 
-<!-- Back to top button -->
-<a id="back-to-top" href="#" class="btn btn-danger rounded-circle btn-sm back-to-top" role="button">
-    <i class="fas fa-chevron-up"></i>
-</a>
+<th:block th:insert="layout/btnBackToTop :: btn"/>
+
 <th:block th:insert="layout/template :: language-bottom"/>
 
 <script th:src="@{/js/scriptBtnBackToTop.js}"></script>

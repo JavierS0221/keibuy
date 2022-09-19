@@ -5,12 +5,15 @@
 <head th:fragment="head">
     <title>ProjectAuction</title>
     <meta charset="UTF-8"/>
+
+
+    <!--Slick Carousel Slider-->
+    <link rel="stylesheet" type="text/css" th:href="@{plugin/slick/slick-theme.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{plugin/slick/slick.css}"/>
+
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
-    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js/scriptBtnLang.js}"></script>
+    <link rel="stylesheet" th:href="@{/plugin/mdb-ui-kit-5.0.0/css/mdb.min.css}"/>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <!-- Forcing initial-scale shouldn't be necessary -->
@@ -40,59 +43,29 @@
             display: none;
         }
 
-        .navbar-brand {
-            font-family: 'Anton', sans-serif;
-        }
-
-
-
-        .navbar_item {
-            font-family: 'Roboto Slab', serif;
-        }
-
-        .navbar_item:hover {
-            text-decoration: underline;
-        }
-
-        #account {
-            font-family: "Arial";
-            margin: auto;
-        }
-
-        .logo {
-            filter: invert(100%) sepia(11%) saturate(0%) hue-rotate(167deg) brightness(103%) contrast(102%);
-        }
-
         .bg-blue {
             background: #404eed
-        }
-
-        .btn-search {
-            --bs-btn-font-weight: 600;
-            --bs-btn-color: var(--bs-white);
-            --bs-btn-bg: white;
-            --bs-btn-border-color: black;
-            --bs-btn-border-radius: .5rem;
-            --bs-btn-hover-color: none;
-            --bs-btn-hover-bg: none;
-            --bs-btn-hover-border-color: none;
-            --bs-btn-focus-shadow-rgb: none;
-            --bs-btn-active-color: none;
-            --bs-btn-active-bg: none;
-            --bs-btn-active-border-color: none;
         }
 
     </style>
 </head>
 <body>
 
+<th:block th:fragment="dependencies-js">
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/scriptBtnLang.js}"></script>
+    <script th:src="@{/plugin/mdb-ui-kit-5.0.0/js/mdb.min.js}"></script>
+    <script th:src="@{/plugin/mdb-ui-kit-5.0.0/js/mdb.min.js}"></script>
+    <script th:src="@{plugin/slick/slick.min.js}"></script>
+</th:block>
 
 <header th:fragment="header">
 
 
 
 
-    <th:block th:include="layout/navbar :: navbar"/>
 
     <!--        <nav class="navbar navbar-expand-lg navbar-dark justify-content-between p-0" id="#navbar-scrollspy"-->
 <!--             style="background-color: #404eed;">-->

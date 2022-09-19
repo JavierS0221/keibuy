@@ -4,10 +4,12 @@
 <head>
     <title>Register - Mondongo</title>
     <th:block th:include="layout/template :: head"/>
-    <link rel="stylesheet" type="text/css" th:href="@{plugin}"/>
-    <script th:src="@{plugin}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{plugin/intl-tel-input-17.0.18/css/intlTelInput.css}"/>
+    <script th:src="@{plugin/intl-tel-input-17.0.18/js/intlTelInput.min.js}"></script>
 </head>
 <body>
+
+<th:block th:include="layout/template :: dependencies-js"/>
 
 <!-- Modal Terms And Conditions-->
 <div class="modal fade" id="termsAndConditions100real" tabindex="-1" role="dialog" aria-labelledby="termsAndConditions100realLabel" aria-hidden="true">
@@ -52,6 +54,10 @@
                     <div class="card-body p-5">
                         <h1 class="fs-4 card-title fw-bold mb-4" th:text="#{register}"></h1>
                         <form th:action="@{/register}" th:object="${person}" method="post">
+
+
+
+
                             <div class="mb-3 form-group">
                                 <label class="mb-2 text-muted" for="username" th:text="#{username}"></label>
                                 <input id="username" type="text" class="form-control" th:field="*{username}" required autofocus>
@@ -91,14 +97,6 @@
                                 </div>
                             </div>
 
-<!--                            Telephone-->
-<!--                            <div class="mb-3">-->
-<!--                                <label class="mb-2 text-muted" for="telephone">Telephone</label>-->
-<!--                                <input id="telephone" type="email" class="form-control" name="telephone" value="" required>-->
-<!--                                <div class="invalid-feedback">-->
-<!--                                    Telephone is invalid-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="telephone">Telephone</label>
                                 <input id="telephone" type="tel" class="form-control"  th:field="*{phone}" style=".input-group .form-control, .intl-tel-input { width: 100%; }" required>
@@ -116,7 +114,7 @@
                             </div>
 
                             <p class="form-text text-muted mb-3">
-                                By registering you agree with our <a type="button" class="" data-bs-toggle="modal" data-bs-target="#termsAndConditions100real">terms and condition</a>.
+                                By registering you agree with our <a type="button" class="" data-mdb-toggle="modal" data-mdb-target="#termsAndConditions100real">terms and condition</a>.
                             </p>
 
 
