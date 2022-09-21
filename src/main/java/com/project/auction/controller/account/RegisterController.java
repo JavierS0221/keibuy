@@ -1,9 +1,10 @@
 package com.project.auction.controller.account;
 
 import com.project.auction.dto.PersonDto;
-import com.project.auction.exception.EmailAlreadyExistException;
+import com.project.auction.exception.EmailAlreadyUsedException;
 import com.project.auction.exception.InvalidTokenException;
-import com.project.auction.exception.UsernameAlreadyExistException;
+import com.project.auction.exception.UsernameAlreadyUsedException;
+import com.project.auction.exception.UsernameAndEmailAlreadyUsedException;
 import com.project.auction.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -15,11 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 
 @Slf4j
@@ -41,7 +41,7 @@ public class RegisterController {
         this.personService = personService;
     }
 
-    @ModelAttribute("person")
+    @ModelAttribute("personDto")
     public PersonDto personDto() {
         return new PersonDto();
     }
@@ -52,11 +52,15 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String registerPerson(@ModelAttribute("person") PersonDto personDto, BindingResult bindingResult, Model model,RedirectAttributes rm) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("registrationForm", personDto);
+    public String registerPerson(@Valid PersonDto personDto,
+                                 BindingResult bindingResult,
+                                 Model model,
+                                 RedirectAttributes rm) {
+
+        if(bindingResult.hasErrors()){
             return "pages/register";
         }
+
         try {
             personService.save(personDto);
 
@@ -66,11 +70,17 @@ public class RegisterController {
             } else {
                 return "redirect:/register?success";
             }
-        } catch (UsernameAlreadyExistException | EmailAlreadyExistException ex) {
-            bindingResult.rejectValue("email", "userData.email", ex.getMessage());
-            model.addAttribute("registrationForm", personDto);
-            return "pages/register";
+        } catch (UsernameAndEmailAlreadyUsedException ex) {
+            bindingResult.rejectValue("username", "usernameAlreadyExist", "Username already used");
+            bindingResult.rejectValue("email", "userData.email", "Email already used");
+        } catch (UsernameAlreadyUsedException ex) {
+            bindingResult.rejectValue("username", "usernameAlreadyExist", "Username already used");
+        } catch (EmailAlreadyUsedException ex) {
+            bindingResult.rejectValue("email", "userData.email", "Email already used");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+        return "pages/register";
     }
 
     @GetMapping("/verify")

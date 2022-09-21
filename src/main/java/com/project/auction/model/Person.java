@@ -1,9 +1,12 @@
 package com.project.auction.model;
 
+import com.project.auction.constraints.BirthDate;
 import com.project.auction.model.relation.AuctionOffer;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,26 +23,51 @@ public class Person {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "username", length = 45, nullable = false)
+    @Column(name = "username")
+    @NotEmpty(message="El usuario es obligatorio")
+    @Size(min = 2, max = 32, message = "El usuario debe tener entre 2 y 32 caracteres")
     private String username;
 
-    @Column(name = "name", length = 45, nullable = false)
+    @NotEmpty(message="El nombre es obligatorio")
+    @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "last_name", length = 45, nullable = false)
+    @NotEmpty(message="El apellido es obligatorio")
+    @Size(max = 45, message = "El apellido no puede tener más de 45 caracteres")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "password", length = 500, nullable = false)
+    @NotEmpty(message="La contraseña es obligatoria")
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "email", length = 80, nullable = false)
+    @NotEmpty(message="El email es obligatorio")
+    @Email(message = "Email no válido")
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "phone", length = 15)
+    @NotEmpty(message="El pais es obligatorio")
+    @Column(name = "country")
+    private String country;
+
+    @NotEmpty(message="El teléfono es obligatorio")
+    @Size(max = 15, message = "El teléfono no puede tener más de 15 dígitos")
+    @Column(name = "phone")
     private String phone;
 
+    @NotNull(message = "The birth date is required.")
+    @BirthDate(message = "The birth date must be greater or equal than 18")
+    @Past(message = "The birth date must be in the past.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date")
     private Date birthDate;
+
+    @Column(name = "account_verified")
+    private boolean accountVerified = false;
+
+    @Column(name = "account_banned")
+    private boolean accountBanned = false;
 
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<Report> reportsCreated;
@@ -74,7 +102,6 @@ public class Person {
     private Collection<Item> items;
 
 
-    private boolean accountVerified;
 
     public void addReport(Report report) {
         if (this.reportsCreated == null) this.reportsCreated = new ArrayList<>();

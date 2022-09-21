@@ -121,19 +121,9 @@
                      loading="lazy"/>
             </div>
             <div class="modal-footer m-auto">
-                <form th:action="@{/profile}" method="post" th:object="${personDto}" enctype="multipart/form-data">
+                <form th:action="@{/profile/changeAvatar}" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <input type="hidden" name="id" th:field="*{id}"/>
-                        <input type="hidden" name="accountVerified" th:field="*{accountVerified}"/>
-                        <input type="hidden" name="birthDate" th:field="*{birthDate}"/>
-                        <input type="hidden" name="email" th:field="*{email}"/>
-                        <input type="hidden" name="lastName" th:field="*{lastName}"/>
-                        <input type="hidden" name="name" th:field="*{name}"/>
-                        <input type="hidden" name="password" th:field="*{password}"/>
-                        <input type="hidden" name="phone" th:field="*{phone}"/>
-                        <input type="hidden" name="username" th:field="*{username}"/>
-                        <hr>
-                        <input type="file" class="form-control form-control-sm" name="avatar" th:field="*{avatar}"
+                        <input type="file" class="form-control form-control-sm" name="file"
                                id="formFile" accept="image/*"/>
                         <div class="col-12 text-center pt-3">
                             <button id="submitAvatar" type="submit" class="btn btn-outline-primary rounded-0 btn-sm"

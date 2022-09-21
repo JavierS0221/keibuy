@@ -1,11 +1,8 @@
-.iti--allow-dropdown {
- width: 100%;
-}
 .iti {
   position: relative;
   display: inline-block; }
   .iti * {
-
+    box-sizing: border-box;
     -moz-box-sizing: border-box; }
   .iti__hide {
     display: none; }

@@ -54,13 +54,16 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional
-    public void save(PersonDto personDto) throws UsernameAlreadyExistException, EmailAlreadyExistException {
+    public void save(PersonDto personDto) throws UsernameAlreadyUsedException, EmailAlreadyUsedException, UsernameAndEmailAlreadyUsedException {
 
         if (checkIfPersonExistByUsername(personDto.getUsername())) {
-            throw new UsernameAlreadyExistException("User already exists for this username");
+            if(checkIfPersonExistByEmail(personDto.getEmail())) {
+                throw new UsernameAndEmailAlreadyUsedException();
+            }
+            throw new UsernameAlreadyUsedException();
         }
         if (checkIfPersonExistByEmail(personDto.getEmail())) {
-            throw new EmailAlreadyExistException("User already exists for this email");
+            throw new EmailAlreadyUsedException();
         }
 
         String defaultRolName = "ROLE_USER";
@@ -78,8 +81,10 @@ public class PersonServiceImpl implements PersonService {
         person.setPassword(passwordEncoder.encode(personDto.getPassword()));
         person.setEmail(personDto.getEmail());
         person.setPhone(personDto.getPhone());
+        person.setCountry(personDto.getCountry());
         person.setBirthDate(personDto.getBirthDate());
         person.setAccountVerified(personDto.isAccountVerified());
+        person.setAccountVerified(personDto.isAccountBanned());
         person.setRoles(List.of(defaultRol));
         personRepository.save(person);
         sendRegistrationConfirmationEmail(person);
@@ -96,8 +101,10 @@ public class PersonServiceImpl implements PersonService {
             person.setPassword(personDto.getPassword());
             person.setEmail(personDto.getEmail());
             person.setPhone(personDto.getPhone());
+            person.setCountry(personDto.getCountry());
             person.setBirthDate(personDto.getBirthDate());
             person.setAccountVerified(personDto.isAccountVerified());
+            person.setAccountVerified(personDto.isAccountBanned());
             personRepository.save(person);
         }
     }
@@ -137,10 +144,12 @@ public class PersonServiceImpl implements PersonService {
         personDto.setName(person.getName());
         personDto.setLastName(person.getLastName());
         personDto.setEmail(person.getEmail());
+        personDto.setCountry(person.getCountry());
         personDto.setPhone(person.getPhone());
         personDto.setPassword(person.getPassword());
         personDto.setBirthDate(person.getBirthDate());
         personDto.setAccountVerified(person.isAccountVerified());
+        personDto.setAccountBanned(person.isAccountBanned());
         return personDto;
     }
 

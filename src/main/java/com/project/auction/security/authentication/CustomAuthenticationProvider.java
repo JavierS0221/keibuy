@@ -21,7 +21,7 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         // Perform the checks from the super class
         super.additionalAuthenticationChecks(userDetails, authentication);
 
-        // Cast the UserDetails to the implementation you use
+
         Person person = null;
         try {
             person = personService.getPersonByNameOrEmail(userDetails.getUsername());
@@ -29,9 +29,14 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
             throw new UsernameNotFoundException("Account not exist");
         }
 
-        // Check the confirmed status
+        // Check if the account is not confirmed
         if (!person.isAccountVerified()) {
             throw new AccountNotConfirmedException("Account is not confirmed yet.");
+        }
+
+        // Check if the account is banned
+        if (person.isAccountBanned()) {
+            throw new AccountNotConfirmedException("Account has banned.");
         }
     }
 

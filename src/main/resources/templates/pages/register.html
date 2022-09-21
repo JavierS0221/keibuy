@@ -4,10 +4,16 @@
 <head>
     <title>Register - Mondongo</title>
     <th:block th:include="layout/template :: head"/>
-    <link rel="stylesheet" type="text/css" th:href="@{plugin/intl-tel-input-17.0.18/css/intlTelInput.css}"/>
-    <script th:src="@{plugin/intl-tel-input-17.0.18/js/intlTelInput.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{plugin/intl-tel-input-17.0.19/css/intlTelInput.css}"/>
+    <style>
+        .iti { width: 100%; }
+
+
+    </style>
+
 </head>
 <body>
+<script th:src="@{plugin/intl-tel-input-17.0.19/js/intlTelInput.min.js}"></script>
 
 <th:block th:include="layout/template :: dependencies-js"/>
 
@@ -53,64 +59,54 @@
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
                         <h1 class="fs-4 card-title fw-bold mb-4" th:text="#{register}"></h1>
-                        <form th:action="@{/register}" th:object="${person}" method="post">
-
-
-
+                        <form onsubmit="onSubmitRegister()" id="register-form" class="needs-validation" th:action="@{/register}" th:object="${personDto}" method="post">
 
                             <div class="mb-3 form-group">
                                 <label class="mb-2 text-muted" for="username" th:text="#{username}"></label>
                                 <input id="username" type="text" class="form-control" th:field="*{username}" required autofocus>
-                                <div class="invalid-feedback" th:text="#{error.username-required}">
-                                </div>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="name">Name</label>
                                 <input id="name" type="text" class="form-control"  th:field="*{name}" value="" required>
-                                <div class="invalid-feedback">
-                                    Name is required
-                                </div>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="last-name">Last Name</label>
                                 <input id="last-name" type="text" class="form-control"  th:field="*{lastName}" value="" required>
-                                <div class="invalid-feedback">
-                                    Last Name is required
-                                </div>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="birth-date">Birth Date</label>
                                 <input id="birth-date" type="date" class="form-control"  th:field="*{birthDate}" value="" required>
-                                <div class="invalid-feedback">
-                                    Birth Date is required
-                                </div>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="email">E-Mail Address</label>
                                 <input id="email" type="email" class="form-control"  th:field="*{email}" value="" required>
-                                <div class="invalid-feedback">
-                                    Email is invalid
-                                </div>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="country">Country</label>
+                                <select id="country" type="text" class="form-control"  th:field="*{country}" required></select>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="telephone">Telephone</label>
-                                <input id="telephone" type="tel" class="form-control"  th:field="*{phone}" style=".input-group .form-control, .intl-tel-input { width: 100%; }" required>
-                                <p id="telephone-warn-msg" class="text-danger small">
-
-                                </p>
+                                <input id="telephone" type="tel" class="form-control"  th:field="*{phone}" required>
+                                <small id="telephone-warn-msg" class="form-text text-danger"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label class="mb-2 text-muted" for="password">Password</label>
                                 <input id="password" type="password" class="form-control"  th:field="*{password}" required>
-                                <div class="invalid-feedback">
-                                    Password is required
-                                </div>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
                             </div>
 
                             <p class="form-text text-muted mb-3">
@@ -140,6 +136,57 @@
     </div>
     <th:block th:insert="layout/template :: language-bottom"/>
 </section>
+
+<script>
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("birth-date").setAttribute("max", today);
+</script>
+
+
+<script>
+    (() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach((form) => {
+            window.addEventListener('load', () => {
+                let smallList = form.getElementsByTagName('small');
+                for(let small of smallList) {
+                    if(small.innerText.length > 0) {
+                        let parent = small.parentElement;
+                        let inputList = parent.getElementsByTagName("input");
+                        if(inputList.length > 0) {
+                            let input = inputList[0];
+                            input.classList.add('is-invalid');
+                            input.classList.add('mb-0');
+                        }
+                        let labelList = parent.getElementsByTagName("label");
+                        if(labelList.length > 0) {
+                            let label = labelList[0];
+                            label.classList.remove('text-muted');
+                            label.classList.add('text-danger');
+                        }
+                    }
+                }
+            }, false);
+        });
+    })();
+</script>
+
 <script th:src="@{/js/scriptLogin.js}"></script>
 <script th:src="@{/js/scriptRegisterPhone.js}"></script>
 </body>
