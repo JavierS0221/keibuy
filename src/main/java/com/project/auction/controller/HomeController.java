@@ -142,8 +142,8 @@ public class HomeController {
 
 //
 //    @PostMapping("/register")
-//    public String validRegister(@Validated Person person, Errors errors) {
-//        if(errors.hasErrors()) {
+//    public String validRegister(@Validated Person person, Errors error) {
+//        if(error.hasErrors()) {
 //            return "pages/register";
 //        }
 //

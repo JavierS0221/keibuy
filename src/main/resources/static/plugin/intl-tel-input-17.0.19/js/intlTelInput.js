@@ -182,7 +182,7 @@
                         });
                         this.promise = Promise.all([ autoCountryPromise, utilsScriptPromise ]);
                     } else {
-                        // prevent errors when Promise doesn't exist
+                        // prevent error when Promise doesn't exist
                         this.resolveAutoCountryPromise = this.rejectAutoCountryPromise = function() {};
                         this.resolveUtilsScriptPromise = this.rejectUtilsScriptPromise = function() {};
                     }

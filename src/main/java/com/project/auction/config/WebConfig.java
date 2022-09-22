@@ -20,33 +20,6 @@ public class WebConfig implements WebMvcConfigurer{
     @Value("${project.testing.mode}")
     private boolean projectTestingMode;
 
-//    @Bean
-//    public LocaleResolver localeResolver(){
-//        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-//        localeResolver.setDefaultLocale(Locale.ENGLISH);
-//        return  localeResolver;
-//    }
-//
-//    @Bean
-//    public LocaleChangeInterceptor localeChangeInterceptor() {
-//        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-//        localeChangeInterceptor.setParamName("lang");
-//        return localeChangeInterceptor;
-//    }
-
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(localeChangeInterceptor());
-//    }
-
-//    @Bean
-//    public LocalValidatorFactoryBean validator(MessageSource messageSource) {
-//        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-//        bean.setValidationMessageSource(messageSource);
-//        return bean;
-//    }
-
-
     @Override
     public void addViewControllers(ViewControllerRegistry registry){
         registry.addViewController("/").setViewName("index");
@@ -55,8 +28,8 @@ public class WebConfig implements WebMvcConfigurer{
         registry.addViewController("/forgot").setViewName("/pages/forgot");
         registry.addViewController("/reset").setViewName("/pages/reset");
         registry.addViewController("/profile").setViewName("/pages/profile");
-        registry.addViewController("/errors/403").setViewName("/errors/403");
-        registry.addViewController("/errors/404").setViewName("/errors/404");
+        registry.addViewController("/error/403").setViewName("/error/403");
+        registry.addViewController("/error/404").setViewName("/error/404");
         registry.addViewController("/items").setViewName("/pages/itemFilter");
         registry.addViewController("/chat-test").setViewName("/layout/chat.component");
         if(projectTestingMode) {

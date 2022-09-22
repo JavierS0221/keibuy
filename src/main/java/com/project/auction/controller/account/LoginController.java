@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     /**
-     * Displays login page passing authentication errors
+     * Displays login page passing authentication error
      *
      * @param request The request object.
      * @param model This is the model that will be passed to the view.
