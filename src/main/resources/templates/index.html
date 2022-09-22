@@ -6,17 +6,19 @@
 <head>
     <th:block th:include="layout/template :: head"/>
 
-    <style th:include="layout/loader :: style">
+    <style th:include="layout/loader :: style"></style>
 
+    <style>
         .slick-prev:before,
         .slick-next:before {
             color: red !important;
         }
 
         .wrapper {
-        margin-right: 3rem;
+            margin-right: 3rem;
             margin-left: 3rem;
         }
+
         .wrapper2 {
             max-width: 300rem;
             margin-right: 1rem;
@@ -27,51 +29,60 @@
 <body class="position-relative bg-light" data-th-span="scroll" data-bs-target="#navbar-scrollspy">
 
 <th:block th:include="layout/template :: dependencies-js"/>
-
-
 <th:block th:include="layout/loader :: loader"/>
-
-
-
 <th:block th:include="layout/navbar :: navbar"/>
-    <th:block th:replace="layout/template :: header"></th:block>
+
 
 <!--Trend-->
 <div class="wrapper2">
     <div class="single-item">
         <div>
             <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top" src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg" alt="Card image cap">
+                <img class="card-img-top"
+                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
+                     alt="Card image cap">
             </div>
         </div>
         <div>
             <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top" src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg" alt="Card image cap">
+                <img class="card-img-top"
+                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
+                     alt="Card image cap">
             </div>
         </div>
         <div>
             <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top" src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg" alt="Card image cap">
+                <img class="card-img-top"
+                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
+                     alt="Card image cap">
             </div>
         </div>
         <div>
             <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top" src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg" alt="Card image cap">
+                <img class="card-img-top"
+                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
+                     alt="Card image cap">
             </div>
         </div>
         <div>
             <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top" src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg" alt="Card image cap">
+                <img class="card-img-top"
+                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
+                     alt="Card image cap">
             </div>
         </div>
         <div>
             <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top" src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg" alt="Card image cap">
+                <img class="card-img-top"
+                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
+                     alt="Card image cap">
             </div>
         </div>
         <div>
             <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top" src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg" alt="Card image cap">
+                <img class="card-img-top"
+                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
+                     alt="Card image cap">
             </div>
         </div>
     </div>
@@ -457,7 +468,6 @@
         })
 
 
-
         $('.your-class').slick({
             swipeToSlide: true,
             autoplay: true,
@@ -471,7 +481,7 @@
             slidesToScroll: 1,
             responsive: [
                 {
-                  breakpoint: 1500,
+                    breakpoint: 1500,
                     settings: {
                         slidesToShow: 5,
                         slidesToScroll: 1,
@@ -489,14 +499,14 @@
                     }
                 },
                 {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                    infinite: false,
-                    dots: false,
-                }
-            },
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1,
+                        infinite: false,
+                        dots: false,
+                    }
+                },
                 {
                     breakpoint: 835,
                     settings: {
@@ -521,9 +531,10 @@
     });
 </script>
 
-<th:block th:insert="layout/template :: language-bottom"/>
 <script th:src="@{/js/scriptLoader.js}"></script>
 
+<!-- Language picker buttom -->
+<th:block th:include="layout/btnLanguage :: btnLang"/>
 
 
 <th:block th:insert="layout/btnBackToTop :: btn"/>

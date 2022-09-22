@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <head>
     <title>Register - Mondongo</title>
     <th:block th:include="layout/template :: head"/>
@@ -134,7 +135,6 @@
             </div>
         </div>
     </div>
-    <th:block th:insert="layout/template :: language-bottom"/>
 </section>
 
 <script>
@@ -186,6 +186,9 @@
         });
     })();
 </script>
+
+<th:block th:include="layout/btnLanguage :: btnLang"/>
+<th:block th:insert="layout/btnBackToTop :: btn"/>
 
 <script th:src="@{/js/scriptLogin.js}"></script>
 <script th:src="@{/js/scriptRegisterPhone.js}"></script>

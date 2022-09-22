@@ -43,11 +43,24 @@
 
     <!-- Body -->
     <body >
+
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet sit amet leo quis vehicula. Aenean vel lacus diam. Nulla placerat erat nec euismod semper. Donec non dapibus sapien, quis tempus odio. Aenean nec ornare diam, vitae dignissim nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin a velit a arcu consectetur aliquam. Sed accumsan metus vel augue condimentum, ac placerat felis dapibus. Quisque congue velit sapien, dictum gravida nisl vestibulum quis. Vivamus at gravida est, quis hendrerit mi.
+
+        Donec interdum orci faucibus tellus volutpat finibus. Nam nec accumsan justo. Aenean commodo, metus volutpat ultrices ultrices, quam dui suscipit massa, vel bibendum orci nulla id odio. Vivamus aliquam tincidunt libero quis ultricies. Integer id cursus orci. Maecenas rutrum velit elementum lacus sollicitudin, non pretium mauris pharetra. Nullam ut quam libero. Nulla accumsan semper mattis. Nunc sagittis accumsan massa, quis dapibus purus vulputate suscipit. Fusce et viverra purus, ac ornare enim. Nam fringilla mi tincidunt magna pretium, eget sodales tortor tempor. Nam sed auctor tellus, in elementum ipsum. Vestibulum euismod quam a quam feugiat maximus. Donec commodo at ex id tincidunt. Sed lacinia mauris mauris, eget lobortis lorem consequat nec.
+
+        Nullam auctor sollicitudin mattis. Maecenas fermentum sem ac eros faucibus, et tincidunt eros maximus. Pellentesque blandit viverra arcu, id mollis risus ultrices eu. Vivamus blandit elementum augue. Mauris ac augue quis nibh sodales venenatis. Morbi vehicula tempor tincidunt. Maecenas id mollis sapien, dapibus ultrices augue. Vestibulum quam purus, faucibus sit amet tempus sit amet, tempor quis mi. Vestibulum velit turpis, egestas ac libero tempor, volutpat imperdiet ligula. Nullam vel ornare ex. Phasellus posuere, ipsum vitae iaculis ornare, mi risus elementum ex, malesuada egestas lacus risus at mi. Sed varius cursus nibh sed laoreet. Cras aliquet nisi eu eros efficitur, a ullamcorper ipsum rutrum. Morbi eu fringilla ipsum.
+
+        Nunc id sem ac est volutpat aliquet. Suspendisse id nisi ligula. Vestibulum dui eros, scelerisque eu placerat id, consectetur volutpat velit. Duis justo quam, elementum id ultricies a, maximus ut quam. In id mi sed leo porttitor efficitur ac sit amet diam. Vivamus a orci ac ligula aliquam dictum vitae ac justo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam sagittis scelerisque cursus.
+
+        Aliquam in lectus quis dolor scelerisque vestibulum. Nam pellentesque vitae magna ut rutrum. Donec non orci quis mauris luctus vulputate. Proin fringilla mauris nibh, a congue lacus porta at. Vivamus ac tellus quis mauris eleifend molestie. In mattis, tellus vitae tristique efficitur, nulla elit laoreet ligula, quis fermentum nibh justo id libero. Nullam sit amet faucibus nulla, scelerisque feugiat mi. Donec ac tortor pretium, ullamcorper risus eget, aliquam tortor. Nullam mattis, nibh in sollicitudin tincidunt, arcu lorem blandit lectus, ut feugiat nisl orci ac diam. In finibus ipsum in ante pharetra convallis. Etiam at ante porta, malesuada dui posuere, tincidunt urna. Aenean dignissim bibendum justo. Quisque nisl augue, venenatis sit amet tempor at, imperdiet eu nunc. Vestibulum bibendum pretium elit, id placerat tellus scelerisque eget. Fusce nec sapien non sem aliquam rutrum vel et urna.
+    </p>
+
         <!-- Thymeleaf fragment btnBackToTop -->
-        <div th:fragment="btn" class="fixed-bottom">
+        <section th:fragment="btn">
 
             <!-- Back to top button -->
-            <a  id="btn-back-to-top" href="#" class="btn btn-primary btn-floating btn-sm float-end m-3"
+            <a  id="btn-back-to-top" href="#" class="btn btn-primary btn-floating btn-sm position-fixed position-absolute bottom-0 end-0 m-3"
                 role="button" style="visibility: hidden">
                 <i class="fas fa-chevron-up"></i>
             </a>
@@ -58,7 +71,7 @@
             <script th:src="@{/js/scriptBtnBackToTop.js}" src="../../static/js/scriptBtnBackToTop.js"></script>
             <!-- -->
 
-        </div>
+        </section>
         <!-- -->
 
     </body>

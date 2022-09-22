@@ -58,6 +58,7 @@ public class WebConfig implements WebMvcConfigurer{
         registry.addViewController("/errors/403").setViewName("/errors/403");
         registry.addViewController("/errors/404").setViewName("/errors/404");
         registry.addViewController("/items").setViewName("/pages/itemFilter");
+        registry.addViewController("/chat-test").setViewName("/layout/chat.component");
         if(projectTestingMode) {
             registry.addViewController("/email").setViewName("/emails/email-verification");
         }

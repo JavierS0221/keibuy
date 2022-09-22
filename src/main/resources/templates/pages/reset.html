@@ -51,8 +51,11 @@
             </div>
         </div>
     </div>
-    <th:block th:insert="layout/template :: language-bottom"/>
 </section>
+
+<th:block th:include="layout/btnLanguage :: btnLang"/>
+<th:block th:insert="layout/btnBackToTop :: btn"/>
+
 <script th:src="@{/js/scriptLogin.js}"></script>
 </body>
 </html>

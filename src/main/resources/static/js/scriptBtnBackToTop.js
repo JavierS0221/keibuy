@@ -3,9 +3,9 @@ $(document).ready(function(){
     $(window).on("scroll load", function () {
         if ($(this).scrollTop() > 50) {
 
-            $('#btn-back-to-top').style.visibility = "visible"
+            document.getElementById("btn-back-to-top").style.visibility = "visible";
         } else {
-            $('#btn-back-to-top').style.visibility = "hidden"
+            document.getElementById("btn-back-to-top").style.visibility = "hidden";
         }
     });
 

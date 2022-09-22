@@ -91,7 +91,8 @@
             </div>
         </div>
     </div>
-    <th:block th:insert="layout/template :: language-bottom"/>
+    <th:block th:include="layout/btnLanguage :: btnLang"/>
+    <th:block th:insert="layout/btnBackToTop :: btn"/>
 </section>
 <script th:src="@{/js/scriptLogin.js}"></script>
 </body>
