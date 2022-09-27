@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="layout/template :: head"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
+          rel="stylesheet">
+
+    <style th:include="control/template :: style">
+    </style>
+    <style>
+        body {
+            color: #566787;
+            background: #f5f5f5;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .table-wrapper {
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+        }
+
+        .table-title {
+            font-size: 15px;
+            padding-bottom: 10px;
+            min-height: 45px;
+        }
+
+        .table-title h2 {
+            margin: 5px 0 0;
+            font-size: 24px;
+        }
+
+        .table-title select {
+            border-color: #ddd;
+            border-width: 0 0 1px 0;
+            padding: 3px 10px 3px 5px;
+            margin: 0 5px;
+        }
+
+        .search-box {
+            position: relative;
+            float: right;
+        }
+
+        .search-box .input-group {
+            min-width: 200px;
+            position: absolute;
+            right: 0;
+        }
+
+        .search-box .input-group-addon,
+        .search-box input {
+            border-color: #ddd;
+            border-radius: 0;
+        }
+
+        .search-box .input-group-addon {
+            border: none;
+            background: transparent;
+            position: absolute;
+            z-index: 9;
+        }
+
+        .search-box input {
+            height: 34px;
+            padding-left: 28px;
+            box-shadow: none !important;
+            border-width: 0 0 1px 0;
+        }
+
+        .search-box input:focus {
+            border-color: #3FBAE4;
+        }
+
+        .search-box i {
+            color: #a0a5b1;
+            font-size: 19px;
+            position: relative;
+            top: 8px;
+        }
+
+        table.table tr th,
+        table.table tr td {
+            border-color: #e9e9e9;
+        }
+
+        table.table tr td {
+            padding-bottom: 0;
+        }
+
+        table.table tr td.user-td {
+            padding-top: 8px;
+        }
+
+        table.table tr td.country-item {
+            padding-top: 5px;
+        }
+
+        table.table tr td img.user-avatar {
+            position: relative;
+            top: -3px;
+            right: -8px;
+            width: 40px;
+            height: 40px
+        }
+
+        table.table th i {
+            font-size: 13px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        table.table td:last-child {
+            width: 130px;
+        }
+
+        .pagination li a {
+            border: none;
+            font-size: 13px;
+            min-width: 30px;
+            min-height: 30px;
+            color: #999;
+            margin: 0 2px;
+            line-height: 30px;
+            border-radius: 30px !important;
+        }
+
+        .pagination li a:hover {
+            color: #666;
+        }
+
+        .pagination li.active a {
+            background: #03A9F4;
+        }
+
+        .pagination li.active a:hover {
+            background: #5ec4f3;
+            color: #fff;
+        }
+
+        .pagination li.disabled i {
+            color: #ccc;
+        }
+
+        .pagination li i {
+            font-size: 16px;
+            padding-top: 6px
+        }
+
+        .user-info__img img {
+            margin-right: 15px;
+            height: 55px;
+            width: 55px;
+            border-radius: 45px;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            font-size: 12px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .table-title {
+                padding-bottom: 40px;
+            }
+        }
+    </style>
+    <script th:src="@{/plugin/country-flags/script.js}"></script>
+
+    <style>
+
+        .modal-confirm {
+            color: #636363;
+            width: 400px;
+        }
+
+        .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .modal-confirm .modal-header {
+            border-bottom: none;
+            position: relative;
+        }
+
+        .modal-confirm h4 {
+            text-align: center;
+            font-size: 26px;
+            margin: 30px 0 -10px;
+        }
+
+        .modal-confirm .btn-close {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+        }
+
+        .modal-confirm .modal-body {
+            color: #999;
+        }
+
+        .modal-confirm .modal-footer {
+            border: none;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 13px;
+            padding: 10px 15px 25px;
+        }
+
+        .modal-confirm .modal-footer a {
+            color: #999;
+        }
+
+        .modal-confirm .icon-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            z-index: 9;
+            text-align: center;
+            border: 3px solid #ffbc40;
+        }
+
+        .modal-confirm .icon-box i {
+            color: #ffbc40;
+            font-size: 46px;
+            display: inline-block;
+            margin-top: 13px;
+        }
+
+        .modal-confirm .btn,
+        .modal-confirm .btn:active {
+            color: #fff;
+            background: #60c7c1;
+            text-decoration: none;
+            transition: all 0.4s;
+            line-height: normal;
+            min-width: 120px;
+            border: none;
+            min-height: 40px;
+            border-radius: 3px;
+            margin: 0 5px;
+        }
+
+        .modal-confirm .btn-secondary {
+            background: #c1c1c1;
+        }
+
+        .modal-confirm .btn-secondary:hover,
+        .modal-confirm .btn-secondary:focus {
+            background: #a8a8a8;
+        }
+
+        .modal-confirm .btn-confirm {
+            background: #ffbc40;
+        }
+
+        .modal-confirm .btn-confirm:hover,
+        .modal-confirm .btn-confirm:focus {
+            background: #ff9040;
+        }
+    </style>
+
+</head>
+<body id="body-pd" class="bg-light vh-100">
+
+<th:block th:include="control/template :: navs"/>
+
+<!--Container Main start-->
+<div class="h-100 bg-light">
+
+    <div class="container-xl">
+        <div class="shadow-sm border border-1 border-secondary position-relative">
+            <div class="search-div">
+                <div class="search-box">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                </div>
+            </div>
+            <div class="table-wrapper table-responsive">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-4">
+                        </div>
+                        <div class="col-sm-4">
+                            <h2 class="text-center"><b>Users</b></h2>
+                        </div>
+
+                    </div>
+                </div>
+                <table class="table text-center text-nowrap table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th class="px-1" th:classappend="${(sortField == 'id' ? 'fw-bolder' : '')}">ID
+                            <a class="text-dark"
+                               th:href="@{'/control/users?page=' + ${currentPage} + '&sortField=id&sortDir=' + ${reverseSortDir}}">
+                                <i th:if="${sortField == 'id' && reverseSortDir == 'asc'}" class="fa fa-sort-up"></i>
+                                <i th:if="${sortField == 'id' && reverseSortDir == 'desc'}" class="fa fa-sort-down"></i>
+                                <i th:if="${sortField != 'id'}" class="fa fa-sort text-secondary"></i>
+                            </a>
+                        </th>
+
+                        <th class="px-1" th:classappend="${(sortField == 'username' ? 'fw-bolder' : '')}">Username
+                            <a class="text-dark"
+                               th:href="@{'/control/users?page=' + ${currentPage} + '&sortField=username&sortDir=' + ${reverseSortDir}}">
+                                <i th:if="${sortField == 'username' && reverseSortDir == 'asc'}" class="fa fa-sort-up"></i>
+                                <i th:if="${sortField == 'username' && reverseSortDir == 'desc'}" class="fa fa-sort-down"></i>
+                                <i th:if="${sortField != 'username'}" class="fa fa-sort text-secondary"></i>
+                            </a>
+                        </th>
+
+                        <th class="px-1" th:classappend="${(sortField == 'email' ? 'fw-bolder' : '')}">Email
+                            <a class="text-dark"
+                               th:href="@{'/control/users?page=' + ${currentPage} + '&sortField=email&sortDir=' + ${reverseSortDir}}">
+                                <i th:if="${sortField == 'email' && reverseSortDir == 'asc'}" class="fa fa-sort-up"></i>
+                                <i th:if="${sortField == 'email' && reverseSortDir == 'desc'}" class="fa fa-sort-down"></i>
+                                <i th:if="${sortField != 'email'}" class="fa fa-sort text-secondary"></i>
+                            </a>
+                        </th>
+
+                        <th class="px-1" th:classappend="${(sortField == 'items' ? 'fw-bolder' : '')}">Items
+                            <a class="text-dark"
+                               th:href="@{'/control/users?page=' + ${currentPage} + '&sortField=items&sortDir=' + ${reverseSortDir}}">
+                                <i th:if="${sortField == 'items' && reverseSortDir == 'asc'}" class="fa fa-sort-up"></i>
+                                <i th:if="${sortField == 'items' && reverseSortDir == 'desc'}" class="fa fa-sort-down"></i>
+                                <i th:if="${sortField != 'items'}" class="fa fa-sort text-secondary"></i>
+                            </a>
+                        </th>
+
+                        <th class="px-1">Status</th>
+                        <th class="px-1">Main Role</th>
+
+                        <th class="px-1" th:classappend="${(sortField == 'country' ? 'fw-bolder' : '')}">Country
+                            <a class="text-dark"
+                               th:href="@{'/control/users?page=' + ${currentPage} + '&sortField=country&sortDir=' + ${reverseSortDir}}">
+                                <i th:if="${sortField == 'country' && reverseSortDir == 'asc'}" class="fa fa-sort-up"></i>
+                                <i th:if="${sortField == 'country' && reverseSortDir == 'desc'}" class="fa fa-sort-down"></i>
+                                <i th:if="${sortField != 'country'}" class="fa fa-sort text-secondary"></i>
+                            </a>
+                        </th>
+
+                        <th class="px-1">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="country-filter">
+
+                    <tr th:each="person : ${listPersons}">
+
+                        <!-- Modal confirm verify-->
+                        <div id="confirmVerify" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" >
+                            <div class="modal-dialog modal-confirm">
+                            </div>
+                        </div>
+                        <!-- -->
+
+                        <td class="fw-bold" th:text="${person.id}"></td>
+                        <td class="user-td">
+                            <div class="d-flex align-items-center">
+                                <img src="../../static/images/DefaultAvatar.png"
+                                     th:src="${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png'"
+                                     alt=""
+                                     class="rounded-circle user-avatar border border-1 border-dark" />
+                                <div class="ms-3">
+                                    <p class="fw-bold mb-1" th:text="${person.username}"></p>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:text="${person.email}"></td>
+
+                        <!-- Items count -->
+                        <td><a href="#!" class="text-primary" th:text="${person.getItems().size}">0</a></td>
+
+                        <!-- Status -->
+                        <td class="text-center">
+                            <span th:if="${person.isAccountBanned()}" class="badge badge-danger rounded-pill d-inline">Banned</span>
+                            <span th:if="${!person.isAccountBanned() && !person.isAccountVerified()}" class="badge badge-warning rounded-pill d-inline">Not verified</span>
+                            <span th:if="${!person.isAccountBanned() && person.isAccountVerified()}" class="badge badge-success rounded-pill d-inline">Active</span>
+
+                        </td>
+                        <!-- -->
+
+                        <td class="text-center"><small class="badge text-warning border rounded-1 rol">VIP</small>
+                        </td>
+                        <td class="m-auto country-item">
+                            <div class="d-inline-flex align-items-center">
+                                <p class="selected-country" th:text="${person.country}"></p>
+                                <div>
+                                    <div class="country-flag"></div>
+                                </div>
+                                <div class="ms-2">
+                                    <h6 class="text-sm mb-0 country-name"></h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dropstart">
+                                <a class="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-dark"></i>
+                                </a>
+
+                                <ul class="w-25 dropdown-menu dropdown-menu-end border border-1 border-secondary rounded-4 shadow-sm">
+                                    <li class="dropdown-item">
+                                        <a class="dropdown-item text-primary" href="#"><i class="fa-solid fa-eye"></i>
+                                            <b>Profile</b></a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="dropdown-item text-muted" href="#"><i class="fa-solid fa-book"></i> <b>Details</b></a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="dropdown-item text-muted" href="#"><i class="fa-solid fa-gavel text-warning"></i>
+                                            <b>Ban</b></a>
+                                    </li>
+                                    <li th:if="${!person.isAccountBanned() && !person.isAccountVerified()}" class="dropdown-item">
+                                        <a class="dropdown-item text-muted" th:attr="onclick=|confirmVerifyModal('${person.id}', '${person.username}')|"
+                                           data-bs-toggle="modal" data-bs-target="#confirmVerify">
+                                            <i class="fa-solid fa-check text-success"></i>
+                                            <b>Verify</b>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash"></i>
+                                            <b>Delete</b></a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="clearfix text-center">
+                    <ul class="pagination m-0">
+
+                        <li th:if="${currentPage > 1}" class="page-item">
+                            <a th:href="@{'/control/users?page=' + ${currentPage - 1} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                               class="page-link">
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                        </li>
+                        <li th:unless="${currentPage > 1}" class="page-item disabled">
+                            <a class="page-link">
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                        </li>
+
+                        <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
+                            <li th:if="${currentPage != i}" class="page-item">
+                                <a th:href="@{'/control/users?page=' + ${i} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                                    class="page-link"
+                                    th:text="${i}">
+                                </a>
+                            </li>
+                            <li th:unless="${currentPage != i}" class="page-item active">
+                                <a class="page-link"
+                                    th:text="${i}">
+                                </a>
+                            </li>
+                        </th:block>
+
+                        <li th:if="${currentPage < totalPages}" class="page-item">
+                            <a th:href="@{'/control/users?page=' + ${currentPage + 1} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                               class="page-link">
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        <li th:unless="${currentPage < totalPages}" class="page-item disabled">
+                            <a class="page-link">
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Container Main end-->
+
+<th:block th:include="layout/template :: dependencies-js"/>
+
+<!--Confirm Verify Modal Script-->
+<script th:inline="javascript">
+    function confirmVerifyModal(person) {
+        var link = /*[[@{/control/users/verify}]]*/'';
+
+        let div = document.getElementById("confirmVerify");
+        if(div != null) {
+            div.innerHTML = `<div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content shadow-sm">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-exclamation"></i>
+                    </div>
+                    <h4 class="modal-title w-100">Want to verify this user?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You are about to verify the user "${person.username}".</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="${link}/${person.id}">
+                    <button type="button" class="btn btn-confirm">Confirm</button>
+                    </a>
+                </div>
+            </div>
+        </div>`;
+        }
+
+    }
+
+
+</script>
+<!---->
+
+<script>
+    let divCountry = document.getElementById('country-filter');
+    let selectedCountryList = divCountry.getElementsByClassName('selected-country');
+
+    for (let x of selectedCountryList) {
+        let parent = x.parentElement;
+        let code = x.innerText;
+        x.innerText = "";
+        let country = null;
+        if (code != null) {
+            try {
+                country = CountryFlag.getCountryByAlpha2(code);
+            } catch (err) {}
+        }
+
+        if (country != null) {
+            let flagsList = parent.getElementsByClassName("country-flag");
+            for (let flag of flagsList) {
+                let flagElement = new CountryFlag(flag);
+                flagElement.selectByAlpha2(country.alpha2);
+            }
+
+            let countryNameList = parent.getElementsByClassName("country-name");
+            for (let name of countryNameList) {
+                name.innerText = country.name;
+            }
+        } else {
+            let flagsList = parent.getElementsByClassName("country-flag");
+            for (let flag of flagsList) {
+                flag.remove();
+            }
+            let countryNameList = parent.getElementsByClassName("country-name");
+            for (let name of countryNameList) {
+                name.innerText = "Undefined"
+            }
+        }
+    }
+</script>
+<script type='text/javascript'>
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+        const showNavbar = (toggleId, navId, bodyId, headerId) => {
+            const toggle = document.getElementById(toggleId),
+                nav = document.getElementById(navId),
+                bodypd = document.getElementById(bodyId),
+                headerpd = document.getElementById(headerId)
+
+            // Validate that all variables exist
+            if (toggle && nav && bodypd && headerpd) {
+                toggle.addEventListener('click', () => {
+                    // show navbar
+                    nav.classList.toggle('show_nav')
+                    // change icon
+                    toggle.classList.toggle('bx-x')
+                    // add padding to body
+                    bodypd.classList.toggle('body-pd')
+                    // add padding to header
+                    headerpd.classList.toggle('body-pd')
+                })
+            }
+        }
+
+        showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+        /*===== LINK ACTIVE =====*/
+        const linkColor = document.querySelectorAll('.nav_link')
+
+        function colorLink() {
+            if (linkColor) {
+                linkColor.forEach(l => l.classList.remove('active'))
+                this.classList.add('active')
+            }
+        }
+        linkColor.forEach(l => l.addEventListener('click', colorLink))
+
+        // Your code to run since DOM is loaded and ready
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        // Animate select box length
+        var searchInput = $(".search-box input");
+        var inputGroup = $(".search-box .input-group");
+        var boxWidth = inputGroup.width();
+        searchInput.focus(function () {
+            inputGroup.animate({
+                width: "300"
+            });
+        }).blur(function () {
+            inputGroup.animate({
+                width: boxWidth
+            });
+        });
+    });
+</script>
+<th:block th:insert="layout/btnBackToTop :: btn"/>
+<script th:src="@{/js/scriptBtnBackToTop.js}"></script>
+</body>
+</html>

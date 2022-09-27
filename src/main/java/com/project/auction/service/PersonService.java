@@ -5,6 +5,7 @@ import java.util.List;
 import com.project.auction.dto.PersonDto;
 import com.project.auction.exception.*;
 import com.project.auction.model.Person;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface PersonService extends UserDetailsService{
@@ -22,4 +23,5 @@ public interface PersonService extends UserDetailsService{
     public boolean checkIfPersonExistByUsername(String username);
     public void sendRegistrationConfirmationEmail(Person person);
     public boolean verifyPerson(String token) throws InvalidTokenException;
+    public Page<Person> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
 }

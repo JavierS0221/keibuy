@@ -10,6 +10,10 @@ import com.project.auction.model.Rol;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -84,7 +88,7 @@ public class PersonServiceImpl implements PersonService {
         person.setCountry(personDto.getCountry());
         person.setBirthDate(personDto.getBirthDate());
         person.setAccountVerified(personDto.isAccountVerified());
-        person.setAccountVerified(personDto.isAccountBanned());
+        person.setAccountBanned(personDto.isAccountBanned());
         person.setRoles(List.of(defaultRol));
         personRepository.save(person);
         sendRegistrationConfirmationEmail(person);
@@ -104,7 +108,7 @@ public class PersonServiceImpl implements PersonService {
             person.setCountry(personDto.getCountry());
             person.setBirthDate(personDto.getBirthDate());
             person.setAccountVerified(personDto.isAccountVerified());
-            person.setAccountVerified(personDto.isAccountBanned());
+            person.setAccountBanned(personDto.isAccountBanned());
             personRepository.save(person);
         }
     }
@@ -255,5 +259,14 @@ public class PersonServiceImpl implements PersonService {
         }
 
         return new User(person.getUsername(), person.getPassword(), roles);
+    }
+
+    @Override
+    public Page<Person> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        return this.personRepository.findAll(pageable);
     }
 }

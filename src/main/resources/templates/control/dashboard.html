@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="layout/template :: head"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
+          rel="stylesheet">
+
+    <style th:include="control/template :: style">
+    </style>
+
+    <th:block th:include="layout/template :: dependencies-js"/>
+    <script th:src="@{/plugin/country-flags/script.js}"></script>
+
+</head>
+<body id="body-pd" class="bg-light vh-100">
+
+
+<th:block th:include="control/template :: navs"/>
+
+<!--Container Main start-->
+<div class="h-100 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-xl-4">
+                <div class="card bg-c-blue order-card">
+                    <div class="card-block">
+                        <h6 class="m-b-20">Users</h6>
+                        <h2 class="text-end"><i class="fa-solid fa-users f-left"></i><span>486</span></h2>
+                        <p class="m-b-0">Reported users<span class="f-right">52</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-xl-4">
+                <div class="card bg-c-green order-card">
+                    <div class="card-block">
+                        <h6 class="m-b-20">Items [In Progress]</h6>
+                        <h2 class="text-end"><i class="fa-solid fa-box-archive f-left"></i><span>812</span></h2>
+                        <p class="m-b-0">Reported items<span class="f-right">124</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-xl-4">
+                <div class="card bg-c-yellow order-card">
+                    <div class="card-block">
+                        <h6 class="m-b-20">Reports Received</h6>
+                        <h2 class="text-end"><i class="fa-solid fa-file-lines f-left"></i><span>225</span></h2>
+                        <p class="m-b-0">Unchecked reports<span class="f-right">124</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+        <div id="country-filter" class="card mx-auto">
+            <div class="card-header pb-0 p-3">
+                <div class="d-flex justify-content-center">
+                    <h6 class="mb-2 fw-bold">Users and Items for country</h6>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="sortTable" class="table align-items-center">
+                    <thead>
+
+                    </thead>
+                    <tr>
+                        <th class="th-sm text-center fw-bold">Country
+                        </th>
+                        <th class="th-sm text-center fw-bold">Users
+                        </th>
+                        <th class="th-sm text-center fw-bold">Items
+                        </th>
+                    </tr>
+                    <tbody>
+                    <tr class="uy">
+                        <td class="w-25">
+                            <div class="d-flex px-2 py-1 align-items-center">
+                                <div>
+                                    <div class="country-flag"></div>
+                                </div>
+                                <div class="ms-4">
+                                    <h6 class="text-sm mb-0 country-name"></h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">2500</h6>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">9200</h6>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="us">
+                        <td class="w-25">
+                            <div class="d-flex px-2 py-1 align-items-center">
+                                <div>
+                                    <div class="country-flag"></div>
+                                </div>
+                                <div class="ms-4">
+                                    <h6 class="text-sm mb-0 country-name"></h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">2500</h6>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">9200</h6>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="br">
+                        <td class="w-25">
+                            <div class="d-flex px-2 py-1 align-items-center">
+                                <div>
+                                    <div class="country-flag"></div>
+                                </div>
+                                <div class="ms-4">
+                                    <h6 class="text-sm mb-0 country-name"></h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">2500</h6>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <p class="my-auto">220</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="es">
+                        <td class="w-25">
+                            <div class="d-flex px-2 py-1 align-items-center">
+                                <div>
+                                    <div class="country-flag"></div>
+                                </div>
+                                <div class="ms-4">
+                                    <h6 class="text-sm mb-0 country-name"></h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">2500</h6>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">9200</h6>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="uy">
+                        <td class="w-25">
+                            <div class="d-flex px-2 py-1 align-items-center">
+                                <div>
+                                    <div class="country-flag"></div>
+                                </div>
+                                <div class="ms-4">
+                                    <h6 class="text-sm mb-0 country-name"></h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">2500</h6>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">9200</h6>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="us">
+                        <td class="w-25">
+                            <div class="d-flex px-2 py-1 align-items-center">
+                                <div>
+                                    <div class="country-flag"></div>
+                                </div>
+                                <div class="ms-4">
+                                    <h6 class="text-sm mb-0 country-name"></h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">2500</h6>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">9200</h6>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="br">
+                        <td class="w-25">
+                            <div class="d-flex px-2 py-1 align-items-center">
+                                <div>
+                                    <div class="country-flag"></div>
+                                </div>
+                                <div class="ms-4">
+                                    <h6 class="text-sm mb-0 country-name"></h6>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">2500</h6>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <h6 class="text-sm mb-0">9200</h6>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--Container Main end-->
+
+
+<script>
+    let divCountry = document.getElementById('country-filter');
+    let trList = divCountry.getElementsByTagName('tr');
+
+    for (let tr of trList) {
+        let code = tr.classList[0];
+        let country = null;
+        if (code != null) {
+            try {
+                country = CountryFlag.getCountryByAlpha2(code);
+            } catch (err) {}
+        }
+        if (country != null) {
+            let flagsList = tr.getElementsByClassName("country-flag");
+            for (let flag of flagsList) {
+                let flagElement = new CountryFlag(flag);
+                flagElement.selectByAlpha2(country.alpha2);
+            }
+
+            let countryNameList = tr.getElementsByClassName("country-name");
+            for (let name of countryNameList) {
+                name.innerText = country.name;
+            }
+        } else {
+            let flagsList = tr.getElementsByClassName("country-flag");
+            for (let flag of flagsList) {
+                flag.remove();
+            }
+
+            let countryNameList = tr.getElementsByClassName("country-name");
+            for (let name of countryNameList) {
+                name.innerText = "Undefined"
+            }
+        }
+    }
+</script>
+<script type='text/javascript'>
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+        const showNavbar = (toggleId, navId, bodyId, headerId) => {
+            const toggle = document.getElementById(toggleId),
+                nav = document.getElementById(navId),
+                bodypd = document.getElementById(bodyId),
+                headerpd = document.getElementById(headerId)
+
+            // Validate that all variables exist
+            if (toggle && nav && bodypd && headerpd) {
+                toggle.addEventListener('click', () => {
+                    // show navbar
+                    nav.classList.toggle('show')
+                    // change icon
+                    toggle.classList.toggle('bx-x')
+                    // add padding to body
+                    bodypd.classList.toggle('body-pd')
+                    // add padding to header
+                    headerpd.classList.toggle('body-pd')
+                })
+            }
+        }
+
+        showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+        /*===== LINK ACTIVE =====*/
+        const linkColor = document.querySelectorAll('.nav_link')
+
+        function colorLink() {
+            if (linkColor) {
+                linkColor.forEach(l => l.classList.remove('active'))
+                this.classList.add('active')
+            }
+        }
+        linkColor.forEach(l => l.addEventListener('click', colorLink))
+
+        // Your code to run since DOM is loaded and ready
+    });
+</script>
+<th:block th:insert="layout/btnBackToTop :: btn"/>
+<script th:src="@{/js/scriptBtnBackToTop.js}"></script>
+</body>
+</html>

@@ -24,41 +24,41 @@ public class Person {
     private long id;
 
     @Column(name = "username")
-    @NotEmpty(message="El usuario es obligatorio")
-    @Size(min = 2, max = 32, message = "El usuario debe tener entre 2 y 32 caracteres")
+    @NotEmpty
+    @Size(min = 2, max = 32)
     private String username;
 
-    @NotEmpty(message="El nombre es obligatorio")
-    @Size(max = 45, message = "El nombre no puede tener más de 45 caracteres")
+    @NotEmpty
+    @Size(max = 45)
     @Column(name = "name")
     private String name;
 
-    @NotEmpty(message="El apellido es obligatorio")
-    @Size(max = 45, message = "El apellido no puede tener más de 45 caracteres")
+    @NotEmpty
+    @Size(max = 45)
     @Column(name = "last_name")
     private String lastName;
 
-    @NotEmpty(message="La contraseña es obligatoria")
+    @NotEmpty
     @Column(name = "password")
     private String password;
 
-    @NotEmpty(message="El email es obligatorio")
-    @Email(message = "Email no válido")
+    @NotEmpty
+    @Email
     @Column(name = "email")
     private String email;
 
-    @NotEmpty(message="El pais es obligatorio")
+    @NotEmpty
     @Column(name = "country")
     private String country;
 
-    @NotEmpty(message="El teléfono es obligatorio")
-    @Size(max = 15, message = "El teléfono no puede tener más de 15 dígitos")
+    @NotEmpty
+    @Size(max = 15)
     @Column(name = "phone")
     private String phone;
 
-    @NotNull(message = "The birth date is required.")
-    @BirthDate(message = "The birth date must be greater or equal than 18")
-    @Past(message = "The birth date must be in the past.")
+    @NotNull
+    @BirthDate
+    @Past
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date")
     private Date birthDate;
