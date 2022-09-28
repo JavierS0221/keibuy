@@ -4,6 +4,10 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta name="x-apple-disable-message-reformatting">
     <th:block th:include="layout/template :: head"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -273,6 +277,17 @@
         .modal-confirm .btn-confirm:focus {
             background: #ff9040;
         }
+
+
+        .mw-85 {
+            max-width: 85%;
+        }
+        #table-container {
+            position: relative;
+            left: calc((50%) - 14px);
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 
 </head>
@@ -283,8 +298,31 @@
 <!--Container Main start-->
 <div class="h-100 bg-light">
 
-    <div class="container-xl">
-        <div class="shadow-sm border border-1 border-secondary position-relative">
+    <div class="container-xl h-100 position-relative mw-85">
+
+        <!-- Modal confirm verify-->
+        <div id="confirmVerify" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  >
+            <div class="modal-dialog modal-confirm">
+            </div>
+        </div>
+        <!-- -->
+
+
+        <!-- Modal confirm ban-->
+        <div id="confirmBan" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  >
+            <div class="modal-dialog modal-confirm">
+            </div>
+        </div>
+        <!-- -->
+
+        <!-- Modal confirm delete-->
+        <div id="confirmDelete" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  >
+            <div class="modal-dialog modal-confirm">
+            </div>
+        </div>
+        <!-- -->
+
+        <div id="table-container" class="shadow-sm border border-1 border-secondary position-relative">
             <div class="search-div">
                 <div class="search-box">
                     <div class="input-group">
@@ -362,14 +400,6 @@
                     <tbody id="country-filter">
 
                     <tr th:each="person : ${listPersons}">
-
-                        <!-- Modal confirm verify-->
-                        <div id="confirmVerify" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" >
-                            <div class="modal-dialog modal-confirm">
-                            </div>
-                        </div>
-                        <!-- -->
-
                         <td class="fw-bold" th:text="${person.id}"></td>
                         <td class="user-td">
                             <div class="d-flex align-items-center">
@@ -424,7 +454,8 @@
                                         <a class="dropdown-item text-muted" href="#"><i class="fa-solid fa-book"></i> <b>Details</b></a>
                                     </li>
                                     <li class="dropdown-item">
-                                        <a class="dropdown-item text-muted" href="#"><i class="fa-solid fa-gavel text-warning"></i>
+                                        <a class="dropdown-item text-muted" th:attr="onclick=|confirmBanModal('${person.id}', '${person.username}')|"
+                                           data-bs-toggle="modal" data-bs-target="#confirmBan"><i class="fa-solid fa-gavel text-warning"></i>
                                             <b>Ban</b></a>
                                     </li>
                                     <li th:if="${!person.isAccountBanned() && !person.isAccountVerified()}" class="dropdown-item">
@@ -435,7 +466,9 @@
                                         </a>
                                     </li>
                                     <li class="dropdown-item">
-                                        <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash"></i>
+                                        <a class="dropdown-item text-muted" th:attr="onclick=|confirmDeleteModal('${person.id}', '${person.username}')|"
+                                           data-bs-toggle="modal" data-bs-target="#confirmDelete">
+                                            <i class="fa fa-trash"></i>
                                             <b>Delete</b></a>
                                     </li>
 
@@ -499,7 +532,7 @@
 
 <!--Confirm Verify Modal Script-->
 <script th:inline="javascript">
-    function confirmVerifyModal(person) {
+    function confirmVerifyModal(personId, personUsername) {
         var link = /*[[@{/control/users/verify}]]*/'';
 
         let div = document.getElementById("confirmVerify");
@@ -514,21 +547,82 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body">
-                    <p>You are about to verify the user "${person.username}".</p>
+                    <p>You are about to verify the user "${personUsername}".</p>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="${link}/${person.id}">
+                    <a href="${link}/${personId}">
                     <button type="button" class="btn btn-confirm">Confirm</button>
                     </a>
                 </div>
             </div>
         </div>`;
         }
-
     }
+</script>
+<!---->
 
+<!--Confirm Ban Modal Script-->
+<script th:inline="javascript">
+    function confirmBanModal(personId, personUsername) {
+        var link = /*[[@{/control/users/ban}]]*/'';
 
+        let div = document.getElementById("confirmBan");
+        if(div != null) {
+            div.innerHTML = `<div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content shadow-sm">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-exclamation"></i>
+                    </div>
+                    <h4 class="modal-title w-100">Want to verify this user?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You are about to verify the user "${personUsername}".</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="${link}/${personId}">
+                    <button type="button" class="btn btn-confirm">Confirm</button>
+                    </a>
+                </div>
+            </div>
+        </div>`;
+        }
+    }
+</script>
+<!---->
+
+<!--Confirm Delete Modal Script-->
+<script th:inline="javascript">
+    function confirmDeleteModal(personId, personUsername) {
+        var link = /*[[@{/control/users/delete}]]*/'';
+
+        let div = document.getElementById("confirmDelete");
+        if(div != null) {
+            div.innerHTML = `<div class="modal-dialog modal-dialog-centered modal-confirm">
+            <div class="modal-content shadow-sm">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-exclamation"></i>
+                    </div>
+                    <h4 class="modal-title w-100">Want to verify this user?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You are about to verify the user "${personUsername}".</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="${link}/${personId}">
+                    <button type="button" class="btn btn-confirm">Confirm</button>
+                    </a>
+                </div>
+            </div>
+        </div>`;
+        }
+    }
 </script>
 <!---->
 

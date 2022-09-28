@@ -58,6 +58,12 @@ public class ControlUsersController {
         model.addAttribute("hasVerifyAccount", false);
         model.addAttribute("verifySuccess", true);
 
+        model.addAttribute("hasBanAccount", false);
+        model.addAttribute("banSuccess", true);
+
+        model.addAttribute("hasDeleteAccount", false);
+        model.addAttribute("deleteSuccess", true);
+
         return "control/users";
     }
 
@@ -74,6 +80,37 @@ public class ControlUsersController {
             return REDIRECT_CONTROL;
         }
         redirectAttr.addFlashAttribute("hasVerifyAccount", true);
+        return REDIRECT_CONTROL;
+    }
+
+    @GetMapping("/ban/{id}")
+    public String banPerson(@PathVariable ( value = "id") long id, Model model, RedirectAttributes redirectAttr) {
+        PersonDto personDto;
+        try {
+            personDto = personService.getPersonDtoById(id);
+            personDto.setAccountBanned(true);
+            personService.update(personDto);
+        } catch (UnkownIdentifierException ex) {
+            ex.printStackTrace();
+            redirectAttr.addFlashAttribute("banSuccess", false);
+            return REDIRECT_CONTROL;
+        }
+        redirectAttr.addFlashAttribute("hasBanAccount", true);
+        return REDIRECT_CONTROL;
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deletePerson(@PathVariable ( value = "id") long id, Model model, RedirectAttributes redirectAttr) {
+        PersonDto personDto;
+        try {
+            personDto = personService.getPersonDtoById(id);
+            personService.delete(personDto);
+        } catch (UnkownIdentifierException ex) {
+            ex.printStackTrace();
+            redirectAttr.addFlashAttribute("deleteSuccess", false);
+            return REDIRECT_CONTROL;
+        }
+        redirectAttr.addFlashAttribute("hasDeleteAccount", true);
         return REDIRECT_CONTROL;
     }
 
