@@ -54,6 +54,10 @@ public class PersonDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
 
+    @Past
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createdDate;
+
     private MultipartFile avatar;
 
     private boolean accountVerified = false;

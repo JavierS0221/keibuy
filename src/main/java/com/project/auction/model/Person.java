@@ -2,6 +2,7 @@ package com.project.auction.model;
 
 import com.project.auction.constraints.BirthDate;
 import com.project.auction.model.relation.AuctionOffer;
+import com.project.auction.model.relation.PersonRol;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -63,6 +64,11 @@ public class Person {
     @Column(name = "birth_date")
     private Date birthDate;
 
+    @Past
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "created_date")
+    private Date createdDate;
+
     @Column(name = "account_verified")
     private boolean accountVerified = false;
 
@@ -72,15 +78,22 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<Report> reportsCreated;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
-    @JoinTable(
-            name = "person_rol",
-            joinColumns = @JoinColumn(
-                    name = "person_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
+//    @JoinTable(
+//            name = "person_rol",
+//            joinColumns = @JoinColumn(
+//                    name = "person_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
+//
+//    )
+//    private Collection<Rol> roless;
 
+    @OneToMany(
+            mappedBy = "person",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private Collection<Rol> roles;
+    private Collection<PersonRol> roles = new ArrayList<PersonRol>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinTable(
@@ -135,5 +148,27 @@ public class Person {
             }
         }
         return path;
+    }
+
+    public void addRol(Rol rol, Date expireDate) {
+        PersonRol personRol = new PersonRol();
+        personRol.setPerson(this);
+        personRol.setRol(rol);
+        personRol.setExpireDate(expireDate);
+        roles.add(personRol);
+    }
+
+    public void removeRol(Rol rol) {
+        for (Iterator<PersonRol> iterator = roles.iterator();
+             iterator.hasNext(); ) {
+            PersonRol personRol = iterator.next();
+
+            if (personRol.getPerson().getUsername().equals(this.getUsername()) &&
+                    personRol.getRol().getName().equals(rol.getName())) {
+                iterator.remove();
+                personRol.setPerson(null);
+                personRol.setRol(null);
+            }
+        }
     }
 }

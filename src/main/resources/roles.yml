@@ -1,0 +1,8 @@
+USER_ROLE:
+  priority: 0
+  hasExpire: false
+
+ADMIN_ROLE:
+  priority: 10
+  hasExpire: false
+

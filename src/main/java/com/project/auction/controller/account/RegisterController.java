@@ -56,14 +56,16 @@ public class RegisterController {
                                  BindingResult bindingResult,
                                  Model model,
                                  RedirectAttributes rm) {
-
+        System.out.println("a");
         if(bindingResult.hasErrors()){
             return "pages/register";
         }
 
         try {
+            System.out.println("-3");
             personService.save(personDto);
 
+            System.out.println("0");
             if (projectTestingMode) {
                 rm.addAttribute("username", personDto.getUsername());
                 return "redirect:/email";
