@@ -1,6 +1,7 @@
 package com.project.auction.dto;
 
 import com.project.auction.constraints.BirthDate;
+import com.project.auction.model.relation.PersonRol;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,6 +11,8 @@ import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 @Getter
@@ -63,5 +66,7 @@ public class PersonDto implements Serializable {
     private boolean accountVerified = false;
 
     private boolean accountBanned = false;
+
+    private Collection<PersonRol> roles = new ArrayList<>();
 
 }

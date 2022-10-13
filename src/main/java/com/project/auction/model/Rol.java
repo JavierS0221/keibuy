@@ -2,15 +2,18 @@ package com.project.auction.model;
 
 import com.project.auction.model.relation.PersonRol;
 import lombok.Data;
+import org.hibernate.annotations.SQLInsert;
+import org.hibernate.annotations.SQLUpdate;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "rol")
+@Table(name = "rol", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class Rol implements Serializable {
 
     @Serial
@@ -32,8 +35,7 @@ public class Rol implements Serializable {
 
     @OneToMany(
             mappedBy = "rol",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
     )
-    private Collection<PersonRol> persons;
+    private Collection<PersonRol> persons = new ArrayList<>();
 }

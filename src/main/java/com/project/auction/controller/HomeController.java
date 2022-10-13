@@ -4,6 +4,7 @@ import com.project.auction.dto.PersonDto;
 import com.project.auction.exception.UnkownIdentifierException;
 import com.project.auction.model.Category;
 import com.project.auction.model.Person;
+import com.project.auction.model.relation.PersonRol;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.PersonService;
 import com.project.auction.service.StorageService;
@@ -68,6 +69,9 @@ public class HomeController {
             } catch (UnkownIdentifierException ignored) {
             }
         }
+        PersonRol prol;
+        if(person != null)
+            prol = person.getMainRol();
 
         model.addAttribute("user", user);
         model.addAttribute("person", person);

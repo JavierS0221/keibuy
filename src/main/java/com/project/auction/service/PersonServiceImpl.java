@@ -62,8 +62,6 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public void save(PersonDto personDto) throws UsernameAlreadyUsedException, EmailAlreadyUsedException, UsernameAndEmailAlreadyUsedException {
-
-        System.out.println("1");
         if (checkIfPersonExistByUsername(personDto.getUsername())) {
             if(checkIfPersonExistByEmail(personDto.getEmail())) {
                 throw new UsernameAndEmailAlreadyUsedException();
@@ -74,13 +72,6 @@ public class PersonServiceImpl implements PersonService {
             throw new EmailAlreadyUsedException();
         }
 
-        System.out.println("2");
-        String defaultRolName = "ROLE_USER";
-        Rol defaultRol = rolService.getRol(defaultRolName);
-        if (defaultRol == null) {
-            defaultRol = new Rol();
-            defaultRol.setName(defaultRolName);
-        }
 
         Person person = new Person();
         person.setUsername(personDto.getUsername());
@@ -95,8 +86,24 @@ public class PersonServiceImpl implements PersonService {
         person.setAccountVerified(personDto.isAccountVerified());
         person.setAccountBanned(personDto.isAccountBanned());
 
-        person.addRol(defaultRol, new Date());
-        System.out.println("3555");
+        String defaultRolName = "ROLE_USER";
+
+        Rol defaultRol = rolService.getRol(defaultRolName);
+        if (defaultRol == null) {
+            defaultRol = new Rol();
+            defaultRol.setName(defaultRolName);
+        }
+        person.addRol(defaultRol, null);
+
+        defaultRolName = "ROLE_ADMIN";
+
+        defaultRol = rolService.getRol(defaultRolName);
+        if (defaultRol == null) {
+            defaultRol = new Rol();
+            defaultRol.setName(defaultRolName);
+        }
+        person.addRol(defaultRol, null);
+
         personRepository.save(person);
         sendRegistrationConfirmationEmail(person);
     }
@@ -117,6 +124,7 @@ public class PersonServiceImpl implements PersonService {
             person.setCreatedDate(personDto.getCreatedDate());
             person.setAccountVerified(personDto.isAccountVerified());
             person.setAccountBanned(personDto.isAccountBanned());
+            person.setRoles(personDto.getRoles());
             personRepository.save(person);
         }
     }
@@ -163,6 +171,7 @@ public class PersonServiceImpl implements PersonService {
         personDto.setCreatedDate(person.getCreatedDate());
         personDto.setAccountVerified(person.isAccountVerified());
         personDto.setAccountBanned(person.isAccountBanned());
+        personDto.setRoles(person.getRoles());
         return personDto;
     }
 
@@ -263,9 +272,10 @@ public class PersonServiceImpl implements PersonService {
 
         var roles = new ArrayList<GrantedAuthority>();
 
-        for (PersonRol personRol : person.getRoles()) {
-            roles.add(new SimpleGrantedAuthority(personRol.getRol().getName()));
-        }
+        roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+//        for (PersonRol personRol : person.getRoles()) {
+//            roles.add(new SimpleGrantedAuthority(personRol.getRol().getName()));
+//        }
 
         return new User(person.getUsername(), person.getPassword(), roles);
     }

@@ -1,8 +1,15 @@
-USER_ROLE:
+ROLE_USER:
+  has-expire: false
   priority: 0
-  hasExpire: false
 
-ADMIN_ROLE:
+ROLE_VIP:
+  has-expire: true
   priority: 10
-  hasExpire: false
 
+ROLE_MOD:
+  has-expire: false
+  priority: 80
+
+ROLE_ADMIN:
+  has-expire: false
+  priority: 100

@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
         lang="en">
 <head>
-    <title>Login - Mondongo</title>
+    <title>Login - KeiBuy</title>
     <th:block th:include="layout/template :: head"/>
 </head>
 <body>
@@ -16,13 +16,13 @@
 
                     <div th:if="${param.error != null}">
                         <a th:href="@{/login}">
-                            <img th:src="@{/images/logo2Err.png}" alt="logo" width="100" style="">
+                            <img th:src="@{/images/logoErr.png}" alt="logo" width="150" style="">
                         </a>
                     </div>
                     <div th:if="${param.error == null}">
 
                         <a th:href="@{/login}">
-                            <img th:src="@{/images/logo2.png}" alt="logo" width="100" style="">
+                            <img th:src="@{/images/logo.png}" alt="logo" width="150" style="">
                         </a>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class="text-center mt-5 text-muted">
-                    Copyright &copy; 666AC - 2069 &mdash; Mondongo Company
+                    Final Project 3BL 2022 &mdash; Team KeiBuy
                 </div>
             </div>
         </div>

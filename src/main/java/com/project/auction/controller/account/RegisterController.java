@@ -5,7 +5,10 @@ import com.project.auction.exception.EmailAlreadyUsedException;
 import com.project.auction.exception.InvalidTokenException;
 import com.project.auction.exception.UsernameAlreadyUsedException;
 import com.project.auction.exception.UsernameAndEmailAlreadyUsedException;
+import com.project.auction.model.Person;
+import com.project.auction.model.Rol;
 import com.project.auction.service.PersonService;
+import com.project.auction.service.RolService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +38,12 @@ public class RegisterController {
     private MessageSource messageSource;
 
     private final PersonService personService;
+    private final RolService rolService;
 
     @Autowired
-    public RegisterController(PersonService personService) {
+    public RegisterController(PersonService personService, RolService rolService) {
         this.personService = personService;
+        this.rolService = rolService;
     }
 
     @ModelAttribute("personDto")
@@ -56,16 +61,12 @@ public class RegisterController {
                                  BindingResult bindingResult,
                                  Model model,
                                  RedirectAttributes rm) {
-        System.out.println("a");
         if(bindingResult.hasErrors()){
             return "pages/register";
         }
 
         try {
-            System.out.println("-3");
             personService.save(personDto);
-
-            System.out.println("0");
             if (projectTestingMode) {
                 rm.addAttribute("username", personDto.getUsername());
                 return "redirect:/email";

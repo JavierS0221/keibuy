@@ -3,6 +3,7 @@ package com.project.auction.model;
 import com.project.auction.constraints.BirthDate;
 import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.model.relation.PersonRol;
+import com.project.auction.model.relation.PersonRolPK;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -78,22 +79,12 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<Report> reportsCreated;
 
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
-//    @JoinTable(
-//            name = "person_rol",
-//            joinColumns = @JoinColumn(
-//                    name = "person_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
-//
-//    )
-//    private Collection<Rol> roless;
-
     @OneToMany(
             mappedBy = "person",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Collection<PersonRol> roles = new ArrayList<PersonRol>();
+    private Collection<PersonRol> roles = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinTable(
@@ -151,9 +142,12 @@ public class Person {
     }
 
     public void addRol(Rol rol, Date expireDate) {
+        PersonRolPK pRolPK = new PersonRolPK();
+        pRolPK.setPersonId(this);
+        pRolPK.setRolId(rol);
+
         PersonRol personRol = new PersonRol();
-        personRol.setPerson(this);
-        personRol.setRol(rol);
+        personRol.setId(pRolPK);
         personRol.setExpireDate(expireDate);
         roles.add(personRol);
     }
@@ -170,5 +164,25 @@ public class Person {
                 personRol.setRol(null);
             }
         }
+    }
+
+    public PersonRol getMainRol() {
+        List<PersonRol> ordRoles = (List<PersonRol>) this.roles;
+
+        // Sort employees by Salary
+        Comparator<PersonRol> rolPriorityComparator = (e1, e2) -> {
+            if (e1.getRol().getPriority() < e2.getRol().getPriority()) {
+                return -1;
+            } else if (e1.getRol().getPriority() > e2.getRol().getPriority()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        };
+        Collections.sort(ordRoles, rolPriorityComparator);
+        for(int i = 0; i < ordRoles.size(); i++) {
+            System.out.println(i + " " + ordRoles.get(i).getRol().getName());
+        }
+        return ordRoles.get(0);
     }
 }
