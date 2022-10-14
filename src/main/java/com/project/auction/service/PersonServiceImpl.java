@@ -2,6 +2,7 @@ package com.project.auction.service;
 
 import com.project.auction.email.context.AccountVerificationEmailContext;
 import com.project.auction.exception.*;
+import com.project.auction.model.Image;
 import com.project.auction.model.SecureToken;
 import com.project.auction.model.relation.PersonRol;
 import com.project.auction.repository.PersonRepository;
@@ -42,13 +43,15 @@ public class PersonServiceImpl implements PersonService {
 
     private PersonRepository personRepository;
     private RolService rolService;
+    private ImageService imageService;
     private SecureTokenService secureTokenService;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public PersonServiceImpl(PersonRepository personRepository, RolService rolService, SecureTokenService secureTokenService, BCryptPasswordEncoder passwordEncoder) {
+    public PersonServiceImpl(PersonRepository personRepository, RolService rolService, ImageService imageService, SecureTokenService secureTokenService, BCryptPasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.rolService = rolService;
+        this.imageService = imageService;
         this.secureTokenService = secureTokenService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -85,6 +88,7 @@ public class PersonServiceImpl implements PersonService {
         person.setCreatedDate(new Date());
         person.setAccountVerified(personDto.isAccountVerified());
         person.setAccountBanned(personDto.isAccountBanned());
+        person.setAvatar(personDto.getAvatar());
 
         String defaultRolName = "ROLE_USER";
 
@@ -94,15 +98,15 @@ public class PersonServiceImpl implements PersonService {
             defaultRol.setName(defaultRolName);
         }
         person.addRol(defaultRol, null);
-
-        defaultRolName = "ROLE_ADMIN";
-
-        defaultRol = rolService.getRol(defaultRolName);
-        if (defaultRol == null) {
-            defaultRol = new Rol();
-            defaultRol.setName(defaultRolName);
-        }
-        person.addRol(defaultRol, null);
+//
+//        defaultRolName = "ROLE_ADMIN";
+//
+//        defaultRol = rolService.getRol(defaultRolName);
+//        if (defaultRol == null) {
+//            defaultRol = new Rol();
+//            defaultRol.setName(defaultRolName);
+//        }
+//        person.addRol(defaultRol, null);
 
         personRepository.save(person);
         sendRegistrationConfirmationEmail(person);
@@ -125,6 +129,13 @@ public class PersonServiceImpl implements PersonService {
             person.setAccountVerified(personDto.isAccountVerified());
             person.setAccountBanned(personDto.isAccountBanned());
             person.setRoles(personDto.getRoles());
+
+            Image currentAvatar = imageService.getImage(person.getAvatar());
+            if(currentAvatar != null) {
+                imageService.delete(currentAvatar);
+            }
+
+            person.setAvatar(personDto.getAvatar());
             personRepository.save(person);
         }
     }
@@ -172,6 +183,7 @@ public class PersonServiceImpl implements PersonService {
         personDto.setAccountVerified(person.isAccountVerified());
         personDto.setAccountBanned(person.isAccountBanned());
         personDto.setRoles(person.getRoles());
+        personDto.setAvatar(person.getAvatar());
         return personDto;
     }
 

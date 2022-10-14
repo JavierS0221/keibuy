@@ -1,6 +1,7 @@
 package com.project.auction.dto;
 
 import com.project.auction.constraints.BirthDate;
+import com.project.auction.model.Image;
 import com.project.auction.model.relation.PersonRol;
 import lombok.Getter;
 import lombok.Setter;
@@ -61,7 +62,7 @@ public class PersonDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdDate;
 
-    private MultipartFile avatar;
+    private Image avatar;
 
     private boolean accountVerified = false;
 

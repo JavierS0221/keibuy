@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -14,6 +15,11 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
+    @Override
+    @Transactional(readOnly = true)
+    public Image getImageById(long id) {
+        return imageRepository.findById(id).orElse(null);
+    }
     @Override
     @Transactional(readOnly = true)
     public List<Image> listImages() {
@@ -35,6 +41,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional(readOnly = true)
     public Image getImage(Image image) {
-        return imageRepository.findById(image.getFileName()).orElse(null);
+        if(image == null) return null;
+        return imageRepository.findById(image.getId()).orElse(null);
     }
 }

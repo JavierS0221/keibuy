@@ -1,24 +1,29 @@
 package com.project.auction.model;
 
 import lombok.Data;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
+import java.io.IOException;
 
 @Data
 @Entity
 @Table(name = "image")
-public class Image implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Image {
 
     @Id
-    @Column(name = "file_name", length = 45, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "file_name", length = 45)
     private String fileName;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="item_id", nullable = false)
-    private Item item;
+    @Lob
+    @Column(name = "bytes", length = Integer.MAX_VALUE)
+    private byte[] bytes;
+
+    private String contentType;
+
 }

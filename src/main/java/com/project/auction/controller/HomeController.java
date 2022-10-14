@@ -3,13 +3,17 @@ package com.project.auction.controller;
 import com.project.auction.dto.PersonDto;
 import com.project.auction.exception.UnkownIdentifierException;
 import com.project.auction.model.Category;
+import com.project.auction.model.Image;
 import com.project.auction.model.Person;
 import com.project.auction.model.relation.PersonRol;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.PersonService;
 import com.project.auction.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -70,7 +76,7 @@ public class HomeController {
             }
         }
         PersonRol prol;
-        if(person != null)
+        if (person != null)
             prol = person.getMainRol();
 
         model.addAttribute("user", user);
@@ -82,62 +88,50 @@ public class HomeController {
     @PostMapping("/profile")
     public String modifyProfile(@AuthenticationPrincipal User user, @Validated PersonDto personDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            System.out.println("Existieron errores: " + result.getAllErrors().toString());
             model.addAttribute("person", personDto);
             return "pages/profile";
         }
         try {
-            Person person = personService.getPerson(personDto);
-
-            List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
-            if (!personDto.getAvatar().isEmpty()) {
-                String contentType = personDto.getAvatar().getContentType();
-                if (!contentTypes.contains(contentType)) {
-                    System.out.println("ERROR TIPO NO VALIDO");
-                    model.addAttribute("person", person);
-                    model.addAttribute("personDto", personDto);
-                    return "pages/profile";
-                }
-
-                if (person.hasAvatar()) {
-                    storageService.deleteFile(person.getAvatarPath());
-                }
-
-                String path = personDto.getId() + "/avatar." + Objects.requireNonNull(personDto.getAvatar().getContentType()).split("/")[1];
-                storageService.storeFile(personDto.getAvatar(), path);
-            }
             personService.update(personDto);
         } catch (UnkownIdentifierException e) {
-            System.out.println("ERROR FINAL");
             e.printStackTrace();
         }
         return "redirect:/profile";
     }
 
     @PostMapping("/profile/changeAvatar")
-    public String changeAvatar(@AuthenticationPrincipal User user, @RequestParam MultipartFile file) {
+    public String changeAvatar(@AuthenticationPrincipal User user, @RequestParam MultipartFile file, Model model) {
         if (user != null) {
             try {
-                Person person = personService.getPersonByNameOrEmail(user.getUsername());
+                PersonDto personDto = personService.getPersonDtoByNameOrEmail(user.getUsername());
                 List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
 
                 if (!file.isEmpty()) {
                     String contentType = file.getContentType();
                     if (!contentTypes.contains(contentType)) {
-                        System.err.println("File type not valid");
                         return "redirect:/profile";
                     }
 
-                    if (person.hasAvatar()) {
-                        storageService.deleteFile(person.getAvatarPath());
+                    String fileName = file.getOriginalFilename();
+                    if (fileName == null || fileName.contains("..")) {
+                        model.addAttribute("invalid", "Sorry! Filename contains invalid path sequence \" + fileName");
+                        return "redirect:/profile";
                     }
 
-                    String path = person.getId() + "/avatar." + Objects.requireNonNull(file.getContentType()).split("/")[1];
-                    System.out.println("path a usar:" + path);
-                    storageService.storeFile(file, path);
+                    Image image = new Image();
+                    image.setContentType(file.getContentType());
+                    image.setFileName(fileName);
+                    image.setBytes(file.getBytes());
+
+
+                    personDto.setAvatar(image);
+
+                    personService.update(personDto);
                 }
             } catch (UnkownIdentifierException e) {
                 System.out.println("ERROR FINAL");
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -178,41 +172,41 @@ public class HomeController {
         return "modify";
     }
 
-    @PostMapping("/modify")
-    public String modify(@Validated PersonDto personDto, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            System.out.println("Existieron errores: " + result.getAllErrors().toString());
-            model.addAttribute("person", personDto);
-            return "modify";
-        }
-        try {
-            List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
-            if (!personDto.getAvatar().isEmpty()) {
-                String contentType = personDto.getAvatar().getContentType();
-                if (!contentTypes.contains(contentType)) {
-                    System.out.println("ERROR TIPO NO VALIDO");
-                    model.addAttribute("person", personDto);
-                    return "modify";
-                }
-
-                Person person = personService.getPerson(personDto);
-
-                if (person.hasAvatar()) {
-                    storageService.deleteFile(person.getAvatarPath());
-                }
-
-                String path = personDto.getId() + "/avatar." + personDto.getAvatar().getContentType().split("/")[1];
-                System.out.println("path a usar:" + path);
-                storageService.storeFile(personDto.getAvatar(), path);
-            }
-
-            personService.update(personDto);
-        } catch (UnkownIdentifierException e) {
-            System.out.println("ERROR FINAL");
-            e.printStackTrace();
-        }
-        return "redirect:/";
-    }
+//    @PostMapping("/modify")
+//    public String modify(@Validated PersonDto personDto, BindingResult result, Model model) {
+//        if (result.hasErrors()) {
+//            System.out.println("Existieron errores: " + result.getAllErrors().toString());
+//            model.addAttribute("person", personDto);
+//            return "modify";
+//        }
+//        try {
+//            List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
+//            if (!personDto.getAvatar().isEmpty()) {
+//                String contentType = personDto.getAvatar().getContentType();
+//                if (!contentTypes.contains(contentType)) {
+//                    System.out.println("ERROR TIPO NO VALIDO");
+//                    model.addAttribute("person", personDto);
+//                    return "modify";
+//                }
+//
+//                Person person = personService.getPerson(personDto);
+//
+//                if (person.hasAvatar()) {
+//                    storageService.deleteFile(person.getAvatarPath());
+//                }
+//
+//                String path = personDto.getId() + "/avatar." + personDto.getAvatar().getContentType().split("/")[1];
+//                System.out.println("path a usar:" + path);
+//                storageService.storeFile(personDto.getAvatar(), path);
+//            }
+//
+//            personService.update(personDto);
+//        } catch (UnkownIdentifierException e) {
+//            System.out.println("ERROR FINAL");
+//            e.printStackTrace();
+//        }
+//        return "redirect:/";
+//    }
 
 
 //    @GetMapping("/add")

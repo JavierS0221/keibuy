@@ -116,7 +116,7 @@
                 <p id="image-warn-msg" class="text-danger small mb-2">
                 </p>
                 <img id="frame"
-                     th:src="${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png'"
+                     th:src="@{${person.getAvatar() != null ? '/image/display/'+ person.getAvatar().getId() : '/images/DefaultAvatar.png'}}"
                      class="rounded-circle border border-secondary" width="150" height="150" alt="avatar"
                      loading="lazy"/>
             </div>
@@ -267,7 +267,7 @@
                 imageWarnMsg.innerText = ""
             }
             fileInput.value = '';
-            frame.src = /*[[${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png']]*/ null;
+            frame.src = /*[[@{${person.getAvatar() != null ? '/image/display/'+ person.getAvatar().getId() : '/images/DefaultAvatar.png'}}]]*/ null;
             submitAvatar.style.display = "none";
         } else {
             frame.src = URL.createObjectURL(event.target.files[0]);
@@ -301,7 +301,7 @@
                                 <!--                                         alt="" loading="lazy" />-->
                                 <button class="btn btn-circle" data-bs-toggle="modal"
                                         data-bs-target="#changeAvatarModal">
-                                    <img th:src="${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png'"
+                                    <img th:src="@{${person.getAvatar() != null ? '/image/display/'+ person.getAvatar().getId() : '/images/DefaultAvatar.png'}}"
                                          class="rounded-circle border border-secondary" width="150" height="150"
                                          alt="avatar" loading="lazy"/>
                                     <h5 class="text-white">Change avatar</h5>

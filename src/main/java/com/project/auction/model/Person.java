@@ -76,6 +76,10 @@ public class Person {
     @Column(name = "account_banned")
     private boolean accountBanned = false;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image", referencedColumnName = "id")
+    private Image avatar;
+
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<Report> reportsCreated;
 
@@ -107,38 +111,12 @@ public class Person {
 
 
 
+
+
     public void addReport(Report report) {
         if (this.reportsCreated == null) this.reportsCreated = new ArrayList<>();
         this.reportsCreated.add(report);
         report.setPerson(this);
-    }
-
-
-    public boolean hasAvatar() {
-        File f = new File("assets\\" + this.id);
-        File[] files = f.listFiles((dir1, name) -> name.startsWith("avatar"));
-        if (files != null) {
-            List<File> avatars = Arrays.stream(files).toList();
-            return !avatars.isEmpty();
-        } else {
-            return false;
-        }
-    }
-
-    public String getAvatarPath() {
-//        System.out.println(Paths.get("assets").resolve(id+"").toString());
-        File f = new File("assets\\" + this.id);
-
-        File[] files = f.listFiles((dir1, name) -> name.startsWith("avatar"));
-        String path = null;
-        if (files != null) {
-            List<File> avatars = Arrays.stream(files).toList();
-            if (!avatars.isEmpty()) {
-                path = avatars.get(0).getPath();
-                path = path.substring(path.indexOf("\\") + 1).replace("\\", "/");
-            }
-        }
-        return path;
     }
 
     public void addRol(Rol rol, Date expireDate) {
