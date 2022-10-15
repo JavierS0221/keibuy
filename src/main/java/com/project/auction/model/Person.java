@@ -120,12 +120,9 @@ public class Person {
     }
 
     public void addRol(Rol rol, Date expireDate) {
-        PersonRolPK pRolPK = new PersonRolPK();
-        pRolPK.setPersonId(this);
-        pRolPK.setRolId(rol);
-
         PersonRol personRol = new PersonRol();
-        personRol.setId(pRolPK);
+        personRol.setPerson(this);
+        personRol.setRol(rol);
         personRol.setExpireDate(expireDate);
         roles.add(personRol);
     }
@@ -148,19 +145,12 @@ public class Person {
         List<PersonRol> ordRoles = (List<PersonRol>) this.roles;
 
         // Sort employees by Salary
-        Comparator<PersonRol> rolPriorityComparator = (e1, e2) -> {
-            if (e1.getRol().getPriority() < e2.getRol().getPriority()) {
-                return -1;
-            } else if (e1.getRol().getPriority() > e2.getRol().getPriority()) {
-                return 1;
-            } else {
-                return 0;
-            }
-        };
-        Collections.sort(ordRoles, rolPriorityComparator);
-        for(int i = 0; i < ordRoles.size(); i++) {
-            System.out.println(i + " " + ordRoles.get(i).getRol().getName());
-        }
+//        Comparator<PersonRol> rolPriorityComparator = Comparator.comparingInt(e -> e.getRol().getPriority());
+        Comparator<PersonRol> rolPriorityComparator = (e1, e2) -> Integer.compare(e2.getRol().getPriority(), e1.getRol().getPriority());
+        ordRoles.sort(rolPriorityComparator);
+//        for(int i = 0; i < ordRoles.size(); i++) {
+//            System.out.println(i + " " + ordRoles.get(i).getRol().getName());
+//        }
         return ordRoles.get(0);
     }
 }

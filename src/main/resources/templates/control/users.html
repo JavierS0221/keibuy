@@ -404,7 +404,7 @@
                         <td class="user-td">
                             <div class="d-flex align-items-center">
                                 <img src="../../static/images/DefaultAvatar.png"
-                                     th:src="${person.getAvatarPath()} != null ? '/assets/'+${person.getAvatarPath()} : '/images/DefaultAvatar.png'"
+                                     th:src="@{${person.getAvatar() != null ? '/image/display/'+ person.getAvatar().getId() : '/images/DefaultAvatar.png'}}"
                                      alt=""
                                      class="rounded-circle user-avatar border border-1 border-dark" />
                                 <div class="ms-3">
@@ -426,7 +426,12 @@
                         </td>
                         <!-- -->
 
-                        <td class="text-center"><small class="badge text-warning border rounded-1 rol">VIP</small>
+                        <td class="text-center text-dark">
+                            <small class="badge border rounded-1 rol"
+                                   th:with="rolName=${person.getMainRol().getRol().getNameWihoutFormat()}"
+                                   th:classappend="
+                                    ${(rolName == 'Admin'  ? 'text-danger' : '')}"
+                                   th:text="${rolName}">USER</small>
                         </td>
                         <td class="m-auto country-item">
                             <div class="d-inline-flex align-items-center">

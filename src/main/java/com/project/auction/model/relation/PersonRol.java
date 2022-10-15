@@ -4,6 +4,7 @@ import com.project.auction.constraints.BirthDate;
 import com.project.auction.model.Item;
 import com.project.auction.model.Person;
 import com.project.auction.model.Rol;
+import com.project.auction.repository.PersonRepository;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,20 +17,18 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "person_rol")
+@IdClass(PersonRolPK.class)
 public class PersonRol implements Serializable {
-
-    @EmbeddedId
-    private PersonRolPK id;
-
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @MapsId("personId") //This is the name of attr in AuctionOfferPK class
+    @Id
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "person_id")
     private Person person;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @MapsId("rolId") //This is the name of attr in AuctionOfferPK class
+    @Id
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "rol_id")
     private Rol rol;
+
 
     @Past
     @DateTimeFormat(pattern = "yyyy-MM-dd")
