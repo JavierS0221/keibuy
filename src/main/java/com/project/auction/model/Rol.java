@@ -34,7 +34,7 @@ public class Rol implements Serializable {
     private int priority = 0;
 
     @Column(name = "color")
-    private String color = "000";
+    private String color = "#6b6b6b";
 
 
     @OneToMany(
