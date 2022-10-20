@@ -2,6 +2,8 @@ package com.project.auction.controller;
 
 import com.project.auction.model.Image;
 import com.project.auction.service.ImageService;
+import com.project.auction.util.Utils;
+import jdk.jshell.execution.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -29,8 +31,9 @@ public class ImageController {
     void showImage(@PathVariable("id") Long id, HttpServletResponse response, Image image)
             throws ServletException, IOException {
         image = imageService.getImageById(id);
+        byte[] decompressBytes = Utils.decompressImage(image.getBytes());
         response.setContentType(image.getContentType());
-        response.getOutputStream().write(image.getBytes());
+        response.getOutputStream().write(decompressBytes);
         response.getOutputStream().close();
     }
 }

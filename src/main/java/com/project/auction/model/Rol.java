@@ -33,9 +33,19 @@ public class Rol implements Serializable {
     @Column(name = "priority")
     private int priority = 0;
 
+    @Column(name = "color")
+    private String color = "#6b6b6b";
+
+
     @OneToMany(
             mappedBy = "rol",
             cascade = CascadeType.ALL
     )
     private Collection<PersonRol> persons = new ArrayList<>();
+
+    public String getNameWihoutFormat() {
+        if (this.name.length() <= 5) return this.name;
+        String firstLatter = this.name.substring(5, 6).toUpperCase();
+        return firstLatter + this.name.substring(6).toLowerCase();
+    }
 }

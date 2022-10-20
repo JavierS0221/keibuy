@@ -1,11 +1,8 @@
 package com.project.auction.model;
 
 import lombok.Data;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.io.IOException;
 
 @Data
 @Entity
@@ -25,5 +22,4 @@ public class Image {
     private byte[] bytes;
 
     private String contentType;
-
 }

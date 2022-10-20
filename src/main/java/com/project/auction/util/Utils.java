@@ -3,8 +3,11 @@ package com.project.auction.util;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 public class Utils {
 
@@ -32,7 +35,12 @@ public class Utils {
         }
     }
 
-    // Metodo para generar una cadena de longitud N de caracteres aleatorios.
+    /**
+     * It generates a random string of length count, using the characters A-Z and 0-9
+     *
+     * @param count The length of the random string you want to create.
+     * @return A random string of alphanumeric characters.
+     */
     public static String randomAlphaNumeric(int count) {
         String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder builder = new StringBuilder();
@@ -41,5 +49,53 @@ public class Utils {
             builder.append(CHARACTERS.charAt(character));
         }
         return builder.toString();
+    }
+
+    /**
+     * Deflate the input data and return the compressed data.
+     *
+     * @param data The byte array to compress.
+     * @return A byte array
+     */
+    public static byte[] compressImage(byte[] data) {
+        Deflater deflater = new Deflater();
+        deflater.setLevel(Deflater.BEST_COMPRESSION);
+        deflater.setInput(data);
+        deflater.finish();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] tmp = new byte[4 * 1024];
+        while (!deflater.finished()) {
+            int size = deflater.deflate(tmp);
+            outputStream.write(tmp, 0, size);
+        }
+        try {
+            outputStream.close();
+        } catch (Exception ignored) {
+        }
+        return outputStream.toByteArray();
+    }
+
+
+    /**
+     * It takes a byte array, decompresses it, and returns a byte array.
+     *
+     * @param data The byte array of the image to be decompressed.
+     * @return A byte array of the decompressed image.
+     */
+    public static byte[] decompressImage(byte[] data) {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] tmp = new byte[4 * 1024];
+        try {
+            while (!inflater.finished()) {
+                int count = inflater.inflate(tmp);
+                outputStream.write(tmp, 0, count);
+            }
+            outputStream.close();
+        } catch (Exception ignored) {
+        }
+        return outputStream.toByteArray();
     }
 }

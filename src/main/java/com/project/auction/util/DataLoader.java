@@ -58,8 +58,13 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
                 int priority = (int) obj.get(key).get("priority");
                 boolean hasExpire = (boolean) obj.get(key).get("has-expire");
 
+                String color = "000";
+                if(obj.get(key).containsKey("color"))
+                    color = (String) obj.get(key).get("color");
+
                 rol.setPriority(priority);
                 rol.setHasExpire(hasExpire);
+                rol.setColor(color);
                 rolService.save(rol);
             }
         } catch (FileNotFoundException e) {

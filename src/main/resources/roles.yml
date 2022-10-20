@@ -1,15 +1,19 @@
 ROLE_USER:
   has-expire: false
   priority: 0
+  color: '#6b6b6b'
 
 ROLE_VIP:
   has-expire: true
   priority: 10
+  color: '#ffce63'
 
 ROLE_MOD:
   has-expire: false
   priority: 80
+  color: '#7073ff'
 
 ROLE_ADMIN:
   has-expire: false
   priority: 100
+  color: '#ff5842'

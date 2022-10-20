@@ -4,22 +4,28 @@ import com.project.auction.model.Person;
 import com.project.auction.model.Rol;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Data
-@Embeddable
 public class PersonRolPK implements Serializable {
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "person_id")
-    private Person personId;
+    private Person person;
+    private Rol rol;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "rol_id")
-    private Rol rolId;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonRolPK that = (PersonRolPK) o;
+        return person.equals(that.person) &&
+                rol.equals(that.rol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(person, rol);
+    }
 }
