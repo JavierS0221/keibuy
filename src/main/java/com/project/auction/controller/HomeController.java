@@ -9,6 +9,7 @@ import com.project.auction.model.relation.PersonRol;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.PersonService;
 import com.project.auction.service.StorageService;
+import com.project.auction.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,9 +120,10 @@ public class HomeController {
                     }
 
                     Image image = new Image();
+
                     image.setContentType(file.getContentType());
                     image.setFileName(fileName);
-                    image.setBytes(file.getBytes());
+                    image.setBytes(Utils.compressImage(file.getBytes()));
 
 
                     personDto.setAvatar(image);

@@ -132,10 +132,12 @@ public class PersonServiceImpl implements PersonService {
 
             Image currentAvatar = imageService.getImage(person.getAvatar());
             if(currentAvatar != null) {
-                imageService.delete(currentAvatar);
+                Image newAvatar = personDto.getAvatar();
+                newAvatar.setId(currentAvatar.getId());
+                imageService.save(newAvatar);
+            } else {
+                person.setAvatar(personDto.getAvatar());
             }
-
-            person.setAvatar(personDto.getAvatar());
             personRepository.save(person);
         }
     }
