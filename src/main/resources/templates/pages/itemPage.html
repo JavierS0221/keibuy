@@ -1,54 +1,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
-
-<!-- MDB CSS -->
-<link rel="stylesheet" href="../../static/plugin/mdb-ui-kit-5.0.0/css/mdb.min.css" />
-
-<!-- Google fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-    href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
-    rel="stylesheet">
-<!-- -->
-
-<link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
-
-<!-- Popper JS -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-    crossorigin="anonymous"></script>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
-    crossorigin="anonymous"></script>
-
-<!-- Fontawesome -->
-<script src="https://kit.fontawesome.com/e106a66f25.js" crossorigin="anonymous"></script>
-
-<!-- MDB JS -->
-<script type="text/javascript" src="../../static/plugin/mdb-ui-kit-5.0.0/js/mdb.min.js"></script>
-
-<!-- JQuery -->
-<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-    crossorigin="anonymous"></script>
-
-<!-- Country Flags JS -->
-<script src="./plugin/country-flags/script.js"></script>
-<!-- -->
-
-<!-- ------------------------------------------ -->
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Item - KeiBuy</title>
-    <th:block th:include="layout/template :: head" />
+    <th:block th:include="layout/template :: head"/>
+    <th:block th:include="layout/template :: dependencies-js"/>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap" rel="stylesheet">
+    <style th:include="layout/loader :: style"></style>
     <style>
         @font-face {
             font-family: Arial !important;
@@ -67,6 +30,7 @@
         .heart:hover {
             background-color: #404eed;
         }
+
     </style>
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
     <style>
@@ -271,125 +235,127 @@
             width: 150px;
             border-radius: 0px !important
         }
+
     </style>
 </head>
 
 <body classname="snippet-body" class="position-relative bg-light" data-th-span="scroll"
-    data-bs-target="#navbar-scrollspy">
+      data-bs-target="#navbar-scrollspy">
+<th:block th:include="layout/loader :: loader"/>
+<th:block th:include="layout/navbar :: navbar"/>
 
-    <th:block th:include="layout/template :: dependencies-js" />
-    <th:block th:include="layout/loader :: loader" />
-    <th:block th:include="layout/navbar :: navbar" />
-
-    <!--Item-->
-    <div class="container mt-5 mb-5" style="padding-right: 0px; padding-left: 0px;">
-        <div class="card">
-            <div class="row g-0">
-                <div class="col-md-6 border-end">
-                    <div class="d-flex flex-column justify-content-center">
-                        <div class="main_image"><img src="https://i.imgur.com/w6kEctd.jpg" id="main_product_image"
-                                width="350"></div>
-                        <div class="thumbnail_images">
-                            <ul id="thumbnail">
-                                <li><img onclick="changeImage(this)" src="https://i.imgur.com/TAzli1U.jpg" width="70">
-                                </li>
-                                <li><img onclick="changeImage(this)" src="https://i.imgur.com/w6kEctd.jpg" width="70">
-                                </li>
-                                <li><img onclick="changeImage(this)" src="https://i.imgur.com/L7hFD8X.jpg" width="70">
-                                </li>
-                                <li><img onclick="changeImage(this)" src="https://i.imgur.com/6ZufmNS.jpg" width="70">
-                                </li>
-                            </ul>
-                        </div>
+<!--Item-->
+<div class="container mt-5 mb-5" style="padding-right: 0px; padding-left: 0px;">
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-6 border-end">
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="main_image"><img src="https://i.imgur.com/w6kEctd.jpg" id="main_product_image"
+                                                 width="350"></div>
+                    <div class="thumbnail_images">
+                        <ul id="thumbnail">
+                            <li><img onclick="changeImage(this)" src="https://i.imgur.com/TAzli1U.jpg" width="70">
+                            </li>
+                            <li><img onclick="changeImage(this)" src="https://i.imgur.com/w6kEctd.jpg" width="70">
+                            </li>
+                            <li><img onclick="changeImage(this)" src="https://i.imgur.com/L7hFD8X.jpg" width="70">
+                            </li>
+                            <li><img onclick="changeImage(this)" src="https://i.imgur.com/6ZufmNS.jpg" width="70">
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="p-3 right-side">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h3>IIlana</h3> <span class="heart"><i class="bx bx-heart"></i></span>
-                        </div>
-                        <div class="mt-2 pr-3 content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
-                        </div>
-                        <h3>Última Oferta: $430.99</h3>
-                        <h6>Tu Oferta: $5 panes blandos</h6>
-
-                        <!--Modal del modal de oferta-->
-                        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <i class="fa-solid fa-triangle-exclamation"></i>
-                                        <h2 class="modal-title fs-2" id="alertModalLabel">¡Atención!</h2>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <h4>Tenga en cuenta la responsabilidad que conlleva el proponer una
-                                                oferta.<br>Pedimos precaución a la hora de ofertar.</h4>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label><input type="checkbox" id="acceptCheck" value="first_checkbox"> Accepto la
-                                                responsabilidad sobre las ofertas que realice.</label><br>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" class="btn-close" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" id="acceptTermsBtn" class="btn btn-primary">Acceptar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Modal del modal de oferta-->
-                        <div class="modal fade" id="offerModal" tabindex="-1" aria-labelledby="offerModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="offerModalLabel">Oferta</h1>
-     
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="offert" class="col-form-label">Ingrese su oferta</label>
-                                            <input type="text" class="form-control" id="offert">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="col-form-label">Ingrese su contraseña</label>
-                                            <input type="text" class="form-control" id="password">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" class="btn-close" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-primary">Enviar oferta</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--                    Modal btn-->
-                        <button type="button" class="btn btn-outline-primary btn-lg mt-4" id="btnOffer">Ofertar</button>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 right-side">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3>IIlana</h3> <span class="heart"><i class="bx bx-heart"></i></span>
                     </div>
-                    <div class="col">
-                        <div class="p-5 count-down-div">
-                            <div class="timer">
-                                <div>
-                                    <p id="contdwn"></p>
+                    <div class="mt-2 pr-3 content">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                            eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+                    </div>
+                    <h3>Última Oferta: $430.99</h3>
+                    <h6>Tu Oferta: $5 panes blandos</h6>
+
+                    <!--Modal del modal de oferta-->
+                    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <h2 class="modal-title fs-2" id="alertModalLabel">¡Atención!</h2>
                                 </div>
-                                <span>Left to buy</span>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <h4>Tenga en cuenta la responsabilidad que conlleva el proponer una
+                                            oferta.<br>Pedimos precaución a la hora de ofertar.</h4>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label><input type="checkbox" id="acceptCheck" value="first_checkbox"> Accepto
+                                            la
+                                            responsabilidad sobre las ofertas que realice.</label><br>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar
+                                    </button>
+                                    <button type="button" id="acceptTermsBtn" class="btn btn-primary">Acceptar</button>
+                                </div>
                             </div>
-                            <div class="progress c-progress mt-4">
-                                <div class="progress-bar bg-dark" role="progressbar" style="width: 30%;"
-                                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <!--Modal del modal de oferta-->
+                    <div class="modal fade" id="offerModal" tabindex="-1" aria-labelledby="offerModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="offerModalLabel">Oferta</h1>
+
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="offert" class="col-form-label">Ingrese su oferta</label>
+                                        <input type="text" class="form-control" id="offert">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="col-form-label">Ingrese su contraseña</label>
+                                        <input type="text" class="form-control" id="password">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar
+                                    </button>
+                                    <button type="button" class="btn btn-primary">Enviar oferta</button>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <!--                    Modal btn-->
+                    <button type="button" class="btn btn-outline-primary btn-lg mt-4" id="btnOffer">Ofertar</button>
+                </div>
+                <div class="col">
+                    <div class="p-5 count-down-div">
+                        <div class="timer">
+                            <div>
+                                <p id="contdwn"></p>
+                            </div>
+                            <span>Left to buy</span>
+                        </div>
+                        <div class="progress c-progress mt-4">
+                            <div class="progress-bar bg-dark" role="progressbar" style="width: 30%;"
+                                 aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Checkbox -->
+<!-- Checkbox -->
 <!--    <script>-->
 <!--function validate() {-->
 <!--        if (document.getElementById('acceptCheck').checked) {-->
@@ -401,9 +367,8 @@
 <!--    </script>-->
 
 
-
-    <!-- Show alert or Offer Modal Script -->
-    <script>
+<!-- Show alert or Offer Modal Script -->
+<script>
       const btnOffer = $("#btnOffer");
       const time = 10000;
 
@@ -415,6 +380,7 @@
             keyboard: false,
           }
         );
+
 
         var offerModal = new bootstrap.Modal(
           document.getElementById("offerModal"),
@@ -449,15 +415,28 @@
         });
 
         acceptTermsBtn[0].addEventListener("click", function (event) {
-            alertModal.hide();
-            offerModal.show();
+            const alertModalDocument = document.querySelector("#alertModal");
+          const alertModal = bootstrap.Modal.getInstance(alertModalDocument);
+
+          var offerModal = new bootstrap.Modal(
+            document.getElementById("offerModal"),
+            {
+              backdrop: "static",
+              keyboard: false,
+            }
+          );
+
+          alertModal.hide();
+          offerModal.show();
+
           sessionStorage["keibuyReadTermsTime"] = Date.now();
         });
 
-    </script>
 
-    <!-- Reloj -->
-    <script>
+</script>
+
+<!-- Reloj -->
+<script>
         // Set the date we're counting down to
         var countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
 
@@ -486,9 +465,13 @@
                 document.getElementById("contdwn").innerHTML = "EXPIRED";
             }
         }, 1000);
-    </script>
-</body>
 
+</script>
+<th:block th:insert="layout/btnBackToTop :: btn"/>
+<script th:src="@{/js/scriptBtnBackToTop.js}"></script>
+<script th:src="@{/js/scriptLoader.js}"></script>
+<th:block th:include="layout/btnLanguage :: btnLang"/>
+</body>
 
 
 </html>
