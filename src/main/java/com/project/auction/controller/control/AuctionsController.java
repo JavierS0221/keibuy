@@ -4,6 +4,7 @@ import com.project.auction.dto.PersonDto;
 import com.project.auction.exception.UnkownIdentifierException;
 import com.project.auction.model.Item;
 import com.project.auction.model.Person;
+import com.project.auction.model.relation.PersonRol;
 import com.project.auction.service.ItemService;
 import com.project.auction.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +38,9 @@ public class AuctionsController {
 
     @GetMapping
     public String auctions(@RequestParam(name = "page", defaultValue = "1") int pageNo,
-                                @RequestParam(name = "sortField", defaultValue = "id") String sortField,
-                                @RequestParam(name = "sortDir", defaultValue = "asc") String sortDir,
-                                Model model, @AuthenticationPrincipal User user) {
+                           @RequestParam(name = "sortField", defaultValue = "id") String sortField,
+                           @RequestParam(name = "sortDir", defaultValue = "asc") String sortDir,
+                           Model model, @AuthenticationPrincipal User user) {
         int pageSize = 12;
 
         Page<Item> page = itemService.findPaginated(pageNo, pageSize, sortField, sortDir);
@@ -65,5 +66,27 @@ public class AuctionsController {
 
         model.addAttribute("listItems", listItems);
         return "auctions/listAuctions";
+    }
+
+    @GetMapping("/new")
+    public String newAuction(Model model, @AuthenticationPrincipal User user) {
+
+        Person person = null;
+        PersonDto personDto = new PersonDto();
+        if (user != null) {
+            try {
+                person = personService.getPersonByNameOrEmail(user.getUsername());
+                personDto = personService.getPersonDto(person);
+            } catch (UnkownIdentifierException ignored) {
+            }
+        }
+        PersonRol prol;
+        if (person != null)
+            prol = person.getMainRol();
+
+        model.addAttribute("user", user);
+        model.addAttribute("person", person);
+        model.addAttribute("personDto", personDto);
+        return "auctions/newAuction";
     }
 }

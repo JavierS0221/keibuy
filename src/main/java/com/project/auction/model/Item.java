@@ -44,6 +44,9 @@ public class Item implements Serializable {
     @Column(name = "start_price")
     private int startPrice;
 
+    @Column(name = "min_next_offer")
+    private int minNextOffer;
+
     @Column(name = "status")
     private int status;
 

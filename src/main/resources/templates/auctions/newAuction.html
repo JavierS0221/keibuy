@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta name="x-apple-disable-message-reformatting">
+    <th:block th:include="layout/template :: head"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
+          rel="stylesheet">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <style th:include="layout/loader :: style"></style>
+</head>
+
+
+<head>
+    <title>Item - KeiBuy</title>
+    <th:block th:include="layout/template :: head"/>
+    <th:block th:include="layout/template :: dependencies-js"/>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
+            rel="stylesheet">
+
+</head>
+<body id="body-pd" class="bg-light vh-100">
+<th:block th:include="layout/template :: dependencies-js"/>
+<th:block th:include="layout/loader :: loader"/>
+<th:block th:include="layout/navbar :: navbar"/>
+<!--aca arranca el codigo-->
+
+
+<div class="container-sm h-75 col-xxl-5">
+    <div class="row justify-content-sm-center h-100">
+        <div class="m-auto">
+            <div class="card shadow-lg">
+                <div class="card-body px-5">
+                    <h1 class="fs-4 card-title fw-bold mb-4 text-center">Nueva subasta</h1>
+                    <form onsubmit="onSubmitRegister()" id="register-form" class="needs-validation"
+                          th:action="@{/register}" th:object="${personDto}" method="post">
+
+
+                        <div class="row justify-content-center">
+                            <div class="mb-3 col-10 form-group">
+                                <label class="mb-2 text-muted text-center" for="username">Nombre de producto</label>
+                                <input id="username" type="text" class="form-control" th:field="*{username}" required
+                                       autofocus>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}"
+                                       th:errors="*{username}"></small>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+
+                            <div class="mb-3 col-5">
+                                <label class="mb-2 text-muted" for="name">Monto inicial</label>
+                                <input id="name" type="text" class="form-control" th:field="*{name}" value="" required>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+                                       th:errors="*{name}"></small>
+                            </div>
+
+                            <div class="mb-3 col-5">
+                                <label class="mb-2 text-muted" for="name">minimo entre oferta</label>
+                                <input id="min-offer" type="text" class="form-control" th:field="*{name}" value=""
+                                       required>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+                                       th:errors="*{name}"></small>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="mb-3 col-10">
+                                <label class="mb-2 text-muted" for="last-name">Detalles del producto</label>
+                                <textarea id="last-name" type="text" class="form-control" th:field="*{lastName}"
+                                          value=""
+                                          required></textarea>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('lastName')}"
+                                       th:errors="*{lastName}"></small>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="mb-3 col-5">
+                                <label class="mb-2 text-muted" for="birth-date">Fecha de Inicio</label>
+                                <input id="birth-date" type="date" class="form-control" th:field="*{birthDate}" value=""
+                                       required>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('birthDate')}"
+                                       th:errors="*{birthDate}"></small>
+                            </div>
+
+                            <div class="mb-3 col-5">
+                                <label class="mb-2 text-muted" for="birth-date">Fecha de finalización</label>
+                                <input id="birth-date2" type="date" class="form-control" th:field="*{birthDate}"
+                                       value=""
+                                       required>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('birthDate')}"
+                                       th:errors="*{birthDate}"></small>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center text-center">
+                            <div class="mb-3 col-10">
+                                <label class="mb-2 text-muted" for="birth-date">Tipo de pago aceptado</label>
+                                <div class="d-flex justify-content-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                               value="option1">
+                                        <label class="form-check-label" for="inlineCheckbox1">Physical</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                               value="option2">
+                                        <label class="form-check-label" for="inlineCheckbox2">Virtual</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="mb-3 col-10">
+                                <label class="mb-2 text-muted" for="password">Password</label>
+                                <input id="password" type="password" class="form-control" th:field="*{password}"
+                                       required>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}"
+                                       th:errors="*{password}"></small>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-secondary mx-1">Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary mx-1">Publicar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+<!--aca aabca el codigo-->
+<th:block th:insert="layout/btnBackToTop :: btn"/>
+<script th:src="@{/js/scriptBtnBackToTop.js}"></script>
+<script th:src="@{/js/scriptLoader.js}"></script>
+<th:block th:include="layout/btnLanguage :: btnLang"/>
+</body>
+
+
+</html>
