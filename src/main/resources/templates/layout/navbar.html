@@ -166,40 +166,40 @@
                         <div class="d-flex">
 
                             <!-- Notifications -->
-                            <div id="navbarNotificationDiv" class="dropdown mt-1">
+<!--                            <div id="navbarNotificationDiv" class="dropdown mt-1">-->
 
-                                <!-- button -->
-                                <i id="navbarNotificationDropdown"
-                                   class="fas fa-bell text-white me-3 dropdown"
-                                   role="button"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                </i>
-                                <!-- -->
+<!--                                &lt;!&ndash; button &ndash;&gt;-->
+<!--                                <i id="navbarNotificationDropdown"-->
+<!--                                   class="fas fa-bell text-white me-3 dropdown"-->
+<!--                                   role="button"-->
+<!--                                   data-bs-toggle="dropdown"-->
+<!--                                   aria-expanded="false">-->
+<!--                                </i>-->
+<!--                                &lt;!&ndash; &ndash;&gt;-->
 
 
-                                <!-- dropdown -->
-                                <ul class="dropdown-menu dropdown-menu-end"
-                                    aria-labelledby="navbarNotificationDropdown">
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="#"
-                                           th:href="@{/}">new 1</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="#"
-                                           th:href="@{/}">new 2</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="#"
-                                           th:href="@{/}">new 3</a>
-                                    </li>
-                                </ul>
-                                <!-- -->
+<!--                                &lt;!&ndash; dropdown &ndash;&gt;-->
+<!--                                <ul class="dropdown-menu dropdown-menu-end"-->
+<!--                                    aria-labelledby="navbarNotificationDropdown">-->
+<!--                                    <li>-->
+<!--                                        <a class="dropdown-item"-->
+<!--                                           href="#"-->
+<!--                                           th:href="@{/}">new 1</a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a class="dropdown-item"-->
+<!--                                           href="#"-->
+<!--                                           th:href="@{/}">new 2</a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a class="dropdown-item"-->
+<!--                                           href="#"-->
+<!--                                           th:href="@{/}">new 3</a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                                &lt;!&ndash; &ndash;&gt;-->
 
-                            </div>
+<!--                            </div>-->
                             <!-- -->
 
                             <!-- User -->
@@ -286,7 +286,7 @@
                     <!-- Left links -->
                     <div class="col-md-4 d-flex justify-content-center justify-content-md-center align-items-center mx-auto">
                         <a class="navbar_item text-white me-2 hover-underline-animation text-decoration-none"
-                           href="#">Auctions
+                           th:href="@{/auctions}">Auctions
                         </a>
                         <a class="navbar_item text-white me-2 hover-underline-animation text-decoration-none"
                            href="#">Manual
@@ -295,7 +295,7 @@
                            href="#">Mis Ofertas
                         </a>
                         <a class="navbar_item text-white me-2 hover-underline-animation text-decoration-none"
-                           href="#">Subastar
+                           th:href="@{/auctions/new}">Subastar
                         </a>
                     </div>
                     <!-- -->

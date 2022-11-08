@@ -1,11 +1,12 @@
 package com.project.auction.model;
 
 import com.project.auction.model.relation.AuctionOffer;
+import com.project.auction.model.relation.ItemImage;
+import com.project.auction.model.relation.PersonRol;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -13,10 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "item")
-public class Item implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +28,7 @@ public class Item implements Serializable {
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="person_id")
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @Temporal(TemporalType.DATE)
@@ -49,10 +47,10 @@ public class Item implements Serializable {
 
     @Column(name = "status")
     private int status;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="location_id", nullable = false)
-    private Location locationId;
+//
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "location_id", nullable = false)
+//    private Location locationId;
 
     @Column(name = "physical_payment")
     private boolean physicalPayment;
@@ -63,16 +61,27 @@ public class Item implements Serializable {
     @OneToMany(mappedBy = "item", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<AuctionOffer> auctionOffers;
 
-    @OneToMany(mappedBy = "item", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private Collection<AuctionOffer> images;
+    @OneToMany(mappedBy = "image", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private List<ItemImage> itemImages;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    @JoinTable(
-            name = "item_category",
-            joinColumns =  @JoinColumn(
-                    name = "item_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+//    @JoinTable(
+//            name = "item_category",
+//            joinColumns = @JoinColumn(
+//                    name = "item_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+//
+//    )
+//    private Collection<Category> categories;
 
-    )
-    private Collection<Category> categories;
+    public void setImages(List<Image> listImages) {
+        List<ItemImage> listItemImage = new ArrayList<>();
+        for (Image image : listImages) {
+            ItemImage itemImage = new ItemImage();
+            itemImage.setItem(this);
+            itemImage.setImage(image);
+            listItemImage.add(itemImage);
+        }
+        this.itemImages = listItemImage;
+    }
 }

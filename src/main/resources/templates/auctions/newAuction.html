@@ -24,7 +24,6 @@
 <head>
     <title>Item - KeiBuy</title>
     <th:block th:include="layout/template :: head"/>
-    <th:block th:include="layout/template :: dependencies-js"/>
 
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,96 +46,92 @@
             <div class="card shadow-lg">
                 <div class="card-body px-5">
                     <h1 class="fs-4 card-title fw-bold mb-4 text-center">Nueva subasta</h1>
-                    <form onsubmit="onSubmitRegister()" id="register-form" class="needs-validation"
-                          th:action="@{/register}" th:object="${personDto}" method="post">
+                    <form id="register-form" class="needs-validation"
+                          th:action="@{/auctions/new}" th:object="${itemDto}" method="post" enctype="multipart/form-data">
 
 
                         <div class="row justify-content-center">
                             <div class="mb-3 col-10 form-group">
-                                <label class="mb-2 text-muted text-center" for="username">Nombre de producto</label>
-                                <input id="username" type="text" class="form-control" th:field="*{username}" required
+                                <label class="mb-2 text-muted text-center" for="name">Nombre de producto</label>
+                                <input id="name" type="text" class="form-control" th:field="*{name}" required
                                        autofocus>
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}"
-                                       th:errors="*{username}"></small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+                                       th:errors="*{name}"></small>
                             </div>
                         </div>
                         <div class="row justify-content-center">
 
                             <div class="mb-3 col-5">
-                                <label class="mb-2 text-muted" for="name">Monto inicial</label>
-                                <input id="name" type="text" class="form-control" th:field="*{name}" value="" required>
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
-                                       th:errors="*{name}"></small>
+                                <label class="mb-2 text-muted" for="startPrice">Monto inicial</label>
+                                <input id="startPrice" type="text" class="form-control" th:field="*{startPrice}" value="" required>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('startPrice')}"
+                                       th:errors="*{startPrice}"></small>
                             </div>
 
                             <div class="mb-3 col-5">
-                                <label class="mb-2 text-muted" for="name">minimo entre oferta</label>
-                                <input id="min-offer" type="text" class="form-control" th:field="*{name}" value=""
+                                <label class="mb-2 text-muted" for="minNextOffer">minimo entre oferta</label>
+                                <input id="minNextOffer" type="text" class="form-control" th:field="*{minNextOffer}" value=""
                                        required>
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
-                                       th:errors="*{name}"></small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('minNextOffer')}"
+                                       th:errors="*{minNextOffer}"></small>
                             </div>
                         </div>
 
                         <div class="row justify-content-center">
                             <div class="mb-3 col-10">
-                                <label class="mb-2 text-muted" for="last-name">Detalles del producto</label>
-                                <textarea id="last-name" type="text" class="form-control" th:field="*{lastName}"
+                                <label class="mb-2 text-muted" for="description">Detalles del producto</label>
+                                <textarea id="description" type="text" class="form-control" th:field="*{description}"
                                           value=""
                                           required></textarea>
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('lastName')}"
-                                       th:errors="*{lastName}"></small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('description')}"
+                                       th:errors="*{description}"></small>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="mb-3 col-5">
-                                <label class="mb-2 text-muted" for="birth-date">Fecha de Inicio</label>
-                                <input id="birth-date" type="date" class="form-control" th:field="*{birthDate}" value=""
+                                <label class="mb-2 text-muted" for="startDate">Fecha de Inicio</label>
+                                <input id="startDate" type="date" class="form-control" th:field="*{startDate}" value=""
                                        required>
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('birthDate')}"
-                                       th:errors="*{birthDate}"></small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('startDate')}"
+                                       th:errors="*{startDate}"></small>
                             </div>
 
                             <div class="mb-3 col-5">
-                                <label class="mb-2 text-muted" for="birth-date">Fecha de finalización</label>
-                                <input id="birth-date2" type="date" class="form-control" th:field="*{birthDate}"
+                                <label class="mb-2 text-muted" for="finishDate">Fecha de finalización</label>
+                                <input id="finishDate" type="date" class="form-control" th:field="*{finishDate}"
                                        value=""
                                        required>
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('birthDate')}"
-                                       th:errors="*{birthDate}"></small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('finishDate')}"
+                                       th:errors="*{finishDate}"></small>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="mb-3 col-10">
+                                <label class="mb-2 text-muted" for="formFile">Imagenes</label>
+                                <input type="file" class="form-control form-control" name="files"
+                                       id="formFile" accept="image/*" multiple/>
                             </div>
                         </div>
 
                         <div class="row justify-content-center text-center">
                             <div class="mb-3 col-10">
-                                <label class="mb-2 text-muted" for="birth-date">Tipo de pago aceptado</label>
+                                <label class="mb-2 text-muted me-2">Tipo de pago aceptado</label>
                                 <div class="d-flex justify-content-center">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                               value="option1">
-                                        <label class="form-check-label" for="inlineCheckbox1">Physical</label>
+                                        <input id="physicalPayment" class="form-check-input" type="checkbox"
+                                               value="option1" th:field="*{physicalPayment}">
+                                        <label class="form-check-label" for="physicalPayment">Physical</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                               value="option2">
-                                        <label class="form-check-label" for="inlineCheckbox2">Virtual</label>
+                                        <input class="form-check-input" type="checkbox" id="virtualPayment"
+                                               value="option2" th:field="*{virtualPayment}">
+                                        <label class="form-check-label" for="virtualPayment">Virtual</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row justify-content-center">
-                            <div class="mb-3 col-10">
-                                <label class="mb-2 text-muted" for="password">Password</label>
-                                <input id="password" type="password" class="form-control" th:field="*{password}"
-                                       required>
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}"
-                                       th:errors="*{password}"></small>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-secondary mx-1">Cancelar
-                            </button>
+                        <div class="d-flex justify-content-center mt-2">
                             <button type="submit" class="btn btn-primary mx-1">Publicar
                             </button>
                         </div>
@@ -147,7 +142,15 @@
     </div>
 </div>
 
-</div>
+<script>
+    const formFile = $("#formFile");
+    formFile.on("change", function (e) {
+        if (formFile[0].files.length > 4) {
+            alert("No puedes subir más de 4 imágenes");
+            formFile.val(null);
+        }
+    });
+</script>
 
 
 <!--aca aabca el codigo-->
