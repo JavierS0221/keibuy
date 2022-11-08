@@ -2,15 +2,11 @@ package com.project.auction.controller.auctions;
 
 import com.project.auction.dto.ItemDto;
 import com.project.auction.dto.PersonDto;
-import com.project.auction.exception.EmailAlreadyUsedException;
 import com.project.auction.exception.UnkownIdentifierException;
-import com.project.auction.exception.UsernameAlreadyUsedException;
-import com.project.auction.exception.UsernameAndEmailAlreadyUsedException;
-import com.project.auction.model.Image;
+import com.project.auction.model.AvatarImage;
 import com.project.auction.model.Item;
+import com.project.auction.model.ItemImage;
 import com.project.auction.model.Person;
-import com.project.auction.model.relation.ItemImage;
-import com.project.auction.model.relation.PersonRol;
 import com.project.auction.service.ItemService;
 import com.project.auction.service.PersonService;
 import com.project.auction.util.Utils;
@@ -29,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -125,7 +122,7 @@ public class AuctionsController {
 
         try {
             List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
-            List<Image> images = new ArrayList<>();
+            List<ItemImage> itemImages = new ArrayList<>();
 
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
@@ -140,24 +137,17 @@ public class AuctionsController {
                         return "redirect:/auctions/new";
                     }
 
-                    Image image = new Image();
+                    ItemImage itemImage = new ItemImage();
 
-                    image.setContentType(file.getContentType());
-                    image.setFileName(fileName);
-                    image.setBytes(Utils.compressImage(file.getBytes()));
-
-                    images.add(image);
+                    itemImage.setContentType(file.getContentType());
+                    itemImage.setFileName(fileName);
+                    itemImage.setBytes(Utils.compressImage(file.getBytes()));
+                    itemImages.add(itemImage);
                 }
             }
-
+            itemDto.setItemImages(itemImages);
             itemDto.setPerson(person);
             itemService.save(itemDto);
-
-            Item item = itemService.getItem(itemService.getItem(itemDto));
-            if(item != null) {
-                item.setImages(images);
-                itemService.update(item);
-            }
             return "redirect:/auctions/new?success";
         } catch (Exception ex) {
             ex.printStackTrace();

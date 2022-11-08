@@ -2,9 +2,8 @@ package com.project.auction.service;
 
 import com.project.auction.email.context.AccountVerificationEmailContext;
 import com.project.auction.exception.*;
-import com.project.auction.model.Image;
+import com.project.auction.model.AvatarImage;
 import com.project.auction.model.SecureToken;
-import com.project.auction.model.relation.PersonRol;
 import com.project.auction.repository.PersonRepository;
 import com.project.auction.dto.PersonDto;
 import com.project.auction.model.Person;
@@ -26,8 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -130,9 +127,9 @@ public class PersonServiceImpl implements PersonService {
             person.setAccountBanned(personDto.isAccountBanned());
             person.setRoles(personDto.getRoles());
 
-            Image currentAvatar = imageService.getImage(person.getAvatar());
+            AvatarImage currentAvatar = imageService.getImage(person.getAvatar());
             if(currentAvatar != null) {
-                Image newAvatar = personDto.getAvatar();
+                AvatarImage newAvatar = personDto.getAvatar();
                 newAvatar.setId(currentAvatar.getId());
                 imageService.save(newAvatar);
             } else {

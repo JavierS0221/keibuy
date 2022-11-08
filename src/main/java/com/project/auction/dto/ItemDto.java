@@ -1,10 +1,8 @@
 package com.project.auction.dto;
 
-import com.project.auction.model.Category;
-import com.project.auction.model.Location;
+import com.project.auction.model.ItemImage;
 import com.project.auction.model.Person;
 import com.project.auction.model.relation.AuctionOffer;
-import com.project.auction.model.relation.ItemImage;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,6 +11,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @Data
@@ -38,6 +37,6 @@ public class ItemDto implements Serializable {
     private boolean physicalPayment;
     private boolean virtualPayment;
     private List<AuctionOffer> auctionOffers;
-    private List<ItemImage> itemImages;
+    private Collection<ItemImage> itemImages;
 //    private Collection<Category> categories;
 }

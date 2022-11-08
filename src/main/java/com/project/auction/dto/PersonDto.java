@@ -1,14 +1,12 @@
 package com.project.auction.dto;
 
 import com.project.auction.constraints.BirthDate;
-import com.project.auction.model.Image;
+import com.project.auction.model.AvatarImage;
 import com.project.auction.model.relation.PersonRol;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -62,7 +60,7 @@ public class PersonDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdDate;
 
-    private Image avatar;
+    private AvatarImage avatar;
 
     private boolean accountVerified = false;
 

@@ -3,15 +3,11 @@ package com.project.auction.model;
 import com.project.auction.constraints.BirthDate;
 import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.model.relation.PersonRol;
-import com.project.auction.model.relation.PersonRolPK;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Getter
@@ -78,7 +74,7 @@ public class Person {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image", referencedColumnName = "id")
-    private Image avatar;
+    private AvatarImage avatar;
 
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Collection<Report> reportsCreated;

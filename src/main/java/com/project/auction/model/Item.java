@@ -1,15 +1,10 @@
 package com.project.auction.model;
 
 import com.project.auction.model.relation.AuctionOffer;
-import com.project.auction.model.relation.ItemImage;
-import com.project.auction.model.relation.PersonRol;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Data
 @Entity
@@ -58,11 +53,17 @@ public class Item {
     @Column(name = "virtual_payment")
     private boolean virtualPayment;
 
-    @OneToMany(mappedBy = "item", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<AuctionOffer> auctionOffers;
+    @OneToMany(mappedBy = "item",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Collection<AuctionOffer> auctionOffers;
 
-    @OneToMany(mappedBy = "image", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private List<ItemImage> itemImages;
+    @OneToMany(mappedBy = "item",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Collection<ItemImage> itemImages;
 
 //    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 //    @JoinTable(
@@ -74,14 +75,15 @@ public class Item {
 //    )
 //    private Collection<Category> categories;
 
-    public void setImages(List<Image> listImages) {
-        List<ItemImage> listItemImage = new ArrayList<>();
-        for (Image image : listImages) {
-            ItemImage itemImage = new ItemImage();
+    public void add(ItemImage itemImage) {
+
+        if (itemImage != null) {
+            if (this.itemImages == null) {
+                this.itemImages = new HashSet<>();
+            }
             itemImage.setItem(this);
-            itemImage.setImage(image);
-            listItemImage.add(itemImage);
+            itemImages.add(itemImage);
+            // item.setOrder(this);
         }
-        this.itemImages = listItemImage;
     }
 }
