@@ -17,6 +17,10 @@
           rel="stylesheet">
 
     <script th:src="@{/plugin/country-flags/script.js}"></script>
+
+    <style th:include="layout/loader :: style"></style>
+    <style th:include="layout/template :: style"></style>
+
     <title></title>
 </head>
 
@@ -135,70 +139,70 @@
                         </div>
                     </div>
 
-                    <div class="box border-bottom">
-                        <div class="box-label text-uppercase d-flex align-items-center">
-                            Category
-                            <button
-                                    class="btn ms-auto"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#inner-box"
-                                    aria-expanded="true"
-                                    aria-controls="inner-box"
-                            >
-                                <span class="fas fa-plus"></span>
-                            </button>
-                        </div>
-                        <div id="inner-box" class="collapse show mt-2 me-1">
-                            <div class="my-1">
-                                <label class="tick"
-                                >Windbreaker <input type="checkbox"/>
-                                    <span class="check"></span>
-                                </label>
-                            </div>
-                            <div class="my-1">
-                                <label class="tick"
-                                >Jumpsuit <input type="checkbox"/>
-                                    <span class="check"></span>
-                                </label>
-                            </div>
-                            <div class="my-1">
-                                <label class="tick"
-                                >Jacket <input type="checkbox"/>
-                                    <span class="check"></span>
-                                </label>
-                            </div>
-                            <div class="my-1">
-                                <label class="tick"
-                                >Coat <input type="checkbox"/> <span class="check"></span>
-                                </label>
-                            </div>
-                            <div class="my-1">
-                                <label class="tick"
-                                >Raincoat <input type="checkbox"/>
-                                    <span class="check"></span>
-                                </label>
-                            </div>
-                            <div class="my-1">
-                                <label class="tick"
-                                >Handbag <input type="checkbox"/>
-                                    <span class="check"></span>
-                                </label>
-                            </div>
-                            <div class="my-1">
-                                <label class="tick"
-                                >Warm vest <input type="checkbox"/>
-                                    <span class="check"></span>
-                                </label>
-                            </div>
-                            <div class="my-1">
-                                <label class="tick"
-                                >Wallets <input type="checkbox"/>
-                                    <span class="check"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="box border-bottom">-->
+<!--                        <div class="box-label text-uppercase d-flex align-items-center">-->
+<!--                            Category-->
+<!--                            <button-->
+<!--                                    class="btn ms-auto"-->
+<!--                                    type="button"-->
+<!--                                    data-bs-toggle="collapse"-->
+<!--                                    data-bs-target="#inner-box"-->
+<!--                                    aria-expanded="true"-->
+<!--                                    aria-controls="inner-box"-->
+<!--                            >-->
+<!--                                <span class="fas fa-plus"></span>-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                        <div id="inner-box" class="collapse show mt-2 me-1">-->
+<!--                            <div class="my-1">-->
+<!--                                <label class="tick"-->
+<!--                                >Windbreaker <input type="checkbox"/>-->
+<!--                                    <span class="check"></span>-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="my-1">-->
+<!--                                <label class="tick"-->
+<!--                                >Jumpsuit <input type="checkbox"/>-->
+<!--                                    <span class="check"></span>-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="my-1">-->
+<!--                                <label class="tick"-->
+<!--                                >Jacket <input type="checkbox"/>-->
+<!--                                    <span class="check"></span>-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="my-1">-->
+<!--                                <label class="tick"-->
+<!--                                >Coat <input type="checkbox"/> <span class="check"></span>-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="my-1">-->
+<!--                                <label class="tick"-->
+<!--                                >Raincoat <input type="checkbox"/>-->
+<!--                                    <span class="check"></span>-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="my-1">-->
+<!--                                <label class="tick"-->
+<!--                                >Handbag <input type="checkbox"/>-->
+<!--                                    <span class="check"></span>-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="my-1">-->
+<!--                                <label class="tick"-->
+<!--                                >Warm vest <input type="checkbox"/>-->
+<!--                                    <span class="check"></span>-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="my-1">-->
+<!--                                <label class="tick"-->
+<!--                                >Wallets <input type="checkbox"/>-->
+<!--                                    <span class="check"></span>-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="box">
                         <div class="box-label text-uppercase d-flex align-items-center">
                             Payment type

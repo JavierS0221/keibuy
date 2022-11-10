@@ -75,15 +75,12 @@ public class Item {
 //    )
 //    private Collection<Category> categories;
 
-    public void add(ItemImage itemImage) {
-
-        if (itemImage != null) {
-            if (this.itemImages == null) {
-                this.itemImages = new HashSet<>();
-            }
+    public void setImages(Collection<ItemImage> itemImages) {
+        HashSet<ItemImage> newItemImages = new HashSet<>();
+        for(ItemImage itemImage : itemImages) {
             itemImage.setItem(this);
-            itemImages.add(itemImage);
-            // item.setOrder(this);
+            newItemImages.add(itemImage);
         }
+        this.itemImages = newItemImages;
     }
 }

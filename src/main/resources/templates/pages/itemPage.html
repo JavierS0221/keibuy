@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Item - KeiBuy</title>
     <th:block th:include="layout/template :: head"/>
+    <th:block th:include="layout/template :: dependencies-js"/>
 
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -235,17 +236,13 @@
             border-radius: 0px !important
         }
 
-        #navbarNotificationDiv {
-            margin-top: 0.5rem !important;
-        }
-
     </style>
 </head>
 
-<body id="body-pd" class="bg-light vh-100">
-<th:block th:include="layout/template :: dependencies-js"/>
-<th:block th:include="layout/navbar :: navbar"/>
+<body classname="snippet-body" class="position-relative bg-light" data-th-span="scroll"
+      data-bs-target="#navbar-scrollspy">
 <th:block th:include="layout/loader :: loader"/>
+<th:block th:include="layout/navbar :: navbar"/>
 
 <!--Item-->
 <div class="container mt-5 mb-5" style="padding-right: 0px; padding-left: 0px;">

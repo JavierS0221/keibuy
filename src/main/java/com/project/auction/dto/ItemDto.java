@@ -9,10 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.Future;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Data
 public class ItemDto implements Serializable {
@@ -37,6 +34,6 @@ public class ItemDto implements Serializable {
     private boolean physicalPayment;
     private boolean virtualPayment;
     private List<AuctionOffer> auctionOffers;
-    private Collection<ItemImage> itemImages;
+    private Collection<ItemImage> itemImages = new HashSet<>();
 //    private Collection<Category> categories;
 }

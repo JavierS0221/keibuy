@@ -2,7 +2,6 @@ package com.project.auction.service;
 
 import com.project.auction.dto.ItemDto;
 import com.project.auction.model.ItemImage;
-import com.project.auction.model.Person;
 import com.project.auction.repository.ItemRepository;
 import com.project.auction.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,14 +83,7 @@ public class ItemServiceImpl implements ItemService {
         item.setName(itemDto.getName());
         item.setDescription(itemDto.getDescription());
         item.setPerson(itemDto.getPerson());
-
-        for(ItemImage itemImage : itemDto.getItemImages()) {
-            System.out.println("A");
-            item.add(itemImage);
-            System.out.println("B");
-        }
-        System.out.println("C");
-
+       item.setImages(itemDto.getItemImages());
         item.setAuctionOffers(itemDto.getAuctionOffers());
         item.setStartDate(itemDto.getStartDate());
         item.setFinishDate(itemDto.getFinishDate());

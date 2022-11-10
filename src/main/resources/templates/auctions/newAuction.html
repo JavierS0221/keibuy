@@ -18,6 +18,16 @@
     <title></title>
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
     <style th:include="layout/loader :: style"></style>
+    <style>
+        #description-result {
+            width: 100%;
+            text-align: right;
+            margin-top: -30px;
+            padding-right: 10px;
+            color: #737373;
+            user-select: none;
+        }
+    </style>
 </head>
 
 
@@ -32,6 +42,8 @@
             href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
             rel="stylesheet">
 
+    <style th:include="layout/loader :: style"></style>
+    <style th:include="layout/template :: style"></style>
 </head>
 <body id="body-pd" class="bg-light vh-100">
 <th:block th:include="layout/template :: dependencies-js"/>
@@ -47,7 +59,8 @@
                 <div class="card-body px-5">
                     <h1 class="fs-4 card-title fw-bold mb-4 text-center">Nueva subasta</h1>
                     <form id="register-form" class="needs-validation"
-                          th:action="@{/auctions/new}" th:object="${itemDto}" method="post" enctype="multipart/form-data">
+                          th:action="@{/auctions/new}" th:object="${itemDto}" method="post"
+                          enctype="multipart/form-data">
 
 
                         <div class="row justify-content-center">
@@ -63,15 +76,17 @@
 
                             <div class="mb-3 col-5">
                                 <label class="mb-2 text-muted" for="startPrice">Monto inicial</label>
-                                <input id="startPrice" type="text" class="form-control" th:field="*{startPrice}" value="" required>
+                                <input id="startPrice" type="number" min="1" class="form-control"
+                                       th:field="*{startPrice}" required th:value="1">
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('startPrice')}"
                                        th:errors="*{startPrice}"></small>
                             </div>
 
                             <div class="mb-3 col-5">
                                 <label class="mb-2 text-muted" for="minNextOffer">minimo entre oferta</label>
-                                <input id="minNextOffer" type="text" class="form-control" th:field="*{minNextOffer}" value=""
-                                       required>
+                                <input id="minNextOffer" type="number" class="form-control" th:field="*{minNextOffer}"
+                                       required th:value="1"
+                                >
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('minNextOffer')}"
                                        th:errors="*{minNextOffer}"></small>
                             </div>
@@ -81,8 +96,8 @@
                             <div class="mb-3 col-10">
                                 <label class="mb-2 text-muted" for="description">Detalles del producto</label>
                                 <textarea id="description" type="text" class="form-control" th:field="*{description}"
-                                          value=""
                                           required></textarea>
+                                <p id="description-result">0/255</p>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('description')}"
                                        th:errors="*{description}"></small>
                             </div>
@@ -152,6 +167,81 @@
     });
 </script>
 
+<script>
+    var myText = $("#description");
+    var result = $("#description-result");
+    var limit = 2000;
+    result[0].textContent = 0 + "/" + limit;
+
+    myText[0].addEventListener("input", function () {
+        var textLength = myText[0].value.length;
+        result[0].textContent = textLength + "/" + limit;
+
+        if (textLength > limit) {
+            myText.addClass("is-invalid");
+            myText.addClass("mb-0");
+            result[0].style.color = "#ff2851";
+        } else {
+            if (myText.hasClass("is-invalid"))
+                myText.removeClass("is-invalid");
+            if (myText.hasClass("mb-0"))
+                myText.removeClass("mb-0");
+            result[0].style.color = "#737373";
+        }
+    });
+</script>
+
+<script>
+    Date.prototype.addDays = function (days) {
+        var date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
+    }
+
+    var minStartDay = new Date();
+    minStartDay = minStartDay.addDays(1);
+    var dd = minStartDay.getDate();
+    var mm = minStartDay.getMonth() + 1; //January is 0!
+    var yyyy = minStartDay.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    minStartDay = yyyy + '-' + mm + '-' + dd;
+
+
+    const startDateInput = document.getElementById("startDate");
+    startDateInput.setAttribute("min", minStartDay);
+
+
+    const finishDateInput = document.getElementById("finishDate");
+    finishDateInput.setAttribute("disabled", "");
+
+    startDateInput.addEventListener("change", function () {
+        if (startDateInput.value === "")
+            finishDateInput.setAttribute("disabled", "");
+        else {
+            finishDateInput.removeAttribute("disabled");
+            finishDateInput.value = "";
+        }
+
+    });
+
+    finishDateInput.addEventListener("change", function () {
+        var minFinishDate = minStartDay.addDays(14);
+        var maxFinishDate = minFinishDate.addDays(30);
+        finishDateInput.setAttribute("min", minFinishDate)
+        finishDateInput.setAttribute("max", maxFinishDate)
+    });
+
+    function getMinFinishDate(minStartDate) {
+        let min = new Date();
+        if(minStartDate != null)
+    }
+</script>
 
 <!--aca aabca el codigo-->
 <th:block th:insert="layout/btnBackToTop :: btn"/>
