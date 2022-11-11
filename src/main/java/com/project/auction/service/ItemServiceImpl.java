@@ -58,7 +58,7 @@ public class ItemServiceImpl implements ItemService {
 //            registerItem.setLocationId(item.getLocationId());
             registerItem.setPhysicalPayment(item.isPhysicalPayment());
             registerItem.setVirtualPayment(item.isVirtualPayment());
-            registerItem.setStatus(item.getStatus());
+            registerItem.setFinalized(item.isFinalized());
             itemRepository.save(item);
         }
     }
@@ -93,7 +93,7 @@ public class ItemServiceImpl implements ItemService {
 //        item.setLocationId(itemDto.getLocationId());
         item.setPhysicalPayment(itemDto.isPhysicalPayment());
         item.setVirtualPayment(itemDto.isVirtualPayment());
-        item.setStatus(itemDto.getStatus());
+        item.setFinalized(itemDto.isFinalized());
         return item;
     }
 

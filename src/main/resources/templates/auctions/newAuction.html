@@ -19,14 +19,13 @@
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
     <style th:include="layout/loader :: style"></style>
     <style>
-        #description-result {
-            width: 100%;
-            text-align: right;
+        #description-result, #name-result {
             margin-top: -30px;
             padding-right: 10px;
             color: #737373;
             user-select: none;
         }
+
     </style>
 </head>
 
@@ -64,10 +63,11 @@
 
 
                         <div class="row justify-content-center">
-                            <div class="mb-3 col-10 form-group">
+                            <div class="mb-3 col-10 form-group position-relative">
                                 <label class="mb-2 text-muted text-center" for="name">Nombre de producto</label>
                                 <input id="name" type="text" class="form-control" th:field="*{name}" required
-                                       autofocus>
+                                       autofocus maxlength="80">
+                                <p id="name-result" class="position-absolute end-0 me-2">0/80</p>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
                                        th:errors="*{name}"></small>
                             </div>
@@ -76,8 +76,8 @@
 
                             <div class="mb-3 col-5">
                                 <label class="mb-2 text-muted" for="startPrice">Monto inicial</label>
-                                <input id="startPrice" type="number" min="1" class="form-control"
-                                       th:field="*{startPrice}" required th:value="1">
+                                <input id="startPrice" type="number" min="1" max="1000000000" class="form-control"
+                                       th:field="*{startPrice}" required>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('startPrice')}"
                                        th:errors="*{startPrice}"></small>
                             </div>
@@ -85,7 +85,7 @@
                             <div class="mb-3 col-5">
                                 <label class="mb-2 text-muted" for="minNextOffer">minimo entre oferta</label>
                                 <input id="minNextOffer" type="number" class="form-control" th:field="*{minNextOffer}"
-                                       required th:value="1"
+                                       required min="1" max="1000000000"
                                 >
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('minNextOffer')}"
                                        th:errors="*{minNextOffer}"></small>
@@ -93,11 +93,11 @@
                         </div>
 
                         <div class="row justify-content-center">
-                            <div class="mb-3 col-10">
+                            <div class="mb-3 col-10 position-relative">
                                 <label class="mb-2 text-muted" for="description">Detalles del producto</label>
                                 <textarea id="description" type="text" class="form-control" th:field="*{description}"
-                                          required></textarea>
-                                <p id="description-result">0/255</p>
+                                          required maxlength="2000"></textarea>
+                                <p id="description-result" class="position-absolute end-0 me-2">0/2000</p>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('description')}"
                                        th:errors="*{description}"></small>
                             </div>
@@ -165,82 +165,152 @@
             formFile.val(null);
         }
     });
+
 </script>
 
 <script>
-    var myText = $("#description");
-    var result = $("#description-result");
-    var limit = 2000;
-    result[0].textContent = 0 + "/" + limit;
 
-    myText[0].addEventListener("input", function () {
-        var textLength = myText[0].value.length;
-        result[0].textContent = textLength + "/" + limit;
+    let nameText = $("#name");
+    let resultName = $("#name-result");
+    let limitName = 80;
+    resultName[0].textContent = 0 + "/" + limitName;
 
-        if (textLength > limit) {
-            myText.addClass("is-invalid");
-            myText.addClass("mb-0");
-            result[0].style.color = "#ff2851";
+    nameText[0].addEventListener("input", function () {
+        var textLength = nameText[0].value.length;
+        resultName[0].textContent = textLength + "/" + limitName;
+
+        if (textLength > limitName) {
+            nameText.addClass("is-invalid");
+            nameText.addClass("mb-0");
+            resultName[0].style.color = "#ff2851";
         } else {
-            if (myText.hasClass("is-invalid"))
-                myText.removeClass("is-invalid");
-            if (myText.hasClass("mb-0"))
-                myText.removeClass("mb-0");
-            result[0].style.color = "#737373";
+            if (nameText.hasClass("is-invalid"))
+                nameText.removeClass("is-invalid");
+            if (nameText.hasClass("mb-0"))
+                nameText.removeClass("mb-0");
+            resultName[0].style.color = "#737373";
         }
     });
+
+    var descriptionText = $("#description");
+    var resultDescription = $("#description-result");
+    var limitDescription = 2000;
+    resultDescription[0].textContent = 0 + "/" + limitDescription;
+
+    descriptionText[0].addEventListener("input", function () {
+        var textLength = descriptionText[0].value.length;
+        resultDescription[0].textContent = textLength + "/" + limitDescription;
+
+        if (textLength > limitDescription) {
+            descriptionText.addClass("is-invalid");
+            descriptionText.addClass("mb-0");
+            resultDescription[0].style.color = "#ff2851";
+        } else {
+            if (descriptionText.hasClass("is-invalid"))
+                descriptionText.removeClass("is-invalid");
+            if (descriptionText.hasClass("mb-0"))
+                descriptionText.removeClass("mb-0");
+            resultDescription[0].style.color = "#737373";
+        }
+    });
+
 </script>
 
 <script>
+
+    const startPrice = document.getElementById("startPrice");
+    const minNextOffer = document.getElementById("minNextOffer");
+
+    startPrice.value = 1;
+    minNextOffer.value = 1;
+
+    startPrice.addEventListener("change", function () {
+        if (startPrice.value < 1) {
+            startPrice.value = 1;
+        } else if (startPrice.value > 1000000000) {
+            startPrice.value = 1000000000;
+        }
+    });
+
+    minNextOffer.addEventListener("change", function () {
+        if (minNextOffer.value < 1) {
+            minNextOffer.value = 1;
+        } else if (minNextOffer.value > 1000000000) {
+            minNextOffer.value = 1000000000;
+        }
+    });
+
     Date.prototype.addDays = function (days) {
         var date = new Date(this.valueOf());
         date.setDate(date.getDate() + days);
         return date;
     }
-
-    var minStartDay = new Date();
-    minStartDay = minStartDay.addDays(1);
-    var dd = minStartDay.getDate();
-    var mm = minStartDay.getMonth() + 1; //January is 0!
-    var yyyy = minStartDay.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd
-    }
-    if (mm < 10) {
-        mm = '0' + mm
-    }
-
-    minStartDay = yyyy + '-' + mm + '-' + dd;
-
-
     const startDateInput = document.getElementById("startDate");
-    startDateInput.setAttribute("min", minStartDay);
-
-
     const finishDateInput = document.getElementById("finishDate");
-    finishDateInput.setAttribute("disabled", "");
+
+    function getMinStartDay() {
+        var minDay = new Date();
+        minDay = minDay.addDays(7);
+        return minDay;
+    }
+
+    function getMinFinishDay() {
+        let minDay = getMinStartDay();
+        if (startDateInput.value !== "") {
+            minDay = startDateInput.valueAsDate;
+        }
+        minDay = minDay.addDays(7);
+        return minDay;
+    }
+
+    function getMaxFinishDay() {
+        let minDay = getMinStartDay();
+        if (startDateInput.value !== "") {
+            minDay = startDateInput.valueAsDate;
+        }
+        minDay = minDay.addDays(30);
+        return minDay;
+    }
+
+    function getFormattedDay(day) {
+        if (day == null) return null;
+        if (!(day instanceof Date)) return null;
+
+        let dd = day.getDate();
+        let mm = day.getMonth() + 1; //January is 0!
+        let yyyy = day.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        day = yyyy + '-' + mm + '-' + dd;
+        return day;
+    }
+
+
+    startDateInput.setAttribute("min", getFormattedDay(getMinStartDay()));
 
     startDateInput.addEventListener("change", function () {
         if (startDateInput.value === "")
             finishDateInput.setAttribute("disabled", "");
         else {
             finishDateInput.removeAttribute("disabled");
-            finishDateInput.value = "";
+            finishDateInput.setAttribute("min", getFormattedDay(getMinFinishDay()));
+            finishDateInput.setAttribute("max", getFormattedDay(getMaxFinishDay()));
+
         }
 
     });
 
     finishDateInput.addEventListener("change", function () {
-        var minFinishDate = minStartDay.addDays(14);
-        var maxFinishDate = minFinishDate.addDays(30);
-        finishDateInput.setAttribute("min", minFinishDate)
-        finishDateInput.setAttribute("max", maxFinishDate)
+        finishDateInput.setAttribute("min", getFormattedDay(getMinFinishDay()));
+        finishDateInput.setAttribute("max", getFormattedDay(getMaxFinishDay()));
     });
 
-    function getMinFinishDate(minStartDate) {
-        let min = new Date();
-        if(minStartDate != null)
-    }
 </script>
 
 <!--aca aabca el codigo-->

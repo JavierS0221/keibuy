@@ -399,12 +399,14 @@
 
                     <tbody id="country-filter">
 
+
+<!--                    "for" para lista de usuarios-->
                     <tr th:each="person : ${listPersons}">
                         <td class="fw-bold" th:text="${person.id}"></td>
                         <td class="user-td">
                             <div class="d-flex align-items-center">
                                 <img src="../../static/images/DefaultAvatar.png"
-                                     th:src="@{${person.getAvatar() != null ? '/image/display/'+ person.getAvatar().getId() : '/images/DefaultAvatar.png'}}"
+                                     th:src="@{${person.getAvatar() != null ? '/image/avatar/'+ person.getAvatar().getId() : (person.getUsername() == 'keibuy' ? '/images/adminAvatar.jpg' : '/images/DefaultAvatar.png')}}"
                                      alt=""
                                      class="rounded-circle user-avatar border border-1 border-dark" />
                                 <div class="ms-3">

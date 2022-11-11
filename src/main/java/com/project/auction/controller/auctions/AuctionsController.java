@@ -147,6 +147,7 @@ public class AuctionsController {
             }
             itemDto.setItemImages(itemImages);
             itemDto.setPerson(person);
+            itemDto.setFinalized(false);
             itemService.save(itemDto);
             return "redirect:/auctions/new?success";
         } catch (Exception ex) {

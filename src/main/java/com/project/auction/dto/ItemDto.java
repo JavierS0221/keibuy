@@ -29,7 +29,7 @@ public class ItemDto implements Serializable {
     private Date finishDate;
     private int startPrice;
     private int minNextOffer;
-    private int status;
+    private boolean isFinalized = false;
 //    private Location locationId;
     private boolean physicalPayment;
     private boolean virtualPayment;

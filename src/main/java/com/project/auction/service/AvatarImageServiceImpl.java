@@ -1,7 +1,7 @@
 package com.project.auction.service;
 
 import com.project.auction.model.AvatarImage;
-import com.project.auction.repository.ImageRepository;
+import com.project.auction.repository.AvatarImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,38 +9,38 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class ImageServiceImpl implements ImageService {
+public class AvatarImageServiceImpl implements AvatarImageService {
 
     @Autowired
-    private ImageRepository imageRepository;
+    private AvatarImageRepository avatarImageRepository;
 
     @Override
     @Transactional(readOnly = true)
     public AvatarImage getImageById(long id) {
-        return imageRepository.findById(id).orElse(null);
+        return avatarImageRepository.findById(id).orElse(null);
     }
     @Override
     @Transactional(readOnly = true)
     public List<AvatarImage> listImages() {
-        return (List<AvatarImage>) imageRepository.findAll();
+        return (List<AvatarImage>) avatarImageRepository.findAll();
     }
 
     @Override
     @Transactional
     public void save(AvatarImage avatarImage) {
-        imageRepository.save(avatarImage);
+        avatarImageRepository.save(avatarImage);
     }
 
     @Override
     @Transactional
     public void delete(AvatarImage avatarImage) {
-        imageRepository.delete(avatarImage);
+        avatarImageRepository.delete(avatarImage);
     }
 
     @Override
     @Transactional(readOnly = true)
     public AvatarImage getImage(AvatarImage avatarImage) {
         if(avatarImage == null) return null;
-        return imageRepository.findById(avatarImage.getId()).orElse(null);
+        return avatarImageRepository.findById(avatarImage.getId()).orElse(null);
     }
 }

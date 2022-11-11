@@ -4,7 +4,7 @@ import com.project.auction.model.AvatarImage;
 
 import java.util.List;
 
-public interface ImageService {
+public interface AvatarImageService {
     public List<AvatarImage> listImages();
     public void save(AvatarImage avatarImage);
     public void delete(AvatarImage avatarImage);

@@ -14,7 +14,7 @@ public class ItemImage {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "file_name", length = 45)
+    @Column(name = "file_name", length = 256)
     private String fileName;
 
     @Lob

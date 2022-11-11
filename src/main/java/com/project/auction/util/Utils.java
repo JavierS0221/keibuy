@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
@@ -97,5 +98,32 @@ public class Utils {
         } catch (Exception ignored) {
         }
         return outputStream.toByteArray();
+    }
+
+    public static String formatTime(long millis) {
+        long days = TimeUnit.MILLISECONDS.toDays(millis);
+        long hours = TimeUnit.MILLISECONDS.toHours(millis) - TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(millis));
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis));
+
+        if (days > 0) {
+            return String.format("%02dd %02dh %02dm %02ds",
+                    days,
+                    hours,
+                    minutes,
+                    seconds);
+        } else if (hours > 0) {
+            return String.format("%02dh %02dm %02ds",
+                    hours,
+                    minutes,
+                    seconds);
+        } else if (minutes > 0) {
+            return String.format("%02dm %02ds",
+                    minutes,
+                    seconds);
+        } else {
+            return String.format("%02ds",
+                    seconds);
+        }
     }
 }

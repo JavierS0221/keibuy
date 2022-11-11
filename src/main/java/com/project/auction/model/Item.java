@@ -1,6 +1,7 @@
 package com.project.auction.model;
 
 import com.project.auction.model.relation.AuctionOffer;
+import com.project.auction.util.Utils;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ public class Item {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name", length = 45, nullable = false)
+    @Column(name = "name", length = 80, nullable = false)
     private String name;
 
     @Column(name = "description", length = 2000)
@@ -40,8 +41,8 @@ public class Item {
     @Column(name = "min_next_offer")
     private int minNextOffer;
 
-    @Column(name = "status")
-    private int status;
+    @Column(name = "is_finalized")
+    private boolean isFinalized = false;
 //
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "location_id", nullable = false)
@@ -77,10 +78,59 @@ public class Item {
 
     public void setImages(Collection<ItemImage> itemImages) {
         HashSet<ItemImage> newItemImages = new HashSet<>();
-        for(ItemImage itemImage : itemImages) {
+        for (ItemImage itemImage : itemImages) {
             itemImage.setItem(this);
             newItemImages.add(itemImage);
         }
         this.itemImages = newItemImages;
     }
+
+    public boolean isEnabled() {
+        Date currentDate = new Date();
+        return (currentDate.after(startDate) && currentDate.before(finishDate)) && !isFinalized;
+    }
+
+    public List<Person> getParticipants() {
+        List<Person> listPersons = new ArrayList<>();
+        for(AuctionOffer auctionOffer : this.auctionOffers) {
+            Person person = auctionOffer.getPerson();
+            if(!listPersons.contains(person)) {
+                listPersons.add(person);
+            }
+        }
+        return listPersons;
+    }
+
+    public List<AuctionOffer> getOffersInOrder() {
+        List<AuctionOffer> ordOffers = (List<AuctionOffer>) this.auctionOffers;
+        Comparator<AuctionOffer> mostOfferComparator = ((o1, o2) -> Integer.compare(o2.getOffer(), o1.getOffer()));
+        ordOffers.sort(mostOfferComparator);
+        return ordOffers;
+    }
+
+    public AuctionOffer getMostOffer() {
+        if (getOffersInOrder().size() > 0)
+            return getOffersInOrder().get(0);
+        return null;
+    }
+
+    public String getTimeToStart() {
+        Date currentDate = new Date();
+        long millis = 0;
+        if(currentDate.before(this.startDate)) {
+            millis = this.startDate.getTime() - currentDate.getTime();
+        }
+        return Utils.formatTime(millis);
+    }
+
+    public String getTimeToFinish() {
+        Date currentDate = new Date();
+        long millis = 0;
+        if(currentDate.before(this.finishDate)) {
+            millis = this.finishDate.getTime() - currentDate.getTime();
+        }
+        return Utils.formatTime(millis);
+    }
+
+
 }

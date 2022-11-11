@@ -120,6 +120,13 @@
 			<version>3.0.1</version>
 		</dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.github.wimdeblauwe/htmx-spring-boot-thymeleaf -->
+        <dependency>
+            <groupId>io.github.wimdeblauwe</groupId>
+            <artifactId>htmx-spring-boot-thymeleaf</artifactId>
+            <version>2.0.0-M1</version>
+        </dependency>
+
 	</dependencies>
 
 	<build>

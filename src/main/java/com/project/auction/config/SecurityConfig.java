@@ -51,7 +51,7 @@ public class SecurityConfig {
             .authorizeRequests().antMatchers(
             "/register**", "/js/**", "/css/**", "/images/**", "/videos/**").permitAll()
 
-            .antMatchers("/profile/**")
+            .antMatchers("/profile/**", "/auctions/new/**")
             .hasRole("USER")
             .and()
             .formLogin()

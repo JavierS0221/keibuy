@@ -40,15 +40,15 @@ public class PersonServiceImpl implements PersonService {
 
     private PersonRepository personRepository;
     private RolService rolService;
-    private ImageService imageService;
+    private AvatarImageService avatarImageService;
     private SecureTokenService secureTokenService;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public PersonServiceImpl(PersonRepository personRepository, RolService rolService, ImageService imageService, SecureTokenService secureTokenService, BCryptPasswordEncoder passwordEncoder) {
+    public PersonServiceImpl(PersonRepository personRepository, RolService rolService, AvatarImageService avatarImageService, SecureTokenService secureTokenService, BCryptPasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
         this.rolService = rolService;
-        this.imageService = imageService;
+        this.avatarImageService = avatarImageService;
         this.secureTokenService = secureTokenService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -113,27 +113,33 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public void update(PersonDto personDto) throws UnkownIdentifierException {
         Person person = this.getPerson(personDto);
-        if(person != null) {
-            person.setUsername(personDto.getUsername());
-            person.setName(personDto.getName());
-            person.setLastName(personDto.getLastName());
-            person.setPassword(personDto.getPassword());
-            person.setEmail(personDto.getEmail());
-            person.setPhone(personDto.getPhone());
-            person.setCountry(personDto.getCountry());
-            person.setBirthDate(personDto.getBirthDate());
-            person.setCreatedDate(personDto.getCreatedDate());
-            person.setAccountVerified(personDto.isAccountVerified());
-            person.setAccountBanned(personDto.isAccountBanned());
-            person.setRoles(personDto.getRoles());
+        update(person);
+    }
 
-            AvatarImage currentAvatar = imageService.getImage(person.getAvatar());
+    @Override
+    @Transactional
+    public void update(Person person) throws UnkownIdentifierException {
+        if(person != null) {
+            person.setUsername(person.getUsername());
+            person.setName(person.getName());
+            person.setLastName(person.getLastName());
+            person.setPassword(person.getPassword());
+            person.setEmail(person.getEmail());
+            person.setPhone(person.getPhone());
+            person.setCountry(person.getCountry());
+            person.setBirthDate(person.getBirthDate());
+            person.setCreatedDate(person.getCreatedDate());
+            person.setAccountVerified(person.isAccountVerified());
+            person.setAccountBanned(person.isAccountBanned());
+            person.setRoles(person.getRoles());
+
+            AvatarImage currentAvatar = avatarImageService.getImage(person.getAvatar());
             if(currentAvatar != null) {
-                AvatarImage newAvatar = personDto.getAvatar();
+                AvatarImage newAvatar = person.getAvatar();
                 newAvatar.setId(currentAvatar.getId());
-                imageService.save(newAvatar);
+                avatarImageService.save(newAvatar);
             } else {
-                person.setAvatar(personDto.getAvatar());
+                person.setAvatar(person.getAvatar());
             }
             personRepository.save(person);
         }

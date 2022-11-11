@@ -1,10 +1,11 @@
 package com.project.auction.controller;
 
 import com.project.auction.model.AvatarImage;
-import com.project.auction.service.ImageService;
+import com.project.auction.model.ItemImage;
+import com.project.auction.service.AvatarImageService;
+import com.project.auction.service.ItemImageService;
 import com.project.auction.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,19 +19,29 @@ import java.io.IOException;
 @Controller
 @RequestMapping("image")
 public class ImageController {
-
-    @Value("${uploadDir}")
-    private String uploadFolder;
     @Autowired
-    ImageService imageService;
+    AvatarImageService avatarImageService;
+    @Autowired
+    ItemImageService itemImageService;
 
-    @GetMapping("/display/{id}")
+    @GetMapping("/avatar/{id}")
     @ResponseBody
-    void showImage(@PathVariable("id") Long id, HttpServletResponse response, AvatarImage avatarImage)
+    void showAvatarImage(@PathVariable("id") Long id, HttpServletResponse response, AvatarImage avatarImage)
             throws ServletException, IOException {
-        avatarImage = imageService.getImageById(id);
+        avatarImage = avatarImageService.getImageById(id);
         byte[] decompressBytes = Utils.decompressImage(avatarImage.getBytes());
         response.setContentType(avatarImage.getContentType());
+        response.getOutputStream().write(decompressBytes);
+        response.getOutputStream().close();
+    }
+
+    @GetMapping("/item/{id}")
+    @ResponseBody
+    void showItemImage(@PathVariable("id") Long id, HttpServletResponse response, ItemImage itemImage)
+            throws ServletException, IOException {
+        itemImage = itemImageService.getImageById(id);
+        byte[] decompressBytes = Utils.decompressImage(itemImage.getBytes());
+        response.setContentType(itemImage.getContentType());
         response.getOutputStream().write(decompressBytes);
         response.getOutputStream().close();
     }
