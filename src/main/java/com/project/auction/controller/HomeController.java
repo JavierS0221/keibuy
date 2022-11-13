@@ -98,16 +98,14 @@ public class HomeController {
                 PersonDto personDto = personService.getPersonDtoByNameOrEmail(user.getUsername());
                 if (!file.isEmpty()) {
                     String contentType = file.getContentType();
-                    if (contentType == null || contentType.startsWith("image/")) {
+                    if (contentType == null || !contentType.startsWith("image/")) {
                         return "redirect:/profile";
                     }
-
                     String fileName = file.getOriginalFilename();
                     if (fileName == null || fileName.contains("..")) {
                         model.addAttribute("invalid", "Sorry! Filename contains invalid path sequence \" + fileName");
                         return "redirect:/profile";
                     }
-
                     AvatarImage avatarImage = new AvatarImage();
 
                     avatarImage.setContentType(file.getContentType());
@@ -119,10 +117,7 @@ public class HomeController {
 
                     personService.update(personDto);
                 }
-            } catch (UnkownIdentifierException e) {
-                System.out.println("ERROR FINAL");
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (UnkownIdentifierException | IOException e) {
                 e.printStackTrace();
             }
         }

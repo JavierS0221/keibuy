@@ -8,6 +8,8 @@ import com.project.auction.service.ItemService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
@@ -25,33 +27,40 @@ class AuctionProjectApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	void testSaveOrder(){
+//	@Test
+//	void a() {
+//		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//		String a = passwordEncoder.encode("Mecla800$");
+//		System.out.println(passwordEncoder.encode("Mecla800$"));
+//	}
 
-		// create Order object
-		ItemDto itemDto = new ItemDto();
-
-		ItemImage itemImage = new ItemImage();
-		itemImage.setBytes(new byte[]{0,1,0});
-		itemImage.setFileName("hola");
-		itemImage.setContentType("jpg");
-
-		ItemImage itemImage2 = new ItemImage();
-		itemImage.setBytes(new byte[]{1,1,0});
-		itemImage.setFileName("h241");
-		itemImage.setContentType("jpg");
-
-		itemDto.setName("a");
-		itemDto.setDescription("b");
-		itemDto.setStartDate(new Date(new Date().getTime()+1000000));
-		itemDto.setFinishDate(new Date(new Date().getTime()+4000000));
-
-		itemDto.getItemImages().add(itemImage);
-		itemDto.getItemImages().add(itemImage2);
-
-		Item item = itemService.getItem(itemDto);
-		itemService.save(item);
-
-	}
+//	@Test
+//	void testSaveOrder(){
+//
+//		// create Order object
+//		ItemDto itemDto = new ItemDto();
+//
+//		ItemImage itemImage = new ItemImage();
+//		itemImage.setBytes(new byte[]{0,1,0});
+//		itemImage.setFileName("hola");
+//		itemImage.setContentType("jpg");
+//
+//		ItemImage itemImage2 = new ItemImage();
+//		itemImage.setBytes(new byte[]{1,1,0});
+//		itemImage.setFileName("h241");
+//		itemImage.setContentType("jpg");
+//
+//		itemDto.setName("a");
+//		itemDto.setDescription("b");
+//		itemDto.setStartDate(new Date(new Date().getTime()+1000000));
+//		itemDto.setFinishDate(new Date(new Date().getTime()+4000000));
+//
+//		itemDto.getItemImages().add(itemImage);
+//		itemDto.getItemImages().add(itemImage2);
+//
+//		Item item = itemService.getItem(itemDto);
+//		itemService.save(item);
+//
+//	}
 
 }

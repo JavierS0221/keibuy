@@ -242,7 +242,7 @@
                         <th:block th:each="item : ${listItems}">
                             <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div"
                                  th:attr="onclick=|window.open('item/'+${item.getId()})|">
-                                <div class="card not-started d-flex flex-column align-items-center">
+                                <div class="card d-flex flex-column align-items-center" th:classappend="${!item.isEnabled() ? 'not-started' : ''}">
                                     <div class="product-name" th:text="${item.getName()}"></div>
 
                                     <div class="carousel slide carousel-fade" data-bs-ride="carousel"
@@ -269,12 +269,22 @@
                                                 ><small th:text="${item.getParticipants().size()}">0</small>
                                             </div>
                                             <div class="mt-1">
+                                                <th:block th:if="${item.getMostOffer() != null}">
                                                 <small class="text-colored"
                                                 ><i class="fa-solid fa-sack-dollar"></i>
-                                                    <b>Oferta:</b></small
+                                                    <b>Ultima oferta:</b></small
                                                 ><br/>
                                                 <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getMostOffer().getOffer()} + '$'">&nbsp&nbsp&nbsp
                                                     0$</small>
+                                                </th:block>
+                                                <th:block th:unless="${item.getMostOffer() != null}">
+                                                    <small class="text-colored"
+                                                    ><i class="fa-solid fa-sack-dollar"></i>
+                                                        <b>Oferta inicial:</b></small
+                                                    ><br/>
+                                                    <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getStartPrice()} + '$'">&nbsp&nbsp&nbsp
+                                                        0$</small>
+                                                </th:block>
                                             </div>
                                             <div class="mt-1">
                                                 <small class="text-colored"
@@ -394,8 +404,13 @@
             let parent = time.parentElement;
             let listCooldowns = parent.getElementsByClassName('start-cooldown');
 
+            let distance = startTime - currentDate.getTime();
             for (let cooldown of listCooldowns) {
-                cooldown.innerHTML = '&nbsp&nbsp&nbsp ' + formatTime(startTime - currentDate.getTime());
+                cooldown.innerHTML = '&nbsp&nbsp&nbsp ' + formatTime(distance);
+            }
+
+            if(distance < 0) {
+                parent.parentElement.parentElement.parentElement.classList.remove("not-started");
             }
         }
 

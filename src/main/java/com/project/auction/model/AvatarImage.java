@@ -22,4 +22,5 @@ public class AvatarImage {
     private byte[] bytes;
 
     private String contentType;
+
 }

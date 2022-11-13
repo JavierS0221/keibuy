@@ -2,12 +2,15 @@ package com.project.auction.model;
 
 import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.util.Utils;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "item")
 public class Item {
@@ -58,12 +61,14 @@ public class Item {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @ToString.Exclude
     private Collection<AuctionOffer> auctionOffers;
 
     @OneToMany(mappedBy = "item",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @ToString.Exclude
     private Collection<ItemImage> itemImages;
 
 //    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -92,11 +97,21 @@ public class Item {
 
     public List<Person> getParticipants() {
         List<Person> listPersons = new ArrayList<>();
-        for(AuctionOffer auctionOffer : this.auctionOffers) {
+        List<AuctionOffer> listAuctionOffer = new ArrayList<>();
+        for (AuctionOffer auctionOffer : this.auctionOffers) {
             Person person = auctionOffer.getPerson();
-            if(!listPersons.contains(person)) {
+            if (!listPersons.contains(person)) {
                 listPersons.add(person);
+                listAuctionOffer.add(auctionOffer);
             }
+        }
+
+        listPersons = new ArrayList<>();
+        Comparator<AuctionOffer> mostOfferComparator = ((o1, o2) -> Integer.compare(o2.getOffer(), o1.getOffer()));
+        listAuctionOffer.sort(mostOfferComparator);
+        for (AuctionOffer auctionOffer : listAuctionOffer) {
+            Person person = auctionOffer.getPerson();
+            listPersons.add(person);
         }
         return listPersons;
     }
@@ -117,7 +132,7 @@ public class Item {
     public String getTimeToStart() {
         Date currentDate = new Date();
         long millis = 0;
-        if(currentDate.before(this.startDate)) {
+        if (currentDate.before(this.startDate)) {
             millis = this.startDate.getTime() - currentDate.getTime();
         }
         return Utils.formatTime(millis);
@@ -126,11 +141,16 @@ public class Item {
     public String getTimeToFinish() {
         Date currentDate = new Date();
         long millis = 0;
-        if(currentDate.before(this.finishDate)) {
+        if (currentDate.before(this.finishDate)) {
             millis = this.finishDate.getTime() - currentDate.getTime();
         }
         return Utils.formatTime(millis);
     }
 
-
+    public AuctionOffer getOfferByPerson(Person person) {
+        for (AuctionOffer auctionOffer : this.auctionOffers) {
+            if (auctionOffer.getPerson().equals(person)) return auctionOffer;
+        }
+        return null;
+    }
 }

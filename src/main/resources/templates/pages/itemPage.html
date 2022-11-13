@@ -135,6 +135,39 @@
         }
 
     </style>
+
+    <!--    Table style-->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&family=Poppins:wght@600&display=swap');
+
+
+        .participants-table thead {
+            font-family: 'Poppins', sans-serif;
+            font-weight: bolder;
+            font-size: 16px;
+            color: #666
+        }
+
+        .participants-image {
+            width: 40px;
+            height: 40px
+        }
+
+        .participants-name {
+            display: inline-block
+        }
+
+
+        .participants-table tbody td:first-child {
+            border-bottom-left-radius: 10px;
+            border-top-left-radius: 10px
+        }
+
+        .participants-table tbody td:last-child {
+            border-bottom-right-radius: 10px;
+            border-top-right-radius: 10px
+        }
+    </style>
 </head>
 
 <body class="position-relative bg-light snippet-body" data-th-span="scroll"
@@ -151,41 +184,23 @@
         <div class="row g-0">
             <div class="col-md-5 border-end">
                 <div class="d-flex flex-column justify-content-center">
-                    <div class="main_image h-25 p-5">
-                        <img class="rounded rounded-2 border border-dark border-1" src="https://i.imgur.com/w6kEctd.jpg"
-                             width="350">
-                        <img class="rounded rounded-2 border border-dark border-1" src="https://picsum.photos/200"
-                             width="350">
-                        <img class="rounded rounded-2 border border-dark border-1" src="https://picsum.photos/200"
-                             width="350">
-                        <img class="rounded rounded-2 border border-dark border-1" src="https://picsum.photos/200"
-                             width="350">
-                        <img class="rounded rounded-2 border border-dark border-1" src="https://picsum.photos/200"
-                             width="350">
+                    <div class="main_image p-5">
+                        <th:block th:each="item,i : ${item.getItemImages()}">
+                            <img class="rounded rounded-2 border border-dark border-1"
+                                 th:src="@{${item != null ? '/image/item/'+ item.getId() : '...'}}"
+                                 width="350">
+                        </th:block>
                     </div>
 
                     <div class="your-class px-2">
-                        <div class="m-2 rounded rounded-1">
-                            <img class="card-img" src="https://i.imgur.com/w6kEctd.jpg" alt="Card image cap"
-                                 height="75">
+                        <th:block th:each="item,i : ${item.getItemImages()}">
+                            <div class="m-2 rounded rounded-1">
+                                <img class="card-img" th:src="@{${item != null ? '/image/item/'+ item.getId() : '...'}}"
+                                     alt="Card image cap"
+                                     height="75">
 
-                        </div>
-                        <div class="m-2 rounded rounded-1">
-                            <img class="card-img" src="https://picsum.photos/200" alt="Card image cap" height="75">
-
-                        </div>
-                        <div class="m-2 rounded rounded-1">
-                            <img class="card-img" src="https://picsum.photos/200" alt="Card image cap" height="75">
-
-                        </div>
-                        <div class="m-2 rounded rounded-1">
-                            <img class="card-img" src="https://picsum.photos/200" alt="Card image cap" height="75">
-
-                        </div>
-                        <div class="m-2 rounded rounded-1">
-                            <img class="card-img" src="https://picsum.photos/200" alt="Card image cap" height="75">
-
-                        </div>
+                            </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
@@ -206,8 +221,26 @@
                     </div>
                     <h5 id="contdwn"></h5>
                     <br>
-                    <h5 th:text="'Última oferta: $' + (${item.getMostOffer() != null} ? ${item.getMostOffer().getOffer()} : '-')">-</h5>
-                    <h6>Tu Oferta: $5</h6>
+
+                    <span th:if="${item.getMostOffer() != null}"
+                          th:text="'&#x2022; Última oferta: $' + ${item.getMostOffer().getOffer()}">-</span>
+                    <a href="#"
+                       data-bs-toggle="modal"
+                       data-bs-target="#participantsModal">
+
+                        <span>([[${item.getParticipants().size()}]] <i
+                                class="fa-regular fa-user"></i>)</span></a>
+                    <span th:unless="${item.getMostOffer() != null}"
+                          th:text="'&#x2022; Oferta inicial: $' + ${item.getStartPrice()}">-</span>
+                    <br>
+                    <span th:text="'&#x2022; Minimo entre oferta: $' + ${item.getMinNextOffer()}">-</span>
+
+                    <th:block th:if="${person != null}">
+                        <br>
+                        <span th:if="${item.getOfferByPerson(person) != null}"
+                              th:text="'&#x2022; Tu oferta: $'+${item.getOfferByPerson(person).getOffer()}">-</span>
+                    </th:block>
+                    <br>
                     <br>
                     <!--Modal del modal de oferta-->
                     <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel"
@@ -237,7 +270,86 @@
                             </div>
                         </div>
                     </div>
-                    <!--Modal del modal de oferta-->
+
+
+                    <!--Modal de participantes-->
+                    <div class="modal fade"
+                         id="participantsModal"
+                         tabindex="-1"
+                         aria-labelledby="participantsModalLabel"
+                         aria-hidden="true"
+                    >
+                        <div
+                                class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                        >
+                            <div class="modal-content shadow-sm">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5 m-auto" id="participantsModalLabel">
+                                        <b>Participantes</b>
+                                    </h1>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-responsive">
+                                        <table class="table text-center table-striped participants-table">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Usuario</th>
+                                                <th scope="col">Ofera</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <th:block th:each="participant,i : ${item.getParticipants()}">
+                                                <tr th:id="'pos'+${i.getIndex()+1}" class=" border border-1"
+                                                    th:classappend="${participant.getUsername() == person.getUsername()} ? 'border-primary border-2' : ''">
+                                                    <td class="pt-4 mt-1"><b>[[${i.getIndex()+1}]]</b></td>
+                                                    <td class="pt-2 pb-0">
+                                                        <img
+                                                                th:src="@{${participant.getAvatar() != null ? '/image/avatar/'+ participant.getAvatar().getId() : (participant.getUsername() == 'keibuy' ? '/images/adminAvatar.jpg' : '/images/DefaultAvatar.png')}}"
+                                                                class="rounded-circle participants-image"
+                                                                alt=""
+                                                        /><br>
+                                                        <div class="pl-lg-5 pl-md-3 pl-1 participants-name"
+                                                             th:text="${person.getUsername()}">
+                                                        </div>
+                                                    </td>
+                                                    <td class="pt-4 mt-1">
+                                                        $[[${item.getOfferByPerson(participant).getOffer()}]]
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer py-0">
+
+                                    <th:block th:each="participant,i : ${item.getParticipants()}">
+                                        <th:block th:if="${participant.getUsername() == person.getUsername()}">
+                                            <span class="position-absolute start-0 ps-2"><a
+                                                    th:href="'#pos'+${i.getIndex()+1}">Tu posición: [[${i.getIndex()+1}]]</a></span>
+                                        </th:block>
+                                    </th:block>
+
+                                    <th:block th:unless="${item.getParticipants().contains(person)}">
+                                        <span class="position-absolute start-0 ps-2">No participas</span>
+                                    </th:block>
+                                    <span class="py-1">[[${item.getParticipants().size()}]] participantes</span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                            type="button"
+                                            class="btn btn-secondary m-auto"
+                                            data-bs-dismiss="modal"
+                                    >
+                                        Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Modal de oferta-->
                     <div class="modal fade" id="offerModal" tabindex="-1" aria-labelledby="offerModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -246,27 +358,33 @@
                                     <h1 class="modal-title fs-5" id="offerModalLabel">Oferta</h1>
 
                                 </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="offert" class="col-form-label">Ingrese su oferta</label>
-                                        <input type="text" class="form-control" id="offert">
+                                <form th:action="@{${'/item/'+item.getId()+'/offer'}}" method="post">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="offer" class="col-form-label">Ingrese su oferta</label>
+                                            <input type="number" class="form-control" id="offer" th:value="${offer}"
+                                                   name="offer">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="col-form-label">Ingrese su contraseña</label>
+                                            <input type="password" class="form-control" id="password"
+                                                   th:value="${password}" name="password">
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="password" class="col-form-label">Ingrese su contraseña</label>
-                                        <input type="text" class="form-control" id="password">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Enviar oferta</button>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar
-                                    </button>
-                                    <button type="button" class="btn btn-primary">Enviar oferta</button>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                     <!--                    Modal btn-->
 
-                    <button class="cart-btn btn btn-sm btn-primary px-4" id="btnOffer">Ofertar</button>
+                    <button th:if="${item.isEnabled()}" class="cart-btn btn btn-sm btn-primary px-4" id="btnOffer">
+                        Ofertar
+                    </button>
                     <!--                    <button type="button" class="btn btn-outline-primary btn mt-1" id="btnOffer">Ofertar</button>-->
                 </div>
             </div>
@@ -289,7 +407,7 @@
 <!-- Show alert or Offer Modal Script -->
 <script>
     const btnOffer = $("#btnOffer");
-    const time = 10000;
+    const time = 3600000;
 
     // JQueryElement[0] OR JQueryElement.get(0) == Dom Element
     btnOffer[0].addEventListener("click", function (event) {
@@ -355,9 +473,35 @@
 </script>
 
 <!-- Reloj -->
-<script>
+<script th:inline="javascript">
+    function formatTime(ms) {
+        const days = Math.floor(ms / (24 * 60 * 60 * 1000));
+        const daysms = ms % (24 * 60 * 60 * 1000);
+        const hours = Math.floor(daysms / (60 * 60 * 1000));
+        const hoursms = ms % (60 * 60 * 1000);
+        const minutes = Math.floor(hoursms / (60 * 1000));
+        const minutesms = ms % (60 * 1000);
+        const sec = Math.floor(minutesms / 1000);
+
+
+        let daysString = (days < 10 ? '0' : '') + days;
+        let hoursString = (hours < 10 ? '0' : '') + hours;
+        let minutesString = (minutes < 10 ? '0' : '') + minutes;
+        let secondsString = (sec < 10 ? '0' : '') + sec;
+
+        if (days > 0)
+            return daysString + "d " + hoursString + "h " + minutesString + "m " + secondsString + "s";
+        else if (hours > 0)
+            return hoursString + "h " + minutesString + "m " + secondsString + "s";
+        else if (minutes > 0)
+            return minutesString + "m " + secondsString + "s";
+        else
+            return secondsString + "s";
+    }
+
     // Set the date we're counting down to
-    var countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
+    var countDownDateStart = /*[[${item.getStartDate().getTime()}]]*/ 0;
+    var countDownDateFinish = /*[[${item.getFinishDate().getTime()}]]*/ 0;
 
     // Update the count down every 1 second
     var x = setInterval(function () {
@@ -366,22 +510,19 @@
         var now = new Date().getTime();
 
         // Find the distance between now and the count down date
-        var distance = countDownDate - now;
-
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        var startDistance = countDownDateStart - now;
+        var finishDistance = countDownDateFinish - now;
 
         // Display the result in the element with id="contdwn"
-        document.getElementById("contdwn").innerHTML = "Expira en: " + days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s ";
-
-        // If the count down is finished, write some text
-        if (distance < 0) {
-            clearInterval(x);
-            document.getElementById("contdwn").innerHTML = "EXPIRED";
+        if (startDistance < 0) {
+            if (finishDistance < 0) {
+                clearInterval(x);
+                document.getElementById("contdwn").innerHTML = "&#x2022; EXPIRED";
+            } else {
+                document.getElementById("contdwn").innerHTML = "<i class='fa-solid fa-hourglass-start'></i>  Expira en: " + formatTime(finishDistance);
+            }
+        } else {
+            document.getElementById("contdwn").innerHTML = "&#x2022; Inicia en: " + formatTime(startDistance);
         }
     }, 1000);
 
@@ -398,13 +539,13 @@
             asNavFor: '.your-class'
         });
         $('.your-class').slick({
+            lazyLoad: 'ondemand',
             autoplay: true,
             autoplaySpeed: 8000,
-            infinite: false,
             speed: 300,
             asNavFor: '.main_image',
             slidesToShow: 4,
-            slidesToScroll: 1,
+            dots: true,
             centerMode: true,
             focusOnSelect: true,
             responsive: [
@@ -413,8 +554,6 @@
                     settings: {
                         slidesToShow: 3,
                         slidesToScroll: 1,
-                        infinite: false,
-                        dots: false,
                     }
                 }
             ]

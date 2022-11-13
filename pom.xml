@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.project.auction</groupId>
-	<artifactId>auctionProject</artifactId>
+	<artifactId>keibuy</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>auctionProject</name>
+	<name>keibuy</name>
 	<description>Final class project 3ºBL</description>
 	<properties>
 		<java.version>17</java.version>

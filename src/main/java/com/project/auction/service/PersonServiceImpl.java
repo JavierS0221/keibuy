@@ -111,13 +111,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional
-    public void update(PersonDto personDto) throws UnkownIdentifierException {
-        Person person = this.getPerson(personDto);
-        update(person);
-    }
-
-    @Override
-    @Transactional
     public void update(Person person) throws UnkownIdentifierException {
         if(person != null) {
             person.setUsername(person.getUsername());
@@ -140,6 +133,36 @@ public class PersonServiceImpl implements PersonService {
                 avatarImageService.save(newAvatar);
             } else {
                 person.setAvatar(person.getAvatar());
+            }
+            personRepository.save(person);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void update(PersonDto personDto) throws UnkownIdentifierException {
+        Person person = this.getPerson(personDto);
+        if(person != null) {
+            person.setUsername(personDto.getUsername());
+            person.setName(personDto.getName());
+            person.setLastName(personDto.getLastName());
+            person.setPassword(personDto.getPassword());
+            person.setEmail(personDto.getEmail());
+            person.setPhone(personDto.getPhone());
+            person.setCountry(personDto.getCountry());
+            person.setBirthDate(personDto.getBirthDate());
+            person.setCreatedDate(personDto.getCreatedDate());
+            person.setAccountVerified(personDto.isAccountVerified());
+            person.setAccountBanned(personDto.isAccountBanned());
+            person.setRoles(personDto.getRoles());
+
+            AvatarImage currentAvatar = avatarImageService.getImage(person.getAvatar());
+            if(currentAvatar != null) {
+                AvatarImage newAvatar = personDto.getAvatar();
+                newAvatar.setId(currentAvatar.getId());
+                avatarImageService.save(newAvatar);
+            } else {
+                person.setAvatar(personDto.getAvatar());
             }
             personRepository.save(person);
         }

@@ -12,7 +12,6 @@ public interface ItemService {
     public List<Item> listItems();
     public void save(Item item);
     public void save(ItemDto itemDto);
-    public void update(Item item);
     public void delete(Item item);
     public Item getItem(ItemDto itemDto);
     public Item getItem(Item item);

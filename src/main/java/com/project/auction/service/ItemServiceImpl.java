@@ -42,30 +42,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public void update(Item item) {
-        Item registerItem = this.getItem(item);
-        if (registerItem != null) {
-            registerItem.setName(item.getName());
-            registerItem.setDescription(item.getDescription());
-            registerItem.setPerson(item.getPerson());
-            registerItem.setItemImages(item.getItemImages());
-            registerItem.setAuctionOffers(item.getAuctionOffers());
-            registerItem.setStartDate(item.getStartDate());
-            registerItem.setFinishDate(item.getFinishDate());
-//            registerItem.setCategories(item.getCategories());
-            registerItem.setMinNextOffer(item.getMinNextOffer());
-            registerItem.setStartPrice(item.getStartPrice());
-//            registerItem.setLocationId(item.getLocationId());
-            registerItem.setPhysicalPayment(item.isPhysicalPayment());
-            registerItem.setVirtualPayment(item.isVirtualPayment());
-            registerItem.setFinalized(item.isFinalized());
-            itemRepository.save(item);
-        }
-    }
-
-
-    @Override
-    @Transactional
     public void delete(Item item) {
         itemRepository.delete(item);
     }
