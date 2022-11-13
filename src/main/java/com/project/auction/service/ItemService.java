@@ -2,6 +2,7 @@ package com.project.auction.service;
 
 import com.project.auction.dto.ItemDto;
 import com.project.auction.model.Item;
+import com.project.auction.model.ItemImage;
 import com.project.auction.model.Person;
 import org.springframework.data.domain.Page;
 
@@ -16,4 +17,5 @@ public interface ItemService {
     public Item getItem(ItemDto itemDto);
     public Item getItem(Item item);
     public Page<Item> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
+    public Item getItemById(long id);
 }

@@ -15,6 +15,8 @@
 	<description>Final class project 3ºBL</description>
 	<properties>
 		<java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -119,13 +121,6 @@
 			<artifactId>js-cookie</artifactId>
 			<version>3.0.1</version>
 		</dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.github.wimdeblauwe/htmx-spring-boot-thymeleaf -->
-        <dependency>
-            <groupId>io.github.wimdeblauwe</groupId>
-            <artifactId>htmx-spring-boot-thymeleaf</artifactId>
-            <version>2.0.0-M1</version>
-        </dependency>
 
 	</dependencies>
 

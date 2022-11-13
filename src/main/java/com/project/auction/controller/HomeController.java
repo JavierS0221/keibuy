@@ -8,7 +8,6 @@ import com.project.auction.model.Person;
 import com.project.auction.model.relation.PersonRol;
 import com.project.auction.service.CategoryService;
 import com.project.auction.service.PersonService;
-import com.project.auction.service.StorageService;
 import com.project.auction.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -33,8 +31,6 @@ public class HomeController {
     private CategoryService categoryService;
     @Autowired
     private PersonService personService;
-    @Autowired
-    private StorageService storageService;
 
 
     @GetMapping("/")
@@ -100,11 +96,9 @@ public class HomeController {
         if (user != null) {
             try {
                 PersonDto personDto = personService.getPersonDtoByNameOrEmail(user.getUsername());
-                List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
-
                 if (!file.isEmpty()) {
                     String contentType = file.getContentType();
-                    if (!contentTypes.contains(contentType)) {
+                    if (contentType == null || contentType.startsWith("image/")) {
                         return "redirect:/profile";
                     }
 

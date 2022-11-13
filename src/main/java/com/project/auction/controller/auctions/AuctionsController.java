@@ -3,7 +3,6 @@ package com.project.auction.controller.auctions;
 import com.project.auction.dto.ItemDto;
 import com.project.auction.dto.PersonDto;
 import com.project.auction.exception.UnkownIdentifierException;
-import com.project.auction.model.AvatarImage;
 import com.project.auction.model.Item;
 import com.project.auction.model.ItemImage;
 import com.project.auction.model.Person;
@@ -25,7 +24,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -121,13 +119,12 @@ public class AuctionsController {
 
 
         try {
-            List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
             List<ItemImage> itemImages = new ArrayList<>();
 
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
                     String contentType = file.getContentType();
-                    if (!contentTypes.contains(contentType)) {
+                    if (contentType == null || !contentType.startsWith("image/")) {
                         return "redirect:/auctions/new";
                     }
 

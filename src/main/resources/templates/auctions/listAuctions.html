@@ -240,7 +240,8 @@
                     <div class="row mx-0 px-0">
 
                         <th:block th:each="item : ${listItems}">
-                            <div class="col-lg-3 col-md-6 mb-3 pe-0">
+                            <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div"
+                                 th:attr="onclick=|window.open('item/'+${item.getId()})|">
                                 <div class="card not-started d-flex flex-column align-items-center">
                                     <div class="product-name" th:text="${item.getName()}"></div>
 
@@ -272,14 +273,19 @@
                                                 ><i class="fa-solid fa-sack-dollar"></i>
                                                     <b>Oferta:</b></small
                                                 ><br/>
-                                                <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getMostOffer().getOffer()} + '$'">&nbsp&nbsp&nbsp 0$</small>
+                                                <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getMostOffer().getOffer()} + '$'">&nbsp&nbsp&nbsp
+                                                    0$</small>
                                             </div>
                                             <div class="mt-1">
                                                 <small class="text-colored"
                                                 ><i class="fa-solid fa-hourglass-start"></i>
                                                     <b>Termina en:</b></small
                                                 ><br/>
-                                                <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getTimeToFinish()}">&nbsp&nbsp&nbsp 0s</small>
+                                                <span class="finish-time d-none"
+                                                      th:text="${item.getFinishDate().getTime()}"></span>
+                                                <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getTimeToFinish()}">&nbsp&nbsp&nbsp
+                                                    0s</small>
+
                                             </div>
                                         </th:block>
                                         <th:block th:unless="${item.isEnabled()}">
@@ -288,377 +294,25 @@
                                                 ><i class="fa-solid fa-sack-dollar"></i>
                                                     <b>Oferta Inicial:</b></small
                                                 ><br/>
-                                                <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getStartPrice()} + '$'">&nbsp&nbsp&nbsp 0$</small>
+                                                <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getStartPrice()} + '$'">&nbsp&nbsp&nbsp
+                                                    0$</small>
                                             </div>
                                             <div class="mt-1">
                                                 <small class="text-colored"
                                                 ><i class="fa-solid fa-calendar"></i>
                                                     <b>Inicia en:</b></small
                                                 ><br/>
-                                                <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getTimeToStart()}">&nbsp&nbsp&nbsp 0s</small>
+                                                <span class="start-time d-none"
+                                                      th:text="${item.getStartDate().getTime()}"></span>
+                                                <small class="start-cooldown"
+                                                       th:text="'&nbsp&nbsp&nbsp ' + ${item.getTimeToStart()}">&nbsp&nbsp&nbsp
+                                                    0s</small>
                                             </div>
                                         </th:block>
                                     </div>
                                 </div>
                             </div>
                         </th:block>
-
-<!--                        <div class="col-lg-3 col-md-6 mb-3 pe-0">-->
-<!--                            <div class="card not-started d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Computadora Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://pbs.twimg.com/media/EfldOxaXsAAkQBh.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta Inicial:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-calendar"></i>-->
-<!--                                            <b>Inicia en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 06d 01h 12m 05s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer 3.0</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/sT9OQ2fdVnc/sddefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>254</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 23.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 02d 01h 24m 22s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop-->
-<!--                                    Gameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer-->
-<!--                                </div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-3 col-md-6 mb-3">-->
-<!--                            <div class="card d-flex flex-column align-items-center">-->
-<!--                                <div class="product-name">Laptop Gamer</div>-->
-<!--                                <div class="card-img">-->
-<!--                                    <img src="https://i.ytimg.com/vi/hWKcjTBN72A/maxresdefault.jpg" alt=""/>-->
-<!--                                </div>-->
-<!--                                <div class="card-body p-0">-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-user"></i>-->
-<!--                                            <b>Participantes:</b> </small-->
-<!--                                        ><small>68</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-sack-dollar"></i>-->
-<!--                                            <b>Oferta:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 1.000.000$</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="mt-1">-->
-<!--                                        <small class="text-colored"-->
-<!--                                        ><i class="fa-solid fa-hourglass-start"></i>-->
-<!--                                            <b>Termina en:</b></small-->
-<!--                                        ><br/>-->
-<!--                                        <small class="">&nbsp&nbsp&nbsp 01d 03h 04m 52s</small>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -706,13 +360,58 @@
 <!--Container Main end-->
 
 <script>
-    $(function () {
-       setIn
-    });
 
-    function loadData() {
-        $('#tablecontainer').load( '/controller/tabledata' );
+    function formatTime(ms) {
+        const days = Math.floor(ms / (24 * 60 * 60 * 1000));
+        const daysms = ms % (24 * 60 * 60 * 1000);
+        const hours = Math.floor(daysms / (60 * 60 * 1000));
+        const hoursms = ms % (60 * 60 * 1000);
+        const minutes = Math.floor(hoursms / (60 * 1000));
+        const minutesms = ms % (60 * 1000);
+        const sec = Math.floor(minutesms / 1000);
+
+
+        let daysString = (days < 10 ? '0' : '') + days;
+        let hoursString = (hours < 10 ? '0' : '') + hours;
+        let minutesString = (minutes < 10 ? '0' : '') + minutes;
+        let secondsString = (sec < 10 ? '0' : '') + sec;
+
+        if (days > 0)
+            return daysString + "d " + hoursString + "h " + minutesString + "m " + secondsString + "s";
+        else if (hours > 0)
+            return hoursString + "h " + minutesString + "m " + secondsString + "s";
+        else if (minutes > 0)
+            return minutesString + "m " + secondsString + "s";
+        else
+            return secondsString + "s";
     }
+
+    function refreshCooldowns() {
+        let startTimes = document.getElementsByClassName('start-time');
+        let currentDate = new Date();
+        for (let time of startTimes) {
+            let startTime = parseInt(time.innerHTML);
+            let parent = time.parentElement;
+            let listCooldowns = parent.getElementsByClassName('start-cooldown');
+
+            for (let cooldown of listCooldowns) {
+                cooldown.innerHTML = '&nbsp&nbsp&nbsp ' + formatTime(startTime - currentDate.getTime());
+            }
+        }
+
+        let finishTimes = document.getElementsByClassName('finish-time');
+        for (let time of finishTimes) {
+            let finishTime = parseInt(time.innerHTML);
+            let parent = time.parentElement;
+            let listCooldowns = parent.getElementsByClassName('finish-cooldown');
+
+            for (let cooldown of listCooldowns) {
+                cooldown.innerHTML = '&nbsp&nbsp&nbsp ' + formatTime(finishTime - currentDate.getTime());
+            }
+        }
+    }
+
+    let timerId = setInterval(() => refreshCooldowns(), 1000);
 </script>
 
 <th:block th:insert="layout/btnBackToTop :: btn"/>

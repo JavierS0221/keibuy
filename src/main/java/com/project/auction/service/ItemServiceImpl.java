@@ -83,7 +83,7 @@ public class ItemServiceImpl implements ItemService {
         item.setName(itemDto.getName());
         item.setDescription(itemDto.getDescription());
         item.setPerson(itemDto.getPerson());
-       item.setImages(itemDto.getItemImages());
+        item.setImages(itemDto.getItemImages());
         item.setAuctionOffers(itemDto.getAuctionOffers());
         item.setStartDate(itemDto.getStartDate());
         item.setFinishDate(itemDto.getFinishDate());
@@ -104,5 +104,11 @@ public class ItemServiceImpl implements ItemService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.itemRepository.findAll(pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Item getItemById(long id) {
+        return itemRepository.findById(id).orElse(null);
     }
 }

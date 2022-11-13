@@ -17,6 +17,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
@@ -101,12 +102,7 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
         if (rolService == null) return;
         try {
             Yaml yaml = new Yaml();
-            File file = null;
-
-            file = ResourceUtils.getFile("classpath:roles.yml");
-
-
-            InputStream inputStream = new FileInputStream(file);
+            InputStreamReader inputStream = new InputStreamReader(new ClassPathResource("roles.yml", this.getClass().getClassLoader()).getInputStream());
             Map<String, Map<String, Object>> obj = yaml.load(inputStream);
 
             for (String key : obj.keySet()) {
@@ -126,7 +122,7 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
                 rol.setColor(color);
                 rolService.save(rol);
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
