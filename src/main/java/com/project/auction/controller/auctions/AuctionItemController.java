@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +28,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -41,11 +44,13 @@ import java.util.List;
 public class AuctionItemController {
     private final ItemService itemService;
     private final PersonService personService;
+    private final AuctionsWSController auctionsWSController;
 
     @Autowired
-    public AuctionItemController(ItemService itemService, PersonService personService) {
+    public AuctionItemController(ItemService itemService, PersonService personService, AuctionsWSController auctionsWSController) {
         this.itemService = itemService;
         this.personService = personService;
+        this.auctionsWSController = auctionsWSController;
     }
 
     @GetMapping("/{id}")
@@ -60,8 +65,8 @@ public class AuctionItemController {
         }
         model.addAttribute("user", user);
         model.addAttribute("person", person);
+        model.addAttribute("item", item);
         if (item != null) {
-            model.addAttribute("item", item);
             return "pages/itemPage";
         } else {
             return "error/404";
@@ -70,45 +75,34 @@ public class AuctionItemController {
 
     @PostMapping("/{id}/offer")
     public String offer(@PathVariable("id") Long id, @AuthenticationPrincipal User user, @RequestParam(name = "offer") int offer, @RequestParam(name = "password") String password, Model model) {
-        System.out.println("x");
         if (user != null) {
             try {
-                System.out.println("1");
                 Person person = personService.getPersonByNameOrEmail(user.getUsername());
                 Item item = itemService.getItemById(id);
 
                 PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                System.out.println("A '"+password+"'");
-                System.out.println("B '"+person.getPassword()+"'");
-                System.out.println("C '"+!(passwordEncoder.matches(password, person.getPassword()))+"'");
-                if(!passwordEncoder.matches(password, person.getPassword())) {
-                    System.out.println("Error contraseña");
+                if (!passwordEncoder.matches(password, person.getPassword())) {
                     return "redirect:/item/" + id + "?error";
                 }
 
-                System.out.println("2");
                 if (item != null) {
 
-                    System.out.println("3");
                     int mostOffer = -1;
                     AuctionOffer auctionOffer = item.getMostOffer();
                     if (auctionOffer != null) {
                         mostOffer = auctionOffer.getOffer();
-                        System.out.println("asfas");
                     }
-                    System.out.println("-3");
                     if (mostOffer < offer) {
                         AuctionOffer newAuctionOffer = new AuctionOffer();
                         newAuctionOffer.setPerson(person);
                         newAuctionOffer.setItem(item);
                         newAuctionOffer.setOffer(offer);
-                        System.out.println("0001");
 
                         item.getAuctionOffers().remove(newAuctionOffer);
                         item.getAuctionOffers().add(newAuctionOffer);
 
-                        System.out.println("0002");
                         itemService.save(item);
+                        auctionsWSController.refreshOffer(newAuctionOffer);
                         return "redirect:/item/" + id + "?success";
                     } else {
                         return "redirect:/item/" + id + "?error";
@@ -116,13 +110,10 @@ public class AuctionItemController {
 
                 }
             } catch (UnkownIdentifierException e) {
-                System.out.println("4");
                 e.printStackTrace();
             }
-            System.out.println("5");
         }
 
-        System.out.println("6");
         return "redirect:/item/" + id;
     }
 

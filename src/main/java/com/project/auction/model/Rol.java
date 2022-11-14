@@ -1,9 +1,9 @@
 package com.project.auction.model;
 
 import com.project.auction.model.relation.PersonRol;
-import lombok.Data;
-import org.hibernate.annotations.SQLInsert;
-import org.hibernate.annotations.SQLUpdate;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -11,7 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "rol", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class Rol implements Serializable {
@@ -41,6 +43,7 @@ public class Rol implements Serializable {
             mappedBy = "rol",
             cascade = CascadeType.ALL
     )
+    @ToString.Exclude
     private Collection<PersonRol> persons = new ArrayList<>();
 
     public String getNameWihoutFormat() {

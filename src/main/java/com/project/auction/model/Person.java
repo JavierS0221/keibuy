@@ -1,5 +1,6 @@
 package com.project.auction.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.auction.constraints.BirthDate;
 import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.model.relation.PersonRol;
@@ -77,7 +78,7 @@ public class Person {
     private AvatarImage avatar;
 
     @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    private Collection<Report> reportsCreated;
+    private Collection<Report> reportsCreated = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "person",

@@ -13,12 +13,12 @@ public class AvatarImageServiceImpl implements AvatarImageService {
 
     @Autowired
     private AvatarImageRepository avatarImageRepository;
-
     @Override
     @Transactional(readOnly = true)
     public AvatarImage getImageById(long id) {
         return avatarImageRepository.findById(id).orElse(null);
     }
+
     @Override
     @Transactional(readOnly = true)
     public List<AvatarImage> listImages() {

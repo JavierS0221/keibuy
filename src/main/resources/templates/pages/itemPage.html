@@ -175,6 +175,7 @@
 
 <th:block th:include="layout/template :: dependencies-js"/>
 
+<script th:src="@{/js/auctions/offerAuction.js}" th:inline="javascript"></script>
 <th:block th:include="layout/loader :: loader"/>
 <th:block th:include="layout/navbar :: navbar"/>
 
@@ -222,23 +223,23 @@
                     <h5 id="contdwn"></h5>
                     <br>
 
-                    <span th:if="${item.getMostOffer() != null}"
-                          th:text="'&#x2022; Última oferta: $' + ${item.getMostOffer().getOffer()}">-</span>
-                    <a href="#"
+                    <span id="last-offer"></span>
+
+                    <a id="participants-count1-href" href="#"
                        data-bs-toggle="modal"
                        data-bs-target="#participantsModal">
 
-                        <span>([[${item.getParticipants().size()}]] <i
+                        <span id="participants-count1">([[${item.getParticipants().size()}]] <i
                                 class="fa-regular fa-user"></i>)</span></a>
-                    <span th:unless="${item.getMostOffer() != null}"
-                          th:text="'&#x2022; Oferta inicial: $' + ${item.getStartPrice()}">-</span>
                     <br>
                     <span th:text="'&#x2022; Minimo entre oferta: $' + ${item.getMinNextOffer()}">-</span>
 
                     <th:block th:if="${person != null}">
                         <br>
-                        <span th:if="${item.getOfferByPerson(person) != null}"
+                        <span id="your-offer" th:if="${item.getOfferByPerson(person) != null}"
                               th:text="'&#x2022; Tu oferta: $'+${item.getOfferByPerson(person).getOffer()}">-</span>
+
+                        <span id="your-offer-state"></span>
                     </th:block>
                     <br>
                     <br>
@@ -298,43 +299,14 @@
                                                 <th scope="col">Ofera</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <th:block th:each="participant,i : ${item.getParticipants()}">
-                                                <tr th:id="'pos'+${i.getIndex()+1}" class=" border border-1"
-                                                    th:classappend="${participant.getUsername() == person.getUsername()} ? 'border-primary border-2' : ''">
-                                                    <td class="pt-4 mt-1"><b>[[${i.getIndex()+1}]]</b></td>
-                                                    <td class="pt-2 pb-0">
-                                                        <img
-                                                                th:src="@{${participant.getAvatar() != null ? '/image/avatar/'+ participant.getAvatar().getId() : (participant.getUsername() == 'keibuy' ? '/images/adminAvatar.jpg' : '/images/DefaultAvatar.png')}}"
-                                                                class="rounded-circle participants-image"
-                                                                alt=""
-                                                        /><br>
-                                                        <div class="pl-lg-5 pl-md-3 pl-1 participants-name"
-                                                             th:text="${person.getUsername()}">
-                                                        </div>
-                                                    </td>
-                                                    <td class="pt-4 mt-1">
-                                                        $[[${item.getOfferByPerson(participant).getOffer()}]]
-                                                    </td>
-                                                </tr>
-                                            </th:block>
+                                            <tbody id="participants-table">
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="modal-footer py-0">
-
-                                    <th:block th:each="participant,i : ${item.getParticipants()}">
-                                        <th:block th:if="${participant.getUsername() == person.getUsername()}">
-                                            <span class="position-absolute start-0 ps-2"><a
-                                                    th:href="'#pos'+${i.getIndex()+1}">Tu posición: [[${i.getIndex()+1}]]</a></span>
-                                        </th:block>
-                                    </th:block>
-
-                                    <th:block th:unless="${item.getParticipants().contains(person)}">
-                                        <span class="position-absolute start-0 ps-2">No participas</span>
-                                    </th:block>
-                                    <span class="py-1">[[${item.getParticipants().size()}]] participantes</span>
+                                    <span id="participants-yourstate" class="position-absolute start-0 ps-2">No participas</span>
+                                    <span id="participants-count" class="py-1">[[${item.getParticipants().size()}]] participantes</span>
                                 </div>
                                 <div class="modal-footer">
                                     <button
@@ -358,7 +330,7 @@
                                     <h1 class="modal-title fs-5" id="offerModalLabel">Oferta</h1>
 
                                 </div>
-                                <form th:action="@{${'/item/'+item.getId()+'/offer'}}" method="post">
+                                <form id="offerForm" th:action="@{${'/item/'+item.getId()+'/offer'}}" method="post">
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label for="offer" class="col-form-label">Ingrese su oferta</label>
@@ -382,8 +354,13 @@
                     </div>
                     <!--                    Modal btn-->
 
-                    <button th:if="${item.isEnabled()}" class="cart-btn btn btn-sm btn-primary px-4" id="btnOffer">
+                    <button th:if="${item.isEnabled() && person != null}" class="cart-btn btn btn-sm btn-primary px-4"
+                            id="btnOffer">
                         Ofertar
+                    </button>
+                    <button th:if="${item.isEnabled()}" class="cart-btn btn btn-sm btn-danger px-4" id="testbtn"
+                            th:attr="onclick=|sendOffer(1)|">
+                        test
                     </button>
                     <!--                    <button type="button" class="btn btn-outline-primary btn mt-1" id="btnOffer">Ofertar</button>-->
                 </div>
@@ -410,36 +387,37 @@
     const time = 3600000;
 
     // JQueryElement[0] OR JQueryElement.get(0) == Dom Element
-    btnOffer[0].addEventListener("click", function (event) {
-        var alertModal = new bootstrap.Modal(
-            document.getElementById("alertModal"),
-            {
-                keyboard: false,
+    if (btnOffer[0] != null) {
+        btnOffer[0].addEventListener("click", function () {
+            var alertModal = new bootstrap.Modal(
+                document.getElementById("alertModal"),
+                {
+                    keyboard: false,
+                }
+            );
+
+
+            var offerModal = new bootstrap.Modal(
+                document.getElementById("offerModal"),
+                {
+                    keyboard: false,
+                }
+            );
+
+            let hasOpenTerms = false;
+
+            let readTermsTime = parseInt(
+                sessionStorage["keibuyReadTermsTime"] || 0
+            );
+            if (Date.now() > readTermsTime + time) hasOpenTerms = true;
+
+            if (hasOpenTerms) {
+                alertModal.show();
+            } else {
+                offerModal.show();
             }
-        );
-
-
-        var offerModal = new bootstrap.Modal(
-            document.getElementById("offerModal"),
-            {
-                keyboard: false,
-            }
-        );
-
-        let hasOpenTerms = false;
-
-        let readTermsTime = parseInt(
-            sessionStorage["keibuyReadTermsTime"] || 0
-        );
-        if (Date.now() > readTermsTime + time) hasOpenTerms = true;
-
-        if (hasOpenTerms) {
-            alertModal.show();
-        } else {
-            offerModal.show();
-        }
-    });
-
+        });
+    }
     const acceptTermsBtn = $("#acceptTermsBtn");
     acceptTermsBtn.prop('disabled', true);
     const acceptTermsCheck = $("#acceptCheck");
@@ -536,6 +514,7 @@
             slidesToScroll: 1,
             arrows: false,
             fade: true,
+            infinite: true,
             asNavFor: '.your-class'
         });
         $('.your-class').slick({
@@ -548,17 +527,134 @@
             dots: true,
             centerMode: true,
             focusOnSelect: true,
+            infinite: false,
             responsive: [
                 {
                     breakpoint: 1024,
                     settings: {
                         slidesToShow: 3,
                         slidesToScroll: 1,
+                        infinite: false
                     }
                 }
             ]
         });
     });
+</script>
+
+<script th:inline="javascript">
+    $(document).ready('on', new function () {
+
+        let p = /*[[${person != null ? person.getId() : null}]]*/ null;
+        let i = /*[[${item.getId()}]]*/ null;
+        console.log('obj i:' + i);
+        connect(this, p, i)
+
+
+        $(offerForm)[0].addEventListener('submit', new function (event) {
+            console.log(event);
+        });
+
+    });
+
+</script>
+
+<!--Refresh modal participants-->
+<script th:inline="javascript">
+
+    function getAvatarURL(personId) {
+        let url = /*[[@{'/image/avatar/person/'}]]*/ '';
+        url += personId;
+        return url;
+    }
+
+    let list = [];
+    let objParticipant;
+    let myUsername = /*[[${person != null ? person.getUsername() : '-'}]]*/ '-';
+    let startPrice = /*[[${item.getStartPrice()}]]*/ '-';
+    /*<![CDATA[*/
+
+    /*[# th:each="participant,i : ${item.getParticipants()}"]*/
+    objParticipant = {'id': 0, 'username': null, 'offer': 0}
+    objParticipant.pos = /*[[${i.getIndex()+1}]]*/ 0;
+    objParticipant.id = /*[[${participant.getId()}]]*/ 0;
+    objParticipant.username = /*[[${participant.getUsername()}]]*/ null;
+    objParticipant.offer = /*[[${item.getOfferByPerson(participant).getOffer()}]]*/ 0;
+    list.push(objParticipant);
+    /*[/]*/
+
+    /*]]>*/
+
+    function updatePerson(data) {
+        let updated = false;
+        for (let i = 0; i < list.length; i++) {
+            let x = list[i];
+            if (x.username === data.username) {
+                list[i].offer = data.offer;
+                updated = true;
+                break;
+            }
+        }
+        if (!updated) {
+            list.push(data);
+        }
+    }
+
+    refreshData();
+
+    function refreshData() {
+
+        list.sort(function (b, a) {
+            return parseInt(a.offer) - parseInt(b.offer);
+        });
+
+        let yourPosition = -1;
+        let mostOffer = {'id': 0, 'username': null, 'offer': 0};
+        let participantsTable = $("#participants-table");
+        participantsTable.html("");
+        for (let i = 0; i < list.length; i++) {
+            let x = list[i];
+            if (x.offer > mostOffer.offer) mostOffer = x;
+            if (x.username === myUsername) yourPosition = (i + 1);
+            participantsTable.append(
+                "<tr id='pos" + (i + 1) + "' class='border border-1 "
+                + (yourPosition === (i + 1) ? "border-primary border-2" : "")
+                + "'><td class='pt-4 mt-1'><b>" + (i + 1) + "</b></td><td class='pt-2 pb-0'><img src='" + getAvatarURL(x.id)
+                + "' class='rounded-circle participants-image' alt=''/><br> <div class='pl-lg-5 pl-md-3 pl-1 participants-name'>" + x.username
+                + "</div></td><td class='pt-4 mt-1'>$" + x.offer + "</td></tr>");
+        }
+
+        let participantsCount = $("#participants-count");
+        participantsCount.html(list.length + " participantes");
+
+        let participantsCount1 = $("#participants-count1");
+        participantsCount1.html(" (" + list.length + " <i class='fa-regular fa-user'></i>)");
+
+        let lastOffer = $("#last-offer");
+        let yourOfferState = $("#your-offer-state");
+        let participantsCount1Href = $("#participants-count1-href");
+        if (mostOffer.offer !== 0) {
+            lastOffer.html("&#x2022; Última oferta: $" + mostOffer.offer);
+            participantsCount1Href.removeAttr("hidden");
+
+            if (mostOffer.username === myUsername) {
+                yourOfferState.html(" [ Vas ganando! ]");
+            } else {
+                yourOfferState.html("");
+            }
+        } else {
+            lastOffer.html("&#x2022; Oferta inicial: $" + startPrice);
+            participantsCount1Href.setAttribute('hidden', '');
+        }
+
+        let participantsYourState = $("#participants-yourstate");
+        if (yourPosition !== -1) {
+            participantsYourState.html("<a href='#pos" + yourPosition + "'>Tu posición: " + yourPosition + "</a>");
+        } else {
+            participantsYourState.html("No participas")
+        }
+
+    }
 </script>
 
 <th:block th:insert="layout/btnBackToTop :: btn"/>

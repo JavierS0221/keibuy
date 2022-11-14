@@ -3,12 +3,15 @@ package com.project.auction.model.relation;
 import com.project.auction.model.Person;
 import com.project.auction.model.Rol;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.JoinColumn;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 public class PersonRolPK implements Serializable {
 
     private Person person;

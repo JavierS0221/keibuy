@@ -1,42 +1,100 @@
 package com.project.auction.controller.auctions;
 
-import com.project.auction.dto.ItemDto;
-import com.project.auction.dto.PersonDto;
-import com.project.auction.exception.UnkownIdentifierException;
-import com.project.auction.model.Item;
-import com.project.auction.model.ItemImage;
-import com.project.auction.model.Person;
+import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.service.ItemService;
 import com.project.auction.service.PersonService;
-import com.project.auction.util.Utils;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class AuctionsWSController {
 
-//    @MessageMapping("/hello")
-//    @SendTo("/auction/offer")
-//    public boolean offer(int offer) throws InterruptedException {
-//        Thread.sleep(1000);
-//        if(offer > mostOffer) mostOffer = offer;
-//        return new Offer(mostOffer);
+    @Autowired
+    PersonService personService;
+    @Autowired
+    ItemService itemService;
+    @Autowired
+    private SimpMessagingTemplate template;
+
+    @MessageMapping("/item/{id}/offer")
+    @SendTo("/item/{id}/offer")
+    public Response sendOffer(@DestinationVariable int id) {
+        return new Response(null, 0, 0);
+    }
+
+//    @MessageMapping("/item/{id}/offer")
+//    @SendTo("/item/{id}/offer")
+//    public Response sendOffer(@DestinationVariable int id, AuctionWSObject auctionWSObject) throws InterruptedException {
+//        // Response code:
+//        // 0: Success
+//        // 1: alreadyMostOfferError
+//        // 2: lowerOfferError
+//        // 3: personError
+//        // 4: responseError
+//        // 5: itemError
+//
+//        Thread.sleep(500);
+//        Item item = itemService.getItemById(id);
+//        if (item == null) return new Response(5, 0, 0, 0, 0);
+//        AuctionOffer mostOffer = itemService.getMostOffer(item);
+//
+//        if (auctionWSObject == null) return new Response(4, 0, 0, mostOffer.getOffer(), mostOffer.getPerson().getId());
+//
+//        int personId = auctionWSObject.getPersonId();
+//        Person person = null;
+//
+//        try {
+//            person = personService.getPersonById(personId);
+//        } catch (Exception ignored) {
+//        }
+//
+//        if (person == null) return new Response(3, personId, 0, mostOffer.getOffer(), mostOffer.getPerson().getId());
+//        int offer = auctionWSObject.getOffer();
+//
+//        if (mostOffer != null) {
+//            if (mostOffer.getOffer() >= offer)
+//                return new Response(2, personId, offer, mostOffer.getOffer(), mostOffer.getPerson().getId());
+//            if (mostOffer.getPerson().getId() == personId) {
+//                return new Response(1, personId, offer, mostOffer.getOffer(), mostOffer.getPerson().getId());
+//            } else if (item.getParticipants().contains(person)) {
+//                item.getAuctionOffers().remove(item.getOfferByPerson(person));
+//            }
+//        }
+//
+//        AuctionOffer auctionOffer = new AuctionOffer();
+//        auctionOffer.setOffer(offer);
+//        auctionOffer.setPerson(person);
+//        auctionOffer.setItem(item);
+//        item.getAuctionOffers().add(auctionOffer);
+//        itemService.save(item);
+//        return new Response(0, personId, offer, auctionOffer.getOffer(), auctionOffer.getPerson().getId());
 //    }
+
+    public void refreshOffer(AuctionOffer auctionOffer) {
+        Response response = new Response(auctionOffer.getPerson().getUsername(), (int) auctionOffer.getPerson().getId(), auctionOffer.getOffer());
+        this.template.convertAndSend("/item/" + auctionOffer.getItem().getId() + "/offer", response);
+    }
+}
+
+//@Getter
+//@Setter
+//class AuctionWSObject {
+//    private int personId;
+//    private int offer;
+//}
+
+@Getter
+@Setter
+@AllArgsConstructor
+class Response {
+    private String username;
+    private int personId;
+    private int offer;
 }

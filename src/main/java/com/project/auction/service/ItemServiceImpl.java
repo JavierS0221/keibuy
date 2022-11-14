@@ -2,6 +2,7 @@ package com.project.auction.service;
 
 import com.project.auction.dto.ItemDto;
 import com.project.auction.model.ItemImage;
+import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.repository.ItemRepository;
 import com.project.auction.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +87,16 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(readOnly = true)
     public Item getItemById(long id) {
         return itemRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AuctionOffer getMostOffer(Item item) {
+        AuctionOffer auctionOffer = null;
+        item = this.getItem(item);
+        if(item != null)  {
+            auctionOffer = item.getMostOffer();
+        }
+        return auctionOffer;
     }
 }

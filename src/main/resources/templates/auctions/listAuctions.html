@@ -241,7 +241,7 @@
 
                         <th:block th:each="item : ${listItems}">
                             <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div"
-                                 th:attr="onclick=|window.open('item/'+${item.getId()})|">
+                                 th:attr="onclick=|window.location.href = ('item/'+${item.getId()})|">
                                 <div class="card d-flex flex-column align-items-center" th:classappend="${!item.isEnabled() ? 'not-started' : ''}">
                                     <div class="product-name" th:text="${item.getName()}"></div>
 

@@ -1,16 +1,20 @@
 package com.project.auction.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.util.Utils;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "item")
 public class Item {
@@ -61,14 +65,12 @@ public class Item {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @ToString.Exclude
     private Collection<AuctionOffer> auctionOffers;
 
     @OneToMany(mappedBy = "item",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @ToString.Exclude
     private Collection<ItemImage> itemImages;
 
 //    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -98,7 +100,8 @@ public class Item {
     public List<Person> getParticipants() {
         List<Person> listPersons = new ArrayList<>();
         List<AuctionOffer> listAuctionOffer = new ArrayList<>();
-        for (AuctionOffer auctionOffer : this.auctionOffers) {
+        if(this.auctionOffers == null) this.auctionOffers = new ArrayList<>();
+        for (AuctionOffer auctionOffer : this.getAuctionOffers()) {
             Person person = auctionOffer.getPerson();
             if (!listPersons.contains(person)) {
                 listPersons.add(person);
@@ -117,15 +120,17 @@ public class Item {
     }
 
     public List<AuctionOffer> getOffersInOrder() {
-        List<AuctionOffer> ordOffers = (List<AuctionOffer>) this.auctionOffers;
+        if(this.auctionOffers == null) this.auctionOffers = new ArrayList<>();
+        List<AuctionOffer> ordOffers = new ArrayList<>(this.getAuctionOffers());
         Comparator<AuctionOffer> mostOfferComparator = ((o1, o2) -> Integer.compare(o2.getOffer(), o1.getOffer()));
         ordOffers.sort(mostOfferComparator);
         return ordOffers;
     }
 
     public AuctionOffer getMostOffer() {
-        if (getOffersInOrder().size() > 0)
-            return getOffersInOrder().get(0);
+        List<AuctionOffer> offersInOder = this.getOffersInOrder();
+        if (offersInOder.size() > 0)
+            return offersInOder.get(0);
         return null;
     }
 
@@ -148,7 +153,7 @@ public class Item {
     }
 
     public AuctionOffer getOfferByPerson(Person person) {
-        for (AuctionOffer auctionOffer : this.auctionOffers) {
+        for (AuctionOffer auctionOffer : this.getAuctionOffers()) {
             if (auctionOffer.getPerson().equals(person)) return auctionOffer;
         }
         return null;
