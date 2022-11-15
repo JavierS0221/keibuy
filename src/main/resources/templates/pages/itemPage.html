@@ -384,15 +384,17 @@
                         </div>
                     </div>
                     <!--                    Modal btn-->
-                    <button th:if="${item.isEnabled() && person != null}" class="btn btn btn-primary px-4"
+                    <th:block th:if="${item.isEnabled()}">
+                    <button th:if="${person != null}" class="btn btn-primary px-4"
                             id="btnOffer">
                         Ofertar
                     </button>
                     <a th:href="@{/login}" th:if="${person == null}">
-                        <button class="cart-btn btn btn-sm btn-primary px-4">
+                        <button class="cart-btn btn btn-primary px-4">
                             Iniciar sesión
                         </button>
                     </a>
+                    </th:block>
                     <!--                    <button type="button" class="btn btn-outline-primary btn mt-1" id="btnOffer">Ofertar</button>-->
                 </div>
             </div>
@@ -597,7 +599,7 @@
         return url;
     }
 
-    let list = [];
+    let listParticipants = [];
     let objParticipant;
     let myUsername = /*[[${person != null ? person.getUsername() : '-'}]]*/ '-';
     let startPrice = /*[[${item.getStartPrice()}]]*/ '-';
@@ -609,23 +611,23 @@
     objParticipant.id = /*[[${participant.getId()}]]*/ 0;
     objParticipant.username = /*[[${participant.getUsername()}]]*/ null;
     objParticipant.offer = /*[[${item.getOfferByPerson(participant).getOffer()}]]*/ 0;
-    list.push(objParticipant);
+    listParticipants.push(objParticipant);
     /*[/]*/
 
     /*]]>*/
 
     function updatePerson(data) {
         let updated = false;
-        for (let i = 0; i < list.length; i++) {
-            let x = list[i];
+        for (let i = 0; i < listParticipants.length; i++) {
+            let x = listParticipants[i];
             if (x.username === data.username) {
-                list[i].offer = data.offer;
+                listParticipants[i].offer = data.offer;
                 updated = true;
                 break;
             }
         }
         if (!updated) {
-            list.push(data);
+            listParticipants.push(data);
         }
     }
 
@@ -633,7 +635,7 @@
 
     function refreshData() {
 
-        list.sort(function (b, a) {
+        listParticipants.sort(function (b, a) {
             return parseInt(a.offer) - parseInt(b.offer);
         });
 
@@ -641,8 +643,8 @@
         let mostOffer = {'id': 0, 'username': null, 'offer': 0};
         let participantsTable = $("#participants-table");
         participantsTable.html("");
-        for (let i = 0; i < list.length; i++) {
-            let x = list[i];
+        for (let i = 0; i < listParticipants.length; i++) {
+            let x = listParticipants[i];
             if (x.offer > mostOffer.offer) mostOffer = x;
             if (x.username === myUsername) yourPosition = (i + 1);
             participantsTable.append(
@@ -654,10 +656,10 @@
         }
 
         let participantsCount = $("#participants-count");
-        participantsCount.html(list.length + " participantes");
+        participantsCount.html(listParticipants.length + " participantes");
 
         let participantsCount1 = $("#participants-count1");
-        participantsCount1.html(" (" + list.length + " <i class='fa-regular fa-user'></i>)");
+        participantsCount1.html(" (" + listParticipants.length + " <i class='fa-regular fa-user'></i>)");
 
         let lastOffer = $("#last-offer");
         let yourOfferState = $("#your-offer-state");

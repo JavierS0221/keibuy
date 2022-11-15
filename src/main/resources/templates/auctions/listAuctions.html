@@ -298,7 +298,7 @@
 
                                             </div>
                                         </th:block>
-                                        <th:block th:unless="${item.isEnabled()}">
+                                        <th:block th:if="${!item.isEnabled() && !item.isFinalized()}">
                                             <div class="mt-1">
                                                 <small class="text-colored"
                                                 ><i class="fa-solid fa-sack-dollar"></i>
@@ -317,6 +317,21 @@
                                                 <small class="start-cooldown"
                                                        th:text="'&nbsp&nbsp&nbsp ' + ${item.getTimeToStart()}">&nbsp&nbsp&nbsp
                                                     0s</small>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${item.isFinalized()}">
+                                            <div class="mt-1">
+                                                <small class="text-colored"
+                                                ><i class="fa-solid fa-sack-dollar"></i>
+                                                    <b>Última oferta:</b></small
+                                                ><br/>
+                                                <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getMostOffer().getOffer()} + '$'"></small>
+                                            </div>
+                                            <div class="mt-1">
+                                                <small class="text-colored"
+                                                ><i class="fa-solid fa-calendar"></i>
+                                                    <b>Finalizado</b></small
+                                                ><br/>
                                             </div>
                                         </th:block>
                                     </div>

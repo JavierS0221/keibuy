@@ -1,8 +1,8 @@
 package com.project.auction.controller.auctions;
 
+import com.project.auction.model.Item;
 import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.service.ItemService;
-import com.project.auction.service.PersonService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +17,6 @@ import org.springframework.stereotype.Controller;
 public class AuctionsWSController {
 
     @Autowired
-    PersonService personService;
-    @Autowired
     ItemService itemService;
     @Autowired
     private SimpMessagingTemplate template;
@@ -27,6 +25,12 @@ public class AuctionsWSController {
     @SendTo("/item/{id}/offer")
     public Response sendOffer(@DestinationVariable int id) {
         return new Response(null, 0, 0);
+    }
+
+    @MessageMapping("/item/{id}/isFinalized")
+    @SendTo("/item/{id}/isFinalized")
+    public boolean hasFinalized(@DestinationVariable int id) {
+        return false;
     }
 
 //    @MessageMapping("/item/{id}/offer")
@@ -80,6 +84,10 @@ public class AuctionsWSController {
     public void refreshOffer(AuctionOffer auctionOffer) {
         Response response = new Response(auctionOffer.getPerson().getUsername(), (int) auctionOffer.getPerson().getId(), auctionOffer.getOffer());
         this.template.convertAndSend("/item/" + auctionOffer.getItem().getId() + "/offer", response);
+    }
+
+    public void finalize(Item item) {
+        this.template.convertAndSend("/item/" + item.getId() + "/isFinalized", true);
     }
 }
 

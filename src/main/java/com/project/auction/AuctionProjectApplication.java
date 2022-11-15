@@ -1,5 +1,6 @@
 package com.project.auction;
 
+import com.project.auction.controller.auctions.AuctionsWSController;
 import com.project.auction.model.Item;
 import com.project.auction.service.ItemService;
 import com.project.auction.util.Utils;
@@ -43,10 +44,12 @@ public class AuctionProjectApplication{
 		private boolean enabled = true;
 
 		ItemService itemService;
+		AuctionsWSController auctionsWSController;
 
 		@Autowired
-		public Task(ItemService itemService) {
+		public Task(ItemService itemService, AuctionsWSController auctionsWSController) {
 			this.itemService = itemService;
+			this.auctionsWSController = auctionsWSController;
 		}
 
 		@PostConstruct
@@ -58,16 +61,20 @@ public class AuctionProjectApplication{
 		@Scheduled(fixedDelay = 1000L)
 		public void run() {
 			if (enabled) {
-				List<Item> listItems = itemService.listItems();
-				for(Item item : listItems) {
-					if(item.isFinalized()) continue;
+				try {
+					List<Item> listItems = itemService.listItems();
+					for (Item item : listItems) {
+						if (item.isFinalized()) continue;
 
-					long distance = item.getFinishDate().getTime() - new Date().getTime();
-					if(distance < 0) {
-						itemService.setFinalized(item, true);
-						log.info("item "+item.getId()+": finalizo");
+						long distance = item.getFinishDate().getTime() - new Date().getTime();
+						if (distance < 0) {
+							itemService.setFinalized(item, true);
+							this.auctionsWSController.finalize(item);
+						}
+						log.info("item " + item.getId() + ": " + Utils.formatTime(distance));
 					}
-					log.info("item "+item.getId()+": "+ Utils.formatTime(distance));
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 			}
 		}
