@@ -134,6 +134,12 @@
             position: relative
         }
 
+        @media (max-width: 767px) {
+            #btnOffer {
+                margin-bottom: 100px;
+            }
+        }
+
     </style>
 
     <!--    Table style-->
@@ -173,14 +179,40 @@
 <body class="position-relative bg-light snippet-body" data-th-span="scroll"
       data-bs-target="#navbar-scrollspy">
 
+
 <th:block th:include="layout/template :: dependencies-js"/>
 
 <script th:src="@{/js/auctions/offerAuction.js}" th:inline="javascript"></script>
 <th:block th:include="layout/loader :: loader"/>
 <th:block th:include="layout/navbar :: navbar"/>
 
+
+
 <!--Item-->
 <div class="container-xl mt-5 mb-5 px-0">
+    <div th:if="${success}" class="alert alert-success alert-dismissible mx-5" role="alert">
+        <i class="fa-regular fa-thumbs-up"></i> <strong>Success! </strong><span>Your offer was successfully entered</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${accountNotFound}" class="alert alert-danger alert-dismissible mx-5" role="alert">
+        <i class="fa-solid fa-triangle-exclamation"></i> <strong>Error! </strong><span>Not found your account</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${alreadyIsMostOffer}" class="alert alert-danger alert-dismissible mx-5" role="alert">
+        <i class="fa-solid fa-triangle-exclamation"></i> <strong>Error! </strong><span>You already have the highest bid</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${lowerOffer}" class="alert alert-danger alert-dismissible mx-5" role="alert">
+        <i class="fa-solid fa-triangle-exclamation"></i> <strong>Error! </strong><span>Your offer is too low</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${itemNotFound}" class="alert alert-danger alert-dismissible mx-5" role="alert">
+        <i class="fa-solid fa-triangle-exclamation"></i> <strong>Error! </strong><span>Not found item</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+
     <div class="card">
         <div class="row g-0">
             <div class="col-md-5 border-end">
@@ -188,8 +220,7 @@
                     <div class="main_image p-5">
                         <th:block th:each="item,i : ${item.getItemImages()}">
                             <img class="rounded rounded-2 border border-dark border-1"
-                                 th:src="@{${item != null ? '/image/item/'+ item.getId() : '...'}}"
-                                 width="350">
+                                 th:src="@{${item != null ? '/image/item/'+ item.getId() : '...'}}">
                         </th:block>
                     </div>
 
@@ -330,18 +361,18 @@
                                     <h1 class="modal-title fs-5" id="offerModalLabel">Oferta</h1>
 
                                 </div>
-                                <form id="offerForm" th:action="@{${'/item/'+item.getId()+'/offer'}}" method="post">
+                                <form id="offerForm" th:action="@{${'/item/'+item.getId()}+'/offer'}" method="post">
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label for="offer" class="col-form-label">Ingrese su oferta</label>
                                             <input type="number" class="form-control" id="offer" th:value="${offer}"
                                                    name="offer">
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="col-form-label">Ingrese su contraseña</label>
-                                            <input type="password" class="form-control" id="password"
-                                                   th:value="${password}" name="password">
-                                        </div>
+                                        <!--                                        <div class="mb-3">-->
+                                        <!--                                            <label for="password" class="col-form-label">Ingrese su contraseña</label>-->
+                                        <!--                                            <input type="password" class="form-control" id="password"-->
+                                        <!--                                                   th:value="${password}" name="password">-->
+                                        <!--                                        </div>-->
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar
@@ -353,15 +384,15 @@
                         </div>
                     </div>
                     <!--                    Modal btn-->
-
-                    <button th:if="${item.isEnabled() && person != null}" class="cart-btn btn btn-sm btn-primary px-4"
+                    <button th:if="${item.isEnabled() && person != null}" class="btn btn btn-primary px-4"
                             id="btnOffer">
                         Ofertar
                     </button>
-                    <button th:if="${item.isEnabled()}" class="cart-btn btn btn-sm btn-danger px-4" id="testbtn"
-                            th:attr="onclick=|sendOffer(1)|">
-                        test
-                    </button>
+                    <a th:href="@{/login}" th:if="${person == null}">
+                        <button class="cart-btn btn btn-sm btn-primary px-4">
+                            Iniciar sesión
+                        </button>
+                    </a>
                     <!--                    <button type="button" class="btn btn-outline-primary btn mt-1" id="btnOffer">Ofertar</button>-->
                 </div>
             </div>
@@ -512,7 +543,6 @@
         $('.main_image').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
-            arrows: false,
             fade: true,
             infinite: true,
             asNavFor: '.your-class'
@@ -524,7 +554,6 @@
             speed: 300,
             asNavFor: '.main_image',
             slidesToShow: 4,
-            dots: true,
             centerMode: true,
             focusOnSelect: true,
             infinite: false,

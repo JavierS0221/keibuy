@@ -90,13 +90,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public AuctionOffer getMostOffer(Item item) {
-        AuctionOffer auctionOffer = null;
+    @Transactional
+    public void setFinalized(Item item, boolean finalized) {
         item = this.getItem(item);
-        if(item != null)  {
-            auctionOffer = item.getMostOffer();
+        if(item != null) {
+            item.setFinalized(finalized);
+            itemRepository.save(item);
         }
-        return auctionOffer;
     }
+
 }

