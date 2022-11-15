@@ -6,10 +6,14 @@
     <title th:text="${item.getName()} + ' - KeiBuy'"></title>
     <th:block th:include="layout/template :: head"/>
     <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
-          rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
+            rel="stylesheet"
+    />
+    <!-- -->
+
     <style th:include="layout/loader :: style"></style>
     <style>
         @font-face {
@@ -174,6 +178,124 @@
             border-top-right-radius: 10px
         }
     </style>
+
+    <style>
+        .line {
+            border-bottom: 1px solid #cfcfcf !important;
+        }
+        .space {
+            height: 50px;
+        }
+
+        .user {
+            position: relative;
+        }
+
+        .profile img {
+            height: 89px;
+            width: 89px;
+        }
+
+        .profile {
+            position: absolute;
+            top: -45px;
+            left: -45px;
+            border: 1px solid #cfcfcf;
+            border-radius: 50%;
+        }
+
+        .bg-1 {
+            background-color: #fafafa;
+        }
+        .bg-2 {
+            background-color: #404eed;
+        }
+
+        .rol {
+            position: relative;
+            top: -8px;
+            font-size: 10px;
+        }
+
+        .btn-circle {
+            padding: 0 0;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 1.42857;
+            border: 0;
+        }
+
+        /*ZoomIn Card-Hover-Mask Effect*/
+        .card-hover-mask a {
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-hover-mask img {
+            -webkit-transition: all 0.5s ease-in-out;
+            -moz-transition: all 0.5s ease-in-out;
+            -o-transition: all 0.5s ease-in-out;
+            -ms-transition: all 0.5s ease-in-out;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .card-hover-mask a:hover img {
+            -ms-transform: scale(1.2);
+            transform: scale(1.2);
+        }
+
+        .card-hover-mask a h6 {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            padding: 26% 20px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.4);
+            -webkit-transition: all 0.5s linear;
+            -moz-transition: all 0.5s linear;
+            -o-transition: all 0.5s linear;
+            -ms-transition: all 0.5s linear;
+            transition: all 0.5s linear;
+            -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            filter: alpha(opacity=0);
+            opacity: 0;
+            font-family: "Roboto Slab", serif; !important;
+        }
+
+        .card-hover-mask a:hover h6 {
+            -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+            filter: alpha(opacity=100);
+            opacity: 1;
+        }
+
+        .card-hover-underline-animation {
+            display: inline-block;
+            position: relative;
+            color: #1b1b1b;
+        }
+
+        .card-hover-underline-animation:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #1b1b1b;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .card-hover-underline-animation:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
 </head>
 
 <body class="position-relative bg-light snippet-body" data-th-span="scroll"
@@ -188,6 +310,58 @@
 
 
 
+<div class="modal fade" id="autorModal" tabindex="-1" aria-labelledby="autorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div
+                    class="card rounded-5 m-auto position-absolute top-50 start-50 translate-middle bg-2 shadow"
+                    style="width: 16rem"
+            >
+                <div class="line space"></div>
+                <div class="user text-center mx-auto mb-0">
+                    <div class="profile bg-white card-hover-mask">
+                        <a
+                                th:href="@{${'/profile/'+item.getPerson().getId()}}"
+                                target="_blank"
+                                class="btn btn-circle"
+                        >
+                            <img
+                                    th:src="@{${'/image/avatar/person/'+item.getPerson().getId()}}"
+                                    class="rounded-circle"
+                            />
+
+                            <h6 class="text-white" style="font-size: 14px">Ver perfil</h6>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="pt-5 card-body text-center bg-1">
+                    <div class="mb-3">
+                        <h5 class="card-title">
+                            <a
+                                    th:href="@{${'/profile/'+item.getPerson().getId()}}"
+                                    target="_blank"
+                                    class="rounded-circle card-hover-underline-animation text-decoration-none text-black"
+                            >
+                                [[${item.getPerson().getUsername()}]]
+                            </a>
+                        </h5>
+                        <th:block th:each="personRol : ${item.getPerson().getRoles()}">
+                        <small class="badge border rounded-1 rol" th:style="'color:' + ${personRol.getRol().getColor()}"
+                        >[[${personRol.getRol().getNameWithoutFormat()}]]</small
+                        >
+                        </th:block>
+                    </div>
+                    <p class="text-start">
+                        Subastas concluidas: 999<br />
+                        Subastas activas: [[${item.getPerson().}]]
+                    </p>
+                </div>
+                <div class="text-center" style="min-height: 40px"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <!--Item-->
 <div class="container-xl mt-5 mb-5 px-0">
     <div th:if="${success}" class="alert alert-success alert-dismissible mx-5" role="alert">
@@ -241,6 +415,9 @@
                     <div class="d-flex justify-content-center align-items-center text-center">
                         <h3 th:text="${item.getName()}"></h3>
                     </div>
+                    <i class="fa-solid fa-user-tie"></i> <span>Autor: <a href="#" data-bs-toggle="modal" data-bs-target="#autorModal">[[${item.getPerson().getUsername()}]]</a></span>
+                    <br>
+                    <i class="fa-solid fa-book-open"></i> <span>Descripción:</span>
                     <div class="content">
                         <p style="max-height: 50%" class="h-25
                         overflow-auto
@@ -251,7 +428,7 @@
                         rounded
                         rounded-2" th:text="${item.getDescription()}"></p>
                     </div>
-                    <h5 id="contdwn"></h5>
+                    <span id="contdwn"></span>
                     <br>
 
                     <span id="last-offer"></span>
@@ -263,12 +440,11 @@
                         <span id="participants-count1">([[${item.getParticipants().size()}]] <i
                                 class="fa-regular fa-user"></i>)</span></a>
                     <br>
-                    <span th:text="'&#x2022; Minimo entre oferta: $' + ${item.getMinNextOffer()}">-</span>
+                    <span><i class="fa-solid fa-money-bill-trend-up"></i> Mínimo entre oferta: $[[${item.getMinNextOffer()}]]</span>
 
                     <th:block th:if="${person != null}">
                         <br>
-                        <span id="your-offer" th:if="${item.getOfferByPerson(person) != null}"
-                              th:text="'&#x2022; Tu oferta: $'+${item.getOfferByPerson(person).getOffer()}">-</span>
+                        <span id="your-offer" th:if="${item.getOfferByPerson(person) != null}"><i class='fa-solid fa-money-bill-wave'></i>  Tu oferta: $[[${item.getOfferByPerson(person).getOffer()}]]</span>
 
                         <span id="your-offer-state"></span>
                     </th:block>
@@ -528,12 +704,12 @@
         if (startDistance < 0) {
             if (finishDistance < 0) {
                 clearInterval(x);
-                document.getElementById("contdwn").innerHTML = "&#x2022; EXPIRED";
+                document.getElementById("contdwn").innerHTML = "<i class='fa-solid fa-hourglass-end'></i> Expired";
             } else {
-                document.getElementById("contdwn").innerHTML = "<i class='fa-solid fa-hourglass-start'></i>  Expira en: " + formatTime(finishDistance);
+                document.getElementById("contdwn").innerHTML = "<i class='fa-solid fa-hourglass-half'></i>  Expira en: " + formatTime(finishDistance);
             }
         } else {
-            document.getElementById("contdwn").innerHTML = "&#x2022; Inicia en: " + formatTime(startDistance);
+            document.getElementById("contdwn").innerHTML = "<i class='fa-solid fa-hourglass-start'></i> Inicia en: " + formatTime(startDistance);
         }
     }, 1000);
 
@@ -665,7 +841,7 @@
         let yourOfferState = $("#your-offer-state");
         let participantsCount1Href = $("#participants-count1-href");
         if (mostOffer.offer !== 0) {
-            lastOffer.html("&#x2022; Última oferta: $" + mostOffer.offer);
+            lastOffer.html("<i class='fa-solid fa-gavel'></i> Última oferta: $" + mostOffer.offer);
             participantsCount1Href.removeAttr("hidden");
 
             if (mostOffer.username === myUsername) {
@@ -674,7 +850,7 @@
                 yourOfferState.html("");
             }
         } else {
-            lastOffer.html("&#x2022; Oferta inicial: $" + startPrice);
+            lastOffer.html("<i class='fa-regular fa-money-bill-1'></i> Oferta inicial: $" + startPrice);
             participantsCount1Href.setAttribute('hidden', '');
         }
 

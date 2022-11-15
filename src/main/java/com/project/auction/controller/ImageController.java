@@ -36,10 +36,11 @@ public class ImageController {
     PersonService personService;
     @Autowired
     ResourceLoader resourceLoader;
+
     @GetMapping("/avatar/{id}")
     @ResponseBody
     void showAvatarImage(@PathVariable("id") Long id, HttpServletResponse response, AvatarImage avatarImage)
-            throws ServletException, IOException {
+            throws IOException {
         avatarImage = avatarImageService.getImageById(id);
         if (avatarImage == null) {
             Resource resource = resourceLoader.getResource("classpath:/static/images/DefaultAvatar.png");
@@ -58,16 +59,16 @@ public class ImageController {
     @GetMapping("/avatar/person/{id}")
     @ResponseBody
     void showAvatarImageFromPerson(@PathVariable("id") Long id, HttpServletResponse response, Person person)
-            throws ServletException, IOException {
+            throws IOException {
         AvatarImage avatarImage = null;
         for (Person personListed : personService.listPersons()) {
-            if(personListed.getId() == id) {
+            if (personListed.getId() == id) {
                 person = personListed;
                 break;
             }
         }
 
-        if(person != null) {
+        if (person != null) {
             avatarImage = person.getAvatar();
         }
 
@@ -75,8 +76,8 @@ public class ImageController {
             Resource resource = resourceLoader.getResource("classpath:/static/images/DefaultAvatar.png");
 
             response.setContentType("image/png");
-            if(person != null && person.getUsername() != null) {
-                if(person.getUsername().equalsIgnoreCase("keibuy")) {
+            if (person != null && person.getUsername() != null) {
+                if (person.getUsername().equalsIgnoreCase("keibuy")) {
                     resource = resourceLoader.getResource("classpath:/static/images/adminAvatar.jpg");
                     response.setContentType("image/jpg");
                 }
@@ -95,11 +96,19 @@ public class ImageController {
     @GetMapping("/item/{id}")
     @ResponseBody
     void showItemImage(@PathVariable("id") Long id, HttpServletResponse response, ItemImage itemImage)
-            throws ServletException, IOException {
+            throws IOException {
         itemImage = itemImageService.getImageById(id);
-        byte[] decompressBytes = Utils.decompressImage(itemImage.getBytes());
-        response.setContentType(itemImage.getContentType());
-        response.getOutputStream().write(decompressBytes);
-        response.getOutputStream().close();
+        if (itemImage == null) {
+            Resource resource = resourceLoader.getResource("classpath:/static/images/logo.png");
+            response.setContentType("image/png");
+            InputStream inputStream = resource.getInputStream();
+            response.getOutputStream().write(FileCopyUtils.copyToByteArray(inputStream));
+            response.getOutputStream().close();
+        } else {
+            byte[] decompressBytes = Utils.decompressImage(itemImage.getBytes());
+            response.setContentType(itemImage.getContentType());
+            response.getOutputStream().write(decompressBytes);
+            response.getOutputStream().close();
+        }
     }
 }

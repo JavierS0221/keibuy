@@ -1,38 +1,55 @@
 package com.project.auction;
 
 import com.project.auction.dto.ItemDto;
+import com.project.auction.exception.UnkownIdentifierException;
 import com.project.auction.model.Item;
 import com.project.auction.model.ItemImage;
+import com.project.auction.model.Person;
 import com.project.auction.repository.ItemRepository;
 import com.project.auction.service.ItemService;
+import com.project.auction.service.PersonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class AuctionProjectApplicationTests {
 
 	ItemService itemService;
+	PersonService personService;
 
 	@Autowired
-	public AuctionProjectApplicationTests(ItemService itemService) {
+	public AuctionProjectApplicationTests(ItemService itemService, PersonService personService) {
 		this.itemService = itemService;
+		this.personService = personService;
 	}
 
 	@Test
 	void contextLoads() {
 	}
 
-//	@Test
-//	void a() {
-//		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//		String a = passwordEncoder.encode("Mecla800$");
-//		System.out.println(passwordEncoder.encode("Mecla800$"));
-//	}
+	@Test
+	@Transactional(readOnly = true)
+	void a() {
+		try {
+			Person p = personService.getPersonById(1);
+			List<Item> subastasActivas = p.getItems().stream().filter(item -> !item.isFinalized()).toList();
+			List<Item> subastasFinalizadas = p.getItems().stream().filter(Item::isFinalized).toList();
+
+			System.out.println("activas: "+subastasActivas.size());
+			System.out.println("finalizado: "+subastasFinalizadas.size());
+
+		} catch (UnkownIdentifierException e) {
+			e.printStackTrace();
+		}
+	}
 
 //	@Test
 //	void testSaveOrder(){
@@ -59,8 +76,8 @@ class AuctionProjectApplicationTests {
 //		itemDto.getItemImages().add(itemImage2);
 //
 //		Item item = itemService.getItem(itemDto);
-//		itemService.save(item);
-//
+//		long id = itemService.save(item);
+//		System.out.println(id);
 //	}
 
 }

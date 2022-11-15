@@ -43,4 +43,5 @@ public class AvatarImageServiceImpl implements AvatarImageService {
         if(avatarImage == null) return null;
         return avatarImageRepository.findById(avatarImage.getId()).orElse(null);
     }
+
 }

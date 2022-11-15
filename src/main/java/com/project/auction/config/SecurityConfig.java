@@ -30,7 +30,7 @@ public class SecurityConfig {
         CustomAuthenticationProvider provider = new CustomAuthenticationProvider();
         provider.setUserDetailsService(personService);
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setHideUserNotFoundExceptions(false) ;
+        provider.setHideUserNotFoundExceptions(false);
         return provider;
     }
 
@@ -45,27 +45,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors().and()
-            .csrf().disable()
+                .cors().and()
+                .csrf().disable()
                 .authenticationProvider(myAuthProvider())
-            .authorizeRequests().antMatchers(
-            "/register**", "/js/**", "/css/**", "/images/**", "/videos/**").permitAll()
+                .authorizeRequests().antMatchers(
+                        "/register**", "/js/**", "/css/**", "/images/**", "/videos/**").permitAll()
 
-            .antMatchers("/profile/**", "/auctions/new/**")
-            .hasRole("USER")
-            .and()
-            .formLogin()
-            .loginPage("/login").failureUrl("/login?error=true")
-            .permitAll()
-            .and()
-            .logout()
-            .invalidateHttpSession(true)
-            .clearAuthentication(true)
-            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/login?logout")
-            .permitAll()
-            .and()
-            .exceptionHandling().accessDeniedPage("/error/403");
+                .antMatchers("/profile/**", "/auctions/new/**")
+                .hasRole("USER")
+                .and()
+                .formLogin()
+                .loginPage("/login").failureUrl("/login?error=true")
+                .permitAll()
+                .and()
+                .logout()
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+                .and()
+                .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(1209600)
+                .and()
+                .exceptionHandling().accessDeniedPage("/error/403");
         return http.build();
     }
 }

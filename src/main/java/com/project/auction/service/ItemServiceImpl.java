@@ -29,16 +29,19 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public void save(Item item) {
-        itemRepository.save(item);
+    public long save(Item item) {
+        return itemRepository.save(item).getId();
     }
 
     @Override
     @Transactional
-    public void save(ItemDto itemDto) {
+    public long save(ItemDto itemDto) {
         Item item = getItem(itemDto);
-        if (item != null)
-            itemRepository.save(item);
+        if (item != null) {
+            return itemRepository.save(item).getId();
+
+        }
+        return 0;
     }
 
     @Override
@@ -93,7 +96,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public void setFinalized(Item item, boolean finalized) {
         item = this.getItem(item);
-        if(item != null) {
+        if (item != null) {
             item.setFinalized(finalized);
             itemRepository.save(item);
         }

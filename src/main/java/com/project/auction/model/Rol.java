@@ -46,7 +46,7 @@ public class Rol implements Serializable {
     @ToString.Exclude
     private Collection<PersonRol> persons = new ArrayList<>();
 
-    public String getNameWihoutFormat() {
+    public String getNameWithoutFormat() {
         if (this.name.length() <= 5) return this.name;
         String firstLatter = this.name.substring(5, 6).toUpperCase();
         return firstLatter + this.name.substring(6).toLowerCase();
