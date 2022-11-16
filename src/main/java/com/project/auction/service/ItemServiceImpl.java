@@ -1,7 +1,9 @@
 package com.project.auction.service;
 
 import com.project.auction.dto.ItemDto;
+import com.project.auction.email.context.AccountVerificationEmailContext;
 import com.project.auction.model.ItemImage;
+import com.project.auction.model.Person;
 import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.repository.ItemRepository;
 import com.project.auction.model.Item;
@@ -102,4 +104,36 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+
+    @Override
+    public void sendEmails(Item item) {
+        item = this.getItem(item);
+        if (item != null) {
+            AuctionOffer mostOffer = item.getMostOffer();
+                if(mostOffer != null) {
+
+                    Person personWin = mostOffer.getPerson();
+
+                    for (Person person : item.getParticipants()) {
+                        if(person == personWin) continue;
+
+                        AccountVerificationEmailContext emailContext = new AccountVerificationEmailContext();
+                        emailContext.init(person);
+                        emailContext.setToken(secureToken.getToken());
+                        emailContext.buildVerificationUrl(baseURL, secureToken.getToken());
+
+                        if (!projectTestingMode) {
+                            try {
+                                emailService.sendMail(emailContext);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                } else {
+                    // nadie participo
+                }
+        }
+    }
 }

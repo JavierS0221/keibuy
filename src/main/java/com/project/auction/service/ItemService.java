@@ -19,5 +19,6 @@ public interface ItemService {
     public Page<Item> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
     public Item getItemById(long id);
     public void setFinalized(Item item, boolean finalized);
+    public void sendEmails(Item item);
 //    public int getLastItemId();
 }
