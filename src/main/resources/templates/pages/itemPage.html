@@ -353,8 +353,9 @@
                         </th:block>
                     </div>
                     <p class="text-start">
-                        Subastas concluidas: 999<br />
-                        Subastas activas: [[${item.getPerson().}]]
+                        Subastas concluidas: [[${item.getPerson().getNumberFinalizedAuctions()}]]
+                        <br />
+                        Subastas activas: [[${item.getPerson().getNumberActiveAuctions()}]]
                     </p>
                 </div>
                 <div class="text-center" style="min-height: 40px"></div>

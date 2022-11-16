@@ -35,21 +35,21 @@ class AuctionProjectApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	@Transactional(readOnly = true)
-	void a() {
-		try {
-			Person p = personService.getPersonById(1);
-			List<Item> subastasActivas = p.getItems().stream().filter(item -> !item.isFinalized()).toList();
-			List<Item> subastasFinalizadas = p.getItems().stream().filter(Item::isFinalized).toList();
-
-			System.out.println("activas: "+subastasActivas.size());
-			System.out.println("finalizado: "+subastasFinalizadas.size());
-
-		} catch (UnkownIdentifierException e) {
-			e.printStackTrace();
-		}
-	}
+//	@Test
+//	@Transactional(readOnly = true)
+//	void a() {
+//		try {
+//			Person p = personService.getPersonById(1);
+//			List<Item> subastasActivas = p.getItems().stream().filter(item -> !item.isFinalized()).toList();
+//			List<Item> subastasFinalizadas = p.getItems().stream().filter(Item::isFinalized).toList();
+//
+//			System.out.println("activas: "+subastasActivas.size());
+//			System.out.println("finalizado: "+subastasFinalizadas.size());
+//
+//		} catch (UnkownIdentifierException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 //	@Test
 //	void testSaveOrder(){
