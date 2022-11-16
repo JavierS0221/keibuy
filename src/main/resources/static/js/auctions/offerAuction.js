@@ -4,6 +4,8 @@ var stompClient = null;
 var personId = null;
 var itemId = null;
 
+var personIdWin = null;
+
 function connect(event, p, i) {
     personId = p;
     itemId = i;
@@ -26,18 +28,52 @@ function connect(event, p, i) {
 
 function onOfferReceived(response) {
     let username = response.username;
-    let personId = response.personId;
     let offer = response.offer;
-    updatePerson({'id': personId, 'username': username, 'offer': offer});
+    updatePerson({'id': response.personId, 'username': username, 'offer': offer});
     refreshData();
+
+    personIdWin = response.personId;
 }
 
 function onFinalize(response) {
-    if(response) {
+    if (response) {
         console.log("finalizo la subasta");
-        if(listParticipants.length > 0) {
-            console.log("- Gano "+listParticipants[0].username)
+        if (listParticipants.length > 0) {
+            let isParticipant = false;
+            for(let x of listParticipants) {
+                if(x.id === personId) {
+                    isParticipant = true;
+                    break;
+                }
+            }
+
+
+            var winModal = new bootstrap.Modal(
+                document.getElementById("winModal"),
+                {
+                    keyboard: false,
+                }
+            );
+            var lostModal = new bootstrap.Modal(
+                document.getElementById("lostModal"),
+                {
+                    keyboard: false,
+                }
+            );
+            let hasWin = false;
+            if (personIdWin != null) {
+                if (personIdWin === personId) {
+                    hasWin = true;
+                }
+            }
+
+            if (hasWin) {
+                winModal.show();
+            } else {
+                winModal.show();
+            }
         } else {
             console.log("- No gano nadie")
         }
-    }}
+    }
+}

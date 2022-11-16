@@ -125,7 +125,6 @@
         overflow: hidden;
       "
 >
-    We're thrilled to have you here! Get ready to dive into your new account.
 </div>
 <div class="d-flex justify-content-center">
     <table style="width: 100%">
@@ -153,7 +152,7 @@
                           font-weight: 400;
                           line-height: 48px;">
                             <h1 style="font-size: 40px; font-weight: 400; margin: 2px">
-                                Bienvenido a KeiBuy!
+                                Change password in KeiBuy
                             </h1>
                         </td>
                     </tr>
@@ -172,9 +171,8 @@
                           font-weight: 400;
                           line-height: 25px;">
                             <p style="margin: 0">
-                                Hola<span th:if="${username} != null"> <span th:text="${username}">usuario</span></span>,
-                                verifica que este es tu correo para empezar a
-                                usar tu cuenta. Sólo tienes que pulsar el botón de abajo.
+                                Hi<span th:if="${username} != null"> <span th:text="${username}">usuario</span></span>,
+                                please click on the button to change your password. The link expires in 8 hours and can only be used to change your password once:
                             </p>
                         </td>
                     </tr>
@@ -195,7 +193,7 @@
                                                     text-decoration: none;
                                                     padding: 10px 20px;
                                                     display: inline-block;">
-                                                        VERIFICAR
+                                                        CHANGE
                                                     </a>
                                                 </td>
                                             </tr>
@@ -212,7 +210,7 @@
                                         font-weight: 400;
                                         line-height: 25px;">
                                         <p style="margin: 0">
-                                            También puede copiar esta URL en su navegador:
+                                            You can also copy this URL to your browser:
                                         </p>
                                     </td>
                                 </tr>
@@ -224,7 +222,7 @@
                                         font-size: 18px;
                                         font-weight: 400;
                                         line-height: 25px;">
-                                        <a th:href="${verificationURL}" href="#" th:text="${verificationURL} ">https://example.com/register/verify?code</a>
+                                        <a th:href="${verificationURL}" href="#"  th:text="${verificationURL} ">https://example.com/register/verify?code</a>
                                     </td>
                                 </tr>
                             </table>
@@ -240,8 +238,7 @@
                           font-weight: 400;
                           line-height: 25px;">
                             <p style="margin: 0">
-                                Este es un correo electrónico generado automáticamente. Por
-                                favor, no responda a este correo electrónico.
+                                This is an automatically generated email. Please do not reply to this email at please do not reply to this email.
                             </p>
                         </td>
                     </tr>

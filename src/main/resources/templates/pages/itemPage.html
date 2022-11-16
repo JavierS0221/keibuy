@@ -310,6 +310,36 @@
 
 
 
+<div class="modal fade" id="winModal" tabindex="-1" aria-labelledby="winModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h1 class="modal-title fs-5" id="winModalLabelLabel">Ganaste</h1>
+            </div>
+            <div class="modal-body">
+                Tu oferta: $[[${item.getOfferByPerson(person).getOffer()}]]
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="lostModal" tabindex="-1" aria-labelledby="lostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h1 class="modal-title fs-5" id="lostModalLabelLabel">Perdiste</h1>
+            </div>
+            <div class="modal-body">
+                Tu oferta: $[[${item.getOfferByPerson(person).getOffer()}]]
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="autorModal" tabindex="-1" aria-labelledby="autorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content border-0">
@@ -628,6 +658,7 @@
             }
         });
     }
+
     const acceptTermsBtn = $("#acceptTermsBtn");
     acceptTermsBtn.prop('disabled', true);
     const acceptTermsCheck = $("#acceptCheck");
@@ -860,6 +891,11 @@
             participantsYourState.html("<a href='#pos" + yourPosition + "'>Tu posición: " + yourPosition + "</a>");
         } else {
             participantsYourState.html("No participas")
+        }
+
+        let lostModalPostion = $("#lostModal-position");
+        if (yourPosition !== -1) {
+            lostModalPostion.html("Quedaste en la posición: " + yourPosition);
         }
 
     }

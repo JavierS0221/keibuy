@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- utf-8 works for most cases -->
+    <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta name="x-apple-disable-message-reformatting">
+    <title></title>  <!-- Disable auto-scale in iOS 10 Mail entirely -->
+    <style>
+        @media screen {
+            @font-face {
+                font-family: "Lato";
+                font-style: normal;
+                font-weight: 400;
+                src: local("Lato Regular"), local("Lato-Regular"),
+                url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format("woff");
+            }
+            @font-face {
+                font-family: "Lato";
+                font-style: normal;
+                font-weight: 700;
+                src: local("Lato Bold"), local("Lato-Bold"),
+                url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format("woff");
+            }
+            @font-face {
+                font-family: "Lato";
+                font-style: italic;
+                font-weight: 400;
+                src: local("Lato Italic"), local("Lato-Italic"),
+                url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format("woff");
+            }
+            @font-face {
+                font-family: "Lato";
+                font-style: italic;
+                font-weight: 700;
+                src: local("Lato Bold Italic"), local("Lato-BoldItalic"),
+                url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format("woff");
+            }
+        }
+
+        /* CLIENT-SPECIFIC STYLES */
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        /* RESET STYLES */
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+
+        body {
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* MOBILE STYLES */
+        @media screen and (max-width: 600px) {
+            h1 {
+                font-size: 32px !important;
+                line-height: 32px !important;
+            }
+        }
+
+        /* ANDROID CENTER FIX */
+        div[style*="margin: 16px 0;"] {
+            margin: 0 !important;
+        }
+
+        .bg-blue {
+            background-color: #404eed;
+        }
+
+        .m-auto {
+            margin: auto;
+        }
+    </style>
+    <!--    Table style-->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&family=Poppins:wght@600&display=swap');
+
+        .participants-table thead {
+            font-family: 'Poppins', sans-serif;
+            font-weight: bolder;
+            font-size: 16px;
+            color: #666
+        }
+
+        .participants-image {
+            width: 40px;
+            height: 40px
+        }
+
+        .participants-name {
+            display: inline-block
+        }
+
+
+        .participants-table tbody td:first-child {
+            border-bottom-left-radius: 10px;
+            border-top-left-radius: 10px
+        }
+
+        .participants-table tbody td:last-child {
+            border-bottom-right-radius: 10px;
+            border-top-right-radius: 10px
+        }
+    </style>
+</head>
+<body
+        style="
+      background-color: #f4f4f4;
+      margin: 0 !important;
+      padding: 0 !important;
+    "
+>
+<!-- HIDDEN PREHEADER TEXT -->
+<div
+        style="
+        display: none;
+        font-size: 1px;
+        color: #fefefe;
+        line-height: 1px;
+        font-family: 'Lato', Helvetica, Arial, sans-serif;
+        max-height: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+      "
+>
+</div>
+<div class="d-flex justify-content-center">
+    <table style="width: 100%">
+        <tr>
+            <td class="bg-blue">
+                <table class="bg-blue" style="max-width: 600px; width: 100%">
+                    <tr>
+                        <td style="padding: 40px 10px 40px 10px"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="bg-blue" style="padding: 0 10px 0 10px">
+                <table style="max-width: 600px; width: 100%" class="m-auto">
+                    <tr>
+                        <td
+                                style="
+                          background-color: #FFFFFF;
+                          padding: 40px 20px 0 20px;
+                          border-radius: 4px 4px 0 0;
+                          color: #111111;
+                          font-family: 'Lato', Helvetica, Arial, sans-serif;
+                          font-size: 48px;
+                          font-weight: 400;
+                          line-height: 48px;">
+                            <h1 style="font-size: 40px; font-weight: 400; margin: 2px">
+                                Tu subasta finalizo
+                            </h1>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 0 10px 0 10px; background-color: #f4f4f4">
+                <table style="max-width: 600px; width: 100%" class="m-auto">
+                    <tr>
+                        <td style=" background-color: #FFFFFF;
+                          padding: 10px 30px 20px 30px;
+                          color: #666666;
+                          font-family: 'Lato', Helvetica, Arial, sans-serif;
+                          font-size: 18px;
+                          font-weight: 400;
+                          line-height: 25px;">
+                            <p class="" style="max-width: 540px; max-height: 55px; overflow: auto">
+                                <b>Subasta:</b> <a href="#" style="text-decoration: none">"Ferrari sin uso"
+                                (ID:3)</a><br>
+                            </p>
+                            <p class="" style="max-width: 540px; max-height: 55px; overflow: auto">
+                                <b>Participantes:</b> 2<br>
+                            </p>
+                            <span style="display: grid; justify-content: center">Participantes</span>
+                            <p class="" style="max-width: 540px; max-height: 55px; overflow: auto; margin-top: 0;">
+
+                            <div style="max-height: 478px; overflow:auto">
+                                <table style="width: 100%; text-align: center" class="participants-table">
+                                    <thead>
+                                    <tr style="background-color: #888d94; color:#fff; text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5), 2px 2px 2px rgba(0,0,0,0.8);">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Usuario</th>
+                                        <th scope="col">Correo</th>
+                                        <th scope="col">Ofera</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="participants-table">
+                                    <tr style="border-width:1px; border-style:solid;">
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
+                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
+                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
+                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
+                                            </div>
+                                        </td>
+                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                    </tr>
+                                    <tr style="border-width:1px; border-style:solid;">
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
+                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
+                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
+                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
+                                            </div>
+                                        </td>
+                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                    </tr>
+                                    <tr style="border-width:1px; border-style:solid;">
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
+                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
+                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
+                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
+                                            </div>
+                                        </td>
+                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                    </tr>
+                                    <tr style="border-width:1px; border-style:solid;">
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
+                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
+                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
+                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
+                                            </div>
+                                        </td>
+                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                    </tr>
+                                    <tr style="border-width:1px; border-style:solid;">
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
+                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
+                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
+                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
+                                            </div>
+                                        </td>
+                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                    </tr>
+                                    <tr style="border-width:1px; border-style:solid;">
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
+                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
+                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
+                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
+                                            </div>
+                                        </td>
+                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
+                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <br>
+                            <span style="display: grid; justify-content: center">Ganador</span>
+                            <table style="width: 100%; text-align: center" class="participants-table">
+                                <thead>
+                                <tr style="background-color: #888d94; color:#fff; text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5), 2px 2px 2px rgba(0,0,0,0.8);">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Usuario</th>
+                                    <th scope="col">Correo</th>
+                                    <th scope="col">Ofera</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table-win">
+                                <tr style="border-width:1px; border-style:solid;">
+                                    <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
+                                    <td style="padding-top: 0.5rem; padding-bottom: 0;">
+                                        <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
+                                        <div class="participants-name" style="margin-bottom: 10px">Usuario
+                                        </div>
+                                    </td>
+                                    <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
+                                    <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+
+                            </p>
+                            <p>Debes contactar con el ganador para concretar el pago y envío del item. Debes hacerlo antes de 1 semana desde la finalización de tu subasta.</p>
+                        </td>
+                    </tr>
+                    <td style="
+                          background-color: #FFFFFF;
+                          padding: 0 30px 20px 30px;
+                          color: #666666;
+                          font-family: 'Lato', Helvetica, Arial, sans-serif;
+                          font-size: 15px;
+                          font-weight: 400;
+                          line-height: 25px;">
+                        <p style="margin: 0">
+                            Este es un correo electrónico generado automáticamente. Por
+                            favor, no responda a este correo electrónico.
+                        </p>
+                    </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
