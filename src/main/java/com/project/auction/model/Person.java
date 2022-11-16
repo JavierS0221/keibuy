@@ -150,4 +150,11 @@ public class Person {
 //        }
         return ordRoles.get(0);
     }
+
+    public int getNumberActiveAuctions() {
+        return this.getItems().stream().filter(item -> !item.isFinalized()).toList().size();
+    }
+    public int getNumberFinalizedAuctions() {
+        return this.getItems().stream().filter(Item::isFinalized).toList().size();
+    }
 }
