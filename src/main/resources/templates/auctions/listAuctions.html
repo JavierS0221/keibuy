@@ -51,29 +51,36 @@
                 <div class="ms-auto mt-3 me-2">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination p-top">
-                            <li th:if="${currentPage > 1}" class="page-item">
-                                <a
-                                        href="#!"
-                                        th:href="@{${'/auctions/'+(currentPage - 1)}}"
-                                        class="page-link"
-                                >
-                                    <i class="fa fa-chevron-left"></i>
-                                </a>
-                            </li>
-                            <th:block th:each="page: ${#numbers.sequence(minViewPage, maxViewPage)}">
-                            <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}">
-                                <a class="page-link" th:href="@{${'/auctions/'+page}}" th:text="${page}"></a>
-                            </li>
+                            <th:block th:if="${totalPages > 0}">
+                                <li th:if="${currentPage > 1}" class="page-item">
+                                    <a
+                                            href="#!"
+                                            th:href="@{${'/auctions/'+(currentPage - 1)}}"
+                                            class="page-link"
+                                    >
+                                        <i class="fa fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                                <th:block th:each="page: ${#numbers.sequence(minViewPage, maxViewPage)}">
+                                    <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}">
+                                        <a class="page-link" th:href="@{${'/auctions/'+page}}" th:text="${page}"></a>
+                                    </li>
+                                </th:block>
+                                <li th:if="${currentPage < totalPages}" class="page-item">
+                                    <a
+                                            href="#!"
+                                            th:href="@{${'/auctions/'+(currentPage+1)}}"
+                                            class="page-link"
+                                    >
+                                        <i class="fa fa-chevron-right"></i>
+                                    </a>
+                                </li>
                             </th:block>
-                            <li th:if="${currentPage < totalPages}" class="page-item">
-                                <a
-                                        href="#!"
-                                        th:href="@{${'/auctions/'+(currentPage+1)}}"
-                                        class="page-link"
-                                >
-                                    <i class="fa fa-chevron-right"></i>
-                                </a>
-                            </li>
+                            <th:block th:unless="${totalPages > 0}">
+                                <li class="page-item active">
+                                    <a class="page-link" th:href="@{${'/myoffers/'+1}}" th:text="1"></a>
+                                </li>
+                            </th:block>
                         </ul>
                     </nav>
                 </div>
@@ -84,9 +91,11 @@
                         <div class="box border-bottom">
                             <div class="form-group text-center">
                                 <div class="btn-group" data-bs-toggle="buttons">
-                                    <a th:href="@{'/auctions/reset'}"><button type="button" class="btn btn-filter form-check-label p-2">
-                                        Reset
-                                    </button></a>
+                                    <a th:href="@{'/auctions/reset'}">
+                                        <button type="button" class="btn btn-filter form-check-label p-2">
+                                            Reset
+                                        </button>
+                                    </a>
                                     <button type="submit"
                                             class="btn btn-filter btn-apply form-check-label active p-2"
                                     >
@@ -101,11 +110,19 @@
                                 <!-- Select Order -->
                                 Sort By
                                 <div class="m-auto">
-                                    <select id="sort" class="form-select"  th:value="${a1}" name="a1">
-                                        <option value="most_recent" th:selected="${sortByFilter == 'most_recent'}" >most recent</option>
-                                        <option value="less_recent" th:selected="${sortByFilter == 'less_recent'}">less recent</option>
-                                        <option value="highest_offer" th:selected="${sortByFilter == 'highest_offer'}">highest offer</option>
-                                        <option value="lower_offer" th:selected="${sortByFilter == 'lower_offer'}">lowest offer</option>
+                                    <select id="sort" class="form-select" th:value="${a1}" name="a1">
+                                        <option value="most_recent" th:selected="${sortByFilter == 'most_recent'}" th:text="#{mostRecent}">most
+                                            recent
+                                        </option>
+                                        <option value="less_recent" th:selected="${sortByFilter == 'less_recent'}" th:text="#{lessRecient}">less
+                                            recent
+                                        </option>
+                                        <option value="highest_offer" th:selected="${sortByFilter == 'highest_offer'}" th:text="#{highestOffer}">
+                                            highest offer
+                                        </option>
+                                        <option value="lower_offer" th:selected="${sortByFilter == 'lower_offer'}" th:text="#{lowestOffer}">
+                                            lowest offer
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -127,13 +144,15 @@
                             </div>
                             <div id="inner-box0" class="collapse show mt-2 me-1">
                                 <div class="my-1">
-                                    <label class="tick">
-                                        Started <input type="checkbox"  th:value="1" name="b1" th:checked="${startedFilter}"/><span class="check"></span>
+                                    <label class="tick" th:text="#{started}">
+                                        Started <input type="checkbox" th:value="1" name="b1"
+                                                       th:checked="${startedFilter}"/><span class="check"></span>
                                     </label>
                                 </div>
                                 <div class="my-1">
-                                    <label class="tick">
-                                        Not started <input type="checkbox"  value="1" name="b2" th:checked="${notStartedFilter}"/><span
+                                    <label class="tick" th:text="#{notStarted}">
+                                        Not started <input type="checkbox" value="1" name="b2"
+                                                           th:checked="${notStartedFilter}"/><span
                                             class="check"
                                     ></span>
                                     </label>
@@ -156,15 +175,17 @@
                             </div>
                             <div id="inner-box2" class="collapse show mt-2 me-1">
                                 <div class="my-1">
-                                    <label class="tick">
-                                        Virtual payment <input type="checkbox"  th:value="1" name="c1"  th:checked="${virtualPaymentFilter}"/><span
+                                    <label class="tick" th:text="#{virtualPayment}">
+                                        Virtual payment <input type="checkbox" th:value="1" name="c1"
+                                                               th:checked="${virtualPaymentFilter}"/><span
                                             class="check"
                                     ></span>
                                     </label>
                                 </div>
                                 <div class="my-1">
-                                    <label class="tick">
-                                        Physical payment <input type="checkbox"  th:value="1" name="c2"  th:checked="${physicalPaymentFilter}"/><span
+                                    <label class="tick" th:text="#{physicalPayment}">
+                                        Physical payment <input type="checkbox" th:value="1" name="c2"
+                                                                th:checked="${physicalPaymentFilter}"/><span
                                             class="check"
                                     ></span>
                                     </label>
@@ -283,30 +304,32 @@
             </div>
             <div class="clearfix text-center d-flex justify-content-center">
                 <ul class="pagination m-0 mb-3  bg-light rounded-4 shadow-sm py-1">
-                    <li th:if="${currentPage > 1}" class="page-item">
-                        <a
-                                href="#!"
-                                th:href="@{${'/auctions/'+(currentPage - 1)}}"
-                                class="page-link"
-                        >
-                            <i class="fa fa-chevron-left"></i>
-                        </a>
-                    </li>
-                    <th:block th:each="page: ${#numbers.sequence(minViewPage, maxViewPage)}">
-                        <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}">
-                            <a class="page-link" th:href="@{${'/auctions/'+page}}" th:text="${page}"></a>
+                    <th:block th:if="${totalPages > 0}">
+                        <li th:if="${currentPage > 1}" class="page-item">
+                            <a
+                                    href="#!"
+                                    th:href="@{${'/auctions/'+(currentPage - 1)}}"
+                                    class="page-link"
+                            >
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                        </li>
+                        <th:block th:each="page: ${#numbers.sequence(minViewPage, maxViewPage)}">
+                            <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}">
+                                <a class="page-link" th:href="@{${'/auctions/'+page}}" th:text="${page}"></a>
+                            </li>
+                        </th:block>
+
+                        <li th:if="${currentPage < totalPages}" class="page-item">
+                            <a
+                                    href="#!"
+                                    th:href="@{${'/auctions/'+(currentPage+1)}}"
+                                    class="page-link"
+                            >
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
                         </li>
                     </th:block>
-
-                    <li th:if="${currentPage < totalPages}" class="page-item">
-                        <a
-                                href="#!"
-                                th:href="@{${'/auctions/'+(currentPage+1)}}"
-                                class="page-link"
-                        >
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>

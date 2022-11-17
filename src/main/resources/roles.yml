@@ -4,7 +4,7 @@ ROLE_USER:
   color: '#6b6b6b'
 
 ROLE_AUCTIONEER:
-  has-expire: true
+  has-expire: false
   priority: 5
   color: '#a86232'
 

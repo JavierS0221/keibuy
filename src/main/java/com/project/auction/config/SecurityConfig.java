@@ -49,10 +49,14 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authenticationProvider(myAuthProvider())
                 .authorizeRequests().antMatchers(
-                        "/register**", "/js/**", "/css/**", "/images/**", "/videos/**").permitAll()
+                        "/register/**", "/js/**", "/css/**", "/images/**", "/videos/**").permitAll()
 
-                .antMatchers("/profile/**", "/auctions/new/**")
+                .antMatchers("/profile/**", "/myauctions/**", "/myoffers/**")
                 .hasRole("USER")
+                .antMatchers("/auctions/new/**")
+                .hasRole("AUCTIONEER")
+                .antMatchers("/control/**")
+                .hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")

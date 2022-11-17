@@ -4,6 +4,7 @@ import com.project.auction.email.context.AccountVerificationEmailContext;
 import com.project.auction.exception.*;
 import com.project.auction.model.AvatarImage;
 import com.project.auction.model.SecureToken;
+import com.project.auction.model.relation.PersonRol;
 import com.project.auction.repository.PersonRepository;
 import com.project.auction.dto.PersonDto;
 import com.project.auction.model.Person;
@@ -318,9 +319,10 @@ public class PersonServiceImpl implements PersonService {
         var roles = new ArrayList<GrantedAuthority>();
 
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
-//        for (PersonRol personRol : person.getRoles()) {
-//            roles.add(new SimpleGrantedAuthority(personRol.getRol().getName()));
-//        }
+        for (PersonRol personRol : person.getRoles()) {
+            System.out.println("Rol:"+personRol.getRol().getName());
+            roles.add(new SimpleGrantedAuthority(personRol.getRol().getName()));
+        }
 
         return new User(person.getUsername(), person.getPassword(), roles);
     }

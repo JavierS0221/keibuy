@@ -132,6 +132,7 @@ label {
     position: absolute;
     display: none;
 }
+
 .tick input:checked ~ .check:after {
     display: block;
     transform: rotate(45deg) scale(1);
@@ -144,6 +145,12 @@ label {
     border: solid rgb(0, 0, 0);
     border-width: 0 3px 3px 0;
     transform: rotate(45deg) scale(2);
+}
+
+
+.trash-btn:hover {
+    transform: scale(1.2);
+    transition: 0.3s all ease-in-out;
 }
 .box {
     padding: 10px;
