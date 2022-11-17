@@ -599,10 +599,12 @@
                     </div>
                     <!--                    Modal btn-->
                     <section id="btn-section" hidden>
-                        <button th:if="${person != null}" class="btn btn-primary px-4 mb-6"
-                                id="btnOffer">
-                            Ofertar
-                        </button>
+                        <th:block th:if="${person != null}">
+                            <button th:if="${person != item.getPerson()}" class="btn btn-primary px-4 mb-6"
+                                    id="btnOffer">
+                                Ofertar
+                            </button>
+                        </th:block>
                         <a th:href="@{/login}" th:if="${person == null}">
                             <button class="btn btn-primary px-4 mb-6">
                                 Iniciar sesión

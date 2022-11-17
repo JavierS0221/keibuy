@@ -69,55 +69,55 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="name">Name</label>
+                                <label class="mb-2 text-muted" for="name" th:text="#{name}">Name</label>
                                 <input id="name" type="text" class="form-control"  th:field="*{name}" value="" required>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
                             </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="last-name">Last Name</label>
+                                <label class="mb-2 text-muted" for="last-name" th:text="#{last-name}">Last Name</label>
                                 <input id="last-name" type="text" class="form-control"  th:field="*{lastName}" value="" required>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></small>
                             </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="birth-date">Birth Date</label>
+                                <label class="mb-2 text-muted" for="birth-date" th:text="#{birth-date}">Birth Date</label>
                                 <input id="birth-date" type="date" class="form-control"  th:field="*{birthDate}" value="" required>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></small>
                             </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="email">E-Mail Address</label>
+                                <label class="mb-2 text-muted" for="email" th:text="#{email}">E-Mail Address</label>
                                 <input id="email" type="email" class="form-control"  th:field="*{email}" value="" required>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
                             </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="country">Country</label>
+                                <label class="mb-2 text-muted" for="country" th:text="#{country}">Country</label>
                                 <select id="country" type="text" class="form-control"  th:field="*{country}" required></select>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></small>
                             </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="telephone">Telephone</label>
+                                <label class="mb-2 text-muted" for="telephone" th:text="#{telephone}" >Telephone</label>
                                 <input id="telephone" type="tel" class="form-control"  th:field="*{phone}" required>
                                 <small id="telephone-warn-msg" class="form-text text-danger"></small>
                             </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="password" th:href="#{password}">Password</label>
+                                <label class="mb-2 text-muted" for="password" th:href="#{password}" th:text="#{password}">Password</label>
                                 <input id="password" type="password" class="form-control"  th:field="*{password}" required>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
                             </div>
 
-                            <p class="form-text text-muted mb-3">
-                                By registering you agree with our <a type="button" class="" data-mdb-toggle="modal" data-mdb-target="#termsAndConditions100real">terms and condition</a>.
+                            <p class="form-text text-muted mb-3" th:text="#{terms-and-conditions}">
+                                <a type="button" class="" data-mdb-toggle="modal" data-mdb-target="#termsAndConditions100real">By registering you agree with our terms and condition</a>.
                             </p>
 
 
 
                             <div class="align-items-center d-flex">
-                                <button type="submit" class="btn btn-primary ms-auto">
+                                <button type="submit" class="btn btn-primary ms-auto" th:text="#{register}">
                                     Register
                                 </button>
                             </div>
@@ -125,7 +125,7 @@
                     </div>
                     <div class="card-footer py-3 border-0">
                         <div class="text-center">
-                            Already have an account? <a th:href="@{/login}" class="text-dark">Login</a>
+                            [[#{already-account}]] <a th:href="@{/login}" class="text-dark">[[#{login}]]</a>
                         </div>
                     </div>
                 </div>
