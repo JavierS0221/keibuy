@@ -30,7 +30,7 @@
 <!--Container Main start-->
 <div class="h-100 bg-light">
     <section>
-        <h3 class="text-center fw-bold shadow-sm pb-2">Mis subastas</h3>
+        <h3 class="text-center fw-bold shadow-sm pb-2">Subastas ofertadas</h3>
         <div class="container-fluid">
             <div
                     class="bg-white rounded d-flex align-items-center justify-content-between ps-2 shadow-sm"
@@ -54,7 +54,7 @@
                             <li th:if="${currentPage > 1}" class="page-item">
                                 <a
                                         href="#!"
-                                        th:href="@{${'/myauctions/'+(currentPage - 1)}}"
+                                        th:href="@{${'/myoffers/'+(currentPage - 1)}}"
                                         class="page-link"
                                 >
                                     <i class="fa fa-chevron-left"></i>
@@ -62,13 +62,13 @@
                             </li>
                             <th:block th:each="page: ${#numbers.sequence(minViewPage, maxViewPage)}">
                             <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}">
-                                <a class="page-link" th:href="@{${'/myauctions/'+page}}" th:text="${page}"></a>
+                                <a class="page-link" th:href="@{${'/myoffers/'+page}}" th:text="${page}"></a>
                             </li>
                             </th:block>
                             <li th:if="${currentPage < totalPages}" class="page-item">
                                 <a
                                         href="#!"
-                                        th:href="@{${'/myauctions/'+(currentPage+1)}}"
+                                        th:href="@{${'/myoffers/'+(currentPage+1)}}"
                                         class="page-link"
                                 >
                                     <i class="fa fa-chevron-right"></i>
@@ -79,12 +79,12 @@
                 </div>
             </div>
             <div id="content" class="my-3">
-                <form id="offerForm" th:action="@{'/myauctions'}" method="post">
+                <form id="offerForm" th:action="@{'/myoffers'}" method="post">
                     <div id="filterbar" class="collapse show me-4 mb-4">
                         <div class="box border-bottom">
                             <div class="form-group text-center">
                                 <div class="btn-group" data-bs-toggle="buttons">
-                                    <a th:href="@{'/myauctions/reset'}"><button type="button" class="btn btn-filter form-check-label p-2">
+                                    <a th:href="@{'/myoffers/reset'}"><button type="button" class="btn btn-filter form-check-label p-2">
                                         Reset
                                     </button></a>
                                     <button type="submit"
@@ -286,7 +286,7 @@
                     <li th:if="${currentPage > 1}" class="page-item">
                         <a
                                 href="#!"
-                                th:href="@{${'/myauctions/'+(currentPage - 1)}}"
+                                th:href="@{${'/myoffers/'+(currentPage - 1)}}"
                                 class="page-link"
                         >
                             <i class="fa fa-chevron-left"></i>
@@ -294,14 +294,14 @@
                     </li>
                     <th:block th:each="page: ${#numbers.sequence(minViewPage, maxViewPage)}">
                         <li class="page-item" th:classappend="${page == currentPage ? 'active' : ''}">
-                            <a class="page-link" th:href="@{${'/myauctions/'+page}}" th:text="${page}"></a>
+                            <a class="page-link" th:href="@{${'/myoffers/'+page}}" th:text="${page}"></a>
                         </li>
                     </th:block>
 
                     <li th:if="${currentPage < totalPages}" class="page-item">
                         <a
                                 href="#!"
-                                th:href="@{${'/myauctions/'+(currentPage+1)}}"
+                                th:href="@{${'/myoffers/'+(currentPage+1)}}"
                                 class="page-link"
                         >
                             <i class="fa fa-chevron-right"></i>

@@ -285,7 +285,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#!"
+                                    <a th:href="@{/myauctions}"
                                        class="dropdown-item">My Auctions
                                     </a>
                                 </li>
@@ -329,7 +329,7 @@
                    href="#">Manual
                 </a>
                 <a class="navbar_item text-white me-2 hover-underline-animation text-decoration-none text-nowrap"
-                   href="#">Mis Ofertas
+                   th:href="@{/myoffers}">Mis Ofertas
                 </a>
                 <th:block th:if="${person != null}">
                     <th:block th:if="${person.containsRolForName('ROLE_AUCTIONEER')}">
