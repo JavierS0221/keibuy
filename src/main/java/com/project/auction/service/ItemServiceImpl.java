@@ -88,8 +88,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<Item> findPaginated(int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, boolean excludeFinalized) {
+    public Page<Item> findPaginated(int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, String searchKey, boolean excludeFinalized) {
         List<Item> itemList = this.listItems();
+        if(searchKey != null) {
+            System.out.println("no es null");
+            System.out.println("search: "+searchKey);
+            itemList = this.searchByKey(searchKey);
+        } else {
+
+            System.out.println("null");
+        }
+
         if (started && !notStarted)
             itemList = itemList.stream().filter(Item::isEnabled).collect(Collectors.toList());
         else if (!started && notStarted) {
@@ -217,5 +226,15 @@ public class ItemServiceImpl implements ItemService {
 
             }
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Item> searchByKey(String key) {
+        List<Item> list = new ArrayList<>();
+        if(key != null) {
+            list = itemRepository.searchByKey(key);
+        }
+        return list;
     }
 }

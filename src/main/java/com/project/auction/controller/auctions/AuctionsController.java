@@ -13,6 +13,7 @@ import com.project.auction.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -43,18 +44,27 @@ public class AuctionsController {
     @GetMapping
     public String auctions(Model model, @AuthenticationPrincipal User user) {
         int pageNo = 1;
+        String searchKey = null;
         String sortByFilter = "most_recent";
         boolean startedFilter = true;
         boolean notStartedFilter = true;
         boolean virtualPaymentFilter = true;
         boolean physicalPaymentFilter = true;
 
+        Object objSearchKey = model.getAttribute("searchKey");
         Object objPageNo = model.getAttribute("currentPage");
         Object objSortByFilter = model.getAttribute("sortByFilter");
         Object objStartedFilter = model.getAttribute("startedFilter");
         Object objNotStartedFilter = model.getAttribute("notStartedFilter");
         Object objVirtualPaymentFilter = model.getAttribute("virtualPaymentFilter");
         Object objPhysicalPaymentFilter = model.getAttribute("physicalPaymentFilter");
+
+        if (objSearchKey != null) {
+            try {
+                searchKey = (String) objSearchKey;
+            } catch (Exception ignored) {
+            }
+        }
 
         if (objPageNo != null) {
             pageNo = (int) objPageNo;
@@ -91,25 +101,24 @@ public class AuctionsController {
         }
 
         int pageSize = 12;
-        Page<Item> page = itemService.findPaginated(pageNo, pageSize, sortByFilter, startedFilter, notStartedFilter, virtualPaymentFilter, physicalPaymentFilter, true);
+        Page<Item> page = itemService.findPaginated(pageNo, pageSize, sortByFilter, startedFilter, notStartedFilter, virtualPaymentFilter, physicalPaymentFilter, searchKey, true);
         List<Item> listItems = page.getContent();
-        if(pageNo > page.getTotalPages()) pageNo = page.getTotalPages();
+        if (pageNo > page.getTotalPages()) pageNo = page.getTotalPages();
 
 
-        int minViewPage = pageNo-2;
-        if(minViewPage < 1) minViewPage = 1;
+        int minViewPage = pageNo - 2;
+        if (minViewPage < 1) minViewPage = 1;
 
-        int maxViewPage = pageNo+2;
-        if(maxViewPage > page.getTotalPages()) maxViewPage = page.getTotalPages();
+        int maxViewPage = pageNo + 2;
+        if (maxViewPage > page.getTotalPages()) maxViewPage = page.getTotalPages();
 
-        if(maxViewPage-minViewPage < 4) minViewPage -= 1;
-        if(maxViewPage-minViewPage < 4) minViewPage -= 1;
-        if(minViewPage < 1) minViewPage = 1;
+        if (maxViewPage - minViewPage < 4) minViewPage -= 1;
+        if (maxViewPage - minViewPage < 4) minViewPage -= 1;
+        if (minViewPage < 1) minViewPage = 1;
 
-        if(maxViewPage-minViewPage < 4) maxViewPage += 1;
-        if(maxViewPage-minViewPage < 4) maxViewPage += 1;
-        if(maxViewPage > page.getTotalPages()) maxViewPage = page.getTotalPages();
-
+        if (maxViewPage - minViewPage < 4) maxViewPage += 1;
+        if (maxViewPage - minViewPage < 4) maxViewPage += 1;
+        if (maxViewPage > page.getTotalPages()) maxViewPage = page.getTotalPages();
 
 
         model.addAttribute("minViewPage", minViewPage);
@@ -154,6 +163,13 @@ public class AuctionsController {
         redirectAttributes.addFlashAttribute("notStartedFilter", notStartedFilter);
         redirectAttributes.addFlashAttribute("virtualPaymentFilter", virtualPaymentFilter);
         redirectAttributes.addFlashAttribute("physicalPaymentFilter", physicalPaymentFilter);
+        return "redirect:/auctions";
+    }
+
+    @PostMapping("/search")
+    public String auctionsSearch(@Param("search") String search, Model model, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("searchKey", search);
+        System.out.println("clave:"+search);
         return "redirect:/auctions";
     }
 

@@ -157,4 +157,15 @@ public class Person {
     public int getNumberFinalizedAuctions() {
         return this.getItems().stream().filter(Item::isFinalized).toList().size();
     }
+
+    public boolean containsRolForName(String name) {
+        boolean result = false;
+        for(PersonRol personRol : this.roles) {
+            if(personRol.getRol().getName().equalsIgnoreCase(name)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
 }

@@ -17,10 +17,12 @@ public interface ItemService {
     public Item getItem(ItemDto itemDto);
     public Item getItem(Item item);
 
-    Page<Item> findPaginated(int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, boolean excludeFinalized);
+    Page<Item> findPaginated(int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, String searchKey, boolean excludeFinalized);
 
     public Item getItemById(long id);
     public void setFinalized(Item item, boolean finalized);
     public void sendEmails(Item item);
+
+    public List<Item> searchByKey(String key);
 //    public int getLastItemId();
 }
