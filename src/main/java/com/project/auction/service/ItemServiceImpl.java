@@ -90,13 +90,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Page<Item> findPaginated(int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, String searchKey, boolean excludeFinalized) {
         List<Item> itemList = this.listItems();
-        if(searchKey != null) {
-            System.out.println("no es null");
-            System.out.println("search: "+searchKey);
+        if (searchKey != null) {
             itemList = this.searchByKey(searchKey);
-        } else {
-
-            System.out.println("null");
         }
 
         if (started && !notStarted)
@@ -114,19 +109,19 @@ public class ItemServiceImpl implements ItemService {
         Comparator<Item> itemComparator = switch (sortBy) {
             case "less_recent" -> (Comparator.comparingLong((Item o) -> o.getStartDate().getTime()));
             case "highest_offer" ->
-                    ((o1, o2) -> Integer.compare((o2.getMostOffer() != null ? o2.getMostOffer().getOffer() : o2.getStartPrice()), (o1.getMostOffer() != null ? o1.getMostOffer().getOffer() :  o1.getStartPrice())));
+                    ((o1, o2) -> Integer.compare((o2.getMostOffer() != null ? o2.getMostOffer().getOffer() : o2.getStartPrice()), (o1.getMostOffer() != null ? o1.getMostOffer().getOffer() : o1.getStartPrice())));
             case "lower_offer" ->
                     (Comparator.comparingInt((Item o) -> (o.getMostOffer() != null ? o.getMostOffer().getOffer() : o.getStartPrice())));
             default -> ((o1, o2) -> Long.compare(o2.getStartDate().getTime(), o1.getStartDate().getTime()));
         };
         itemList.sort(itemComparator);
 
-        if(excludeFinalized) {
+        if (excludeFinalized) {
             itemList = itemList.stream().filter(item -> !item.isFinalized()).collect(Collectors.toList());
         }
 
-        int start = (int) PageRequest.of(pageNo-1, pageSize).getOffset();
-        int end = Math.min((start + PageRequest.of(pageNo-1, pageSize).getPageSize()), itemList.size());
+        int start = (int) PageRequest.of(pageNo - 1, pageSize).getOffset();
+        int end = Math.min((start + PageRequest.of(pageNo - 1, pageSize).getPageSize()), itemList.size());
         List<Item> newList;
         try {
             newList = itemList.subList(start, end);
@@ -136,7 +131,59 @@ public class ItemServiceImpl implements ItemService {
             end = Math.min((start + PageRequest.of((0), pageSize).getPageSize()), itemList.size());
             newList = itemList.subList(start, end);
         }
-        return new PageImpl<>(newList, PageRequest.of(pageNo-1, pageSize), itemList.size());
+        return new PageImpl<>(newList, PageRequest.of(pageNo - 1, pageSize), itemList.size());
+    }
+
+    @Override
+    public Page<Item> findPaginated(Person person, int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, String searchKey, boolean excludeFinalized) {
+        List<Item> itemList = new ArrayList<>();
+        try {
+            itemList = (List<Item>) person.getItems();
+        } catch (Exception ignored) {
+        }
+
+        if (searchKey != null) {
+            itemList = this.searchByKey(searchKey);
+        }
+
+        if (started && !notStarted)
+            itemList = itemList.stream().filter(Item::isEnabled).collect(Collectors.toList());
+        else if (!started && notStarted) {
+            itemList = itemList.stream().filter(Item::isInStandby).collect(Collectors.toList());
+        }
+
+        if (virtualPayment && !physicalPayment)
+            itemList = itemList.stream().filter(Item::isVirtualPayment).collect(Collectors.toList());
+        else if (!virtualPayment && physicalPayment) {
+            itemList = itemList.stream().filter(Item::isPhysicalPayment).collect(Collectors.toList());
+        }
+
+        Comparator<Item> itemComparator = switch (sortBy) {
+            case "less_recent" -> (Comparator.comparingLong((Item o) -> o.getStartDate().getTime()));
+            case "highest_offer" ->
+                    ((o1, o2) -> Integer.compare((o2.getMostOffer() != null ? o2.getMostOffer().getOffer() : o2.getStartPrice()), (o1.getMostOffer() != null ? o1.getMostOffer().getOffer() : o1.getStartPrice())));
+            case "lower_offer" ->
+                    (Comparator.comparingInt((Item o) -> (o.getMostOffer() != null ? o.getMostOffer().getOffer() : o.getStartPrice())));
+            default -> ((o1, o2) -> Long.compare(o2.getStartDate().getTime(), o1.getStartDate().getTime()));
+        };
+        itemList.sort(itemComparator);
+
+        if (excludeFinalized) {
+            itemList = itemList.stream().filter(item -> !item.isFinalized()).collect(Collectors.toList());
+        }
+
+        int start = (int) PageRequest.of(pageNo - 1, pageSize).getOffset();
+        int end = Math.min((start + PageRequest.of(pageNo - 1, pageSize).getPageSize()), itemList.size());
+        List<Item> newList;
+        try {
+            newList = itemList.subList(start, end);
+        } catch (Exception ignored) {
+            pageNo = 1;
+            start = (int) PageRequest.of((0), pageSize).getOffset();
+            end = Math.min((start + PageRequest.of((0), pageSize).getPageSize()), itemList.size());
+            newList = itemList.subList(start, end);
+        }
+        return new PageImpl<>(newList, PageRequest.of(pageNo - 1, pageSize), itemList.size());
     }
 
     @Override
@@ -232,7 +279,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(readOnly = true)
     public List<Item> searchByKey(String key) {
         List<Item> list = new ArrayList<>();
-        if(key != null) {
+        if (key != null) {
             list = itemRepository.searchByKey(key);
         }
         return list;

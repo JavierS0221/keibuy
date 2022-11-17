@@ -18,6 +18,7 @@ public interface ItemService {
     public Item getItem(Item item);
 
     Page<Item> findPaginated(int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, String searchKey, boolean excludeFinalized);
+    Page<Item> findPaginated(Person person, int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, String searchKey, boolean excludeFinalized);
 
     public Item getItemById(long id);
     public void setFinalized(Item item, boolean finalized);
