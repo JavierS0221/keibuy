@@ -6,8 +6,8 @@
     <title th:text="${item.getName()} + ' - KeiBuy'"></title>
     <th:block th:include="layout/template :: head"/>
     <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link
             href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin:wght@700&family=Roboto+Slab:wght@400&display=swap"
             rel="stylesheet"
@@ -139,7 +139,7 @@
         }
 
         @media (max-width: 767px) {
-            #btnOffer {
+            .mb-6 {
                 margin-bottom: 100px;
             }
         }
@@ -183,6 +183,7 @@
         .line {
             border-bottom: 1px solid #cfcfcf !important;
         }
+
         .space {
             height: 50px;
         }
@@ -207,6 +208,7 @@
         .bg-1 {
             background-color: #fafafa;
         }
+
         .bg-2 {
             background-color: #404eed;
         }
@@ -263,7 +265,8 @@
             -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
             filter: alpha(opacity=0);
             opacity: 0;
-            font-family: "Roboto Slab", serif; !important;
+            font-family: "Roboto Slab", serif;
+        !important;
         }
 
         .card-hover-mask a:hover h6 {
@@ -309,7 +312,6 @@
 <th:block th:include="layout/navbar :: navbar"/>
 
 
-
 <div class="modal fade" id="winModal" tabindex="-1" aria-labelledby="winModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
@@ -317,7 +319,7 @@
                 <h1 class="modal-title fs-5" id="winModalLabelLabel">Ganaste</h1>
             </div>
             <div class="modal-body">
-                Tu oferta: $[[${item.getOfferByPerson(person).getOffer()}]]
+                Tu oferta: $[[${item.getOfferByPerson(person) != null ? item.getOfferByPerson(person).getOffer() : 0}]]
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -332,7 +334,7 @@
                 <h1 class="modal-title fs-5" id="lostModalLabelLabel">Perdiste</h1>
             </div>
             <div class="modal-body">
-                Tu oferta: $[[${item.getOfferByPerson(person).getOffer()}]]
+                Tu oferta: $[[${item.getOfferByPerson(person) != null ? item.getOfferByPerson(person).getOffer() : 0}]]
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -377,14 +379,15 @@
                             </a>
                         </h5>
                         <th:block th:each="personRol : ${item.getPerson().getRoles()}">
-                        <small class="badge border rounded-1 rol" th:style="'color:' + ${personRol.getRol().getColor()}"
-                        >[[${personRol.getRol().getNameWithoutFormat()}]]</small
-                        >
+                            <small class="badge border rounded-1 rol"
+                                   th:style="'color:' + ${personRol.getRol().getColor()}"
+                            >[[${personRol.getRol().getNameWithoutFormat()}]]</small
+                            >
                         </th:block>
                     </div>
                     <p class="text-start">
                         Subastas concluidas: [[${item.getPerson().getNumberFinalizedAuctions()}]]
-                        <br />
+                        <br/>
                         Subastas activas: [[${item.getPerson().getNumberActiveAuctions()}]]
                     </p>
                 </div>
@@ -396,7 +399,8 @@
 <!--Item-->
 <div class="container-xl mt-5 mb-5 px-0">
     <div th:if="${success}" class="alert alert-success alert-dismissible mx-5" role="alert">
-        <i class="fa-regular fa-thumbs-up"></i> <strong>Success! </strong><span>Your offer was successfully entered</span>
+        <i class="fa-regular fa-thumbs-up"></i>
+        <strong>Success! </strong><span>Your offer was successfully entered</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div th:if="${accountNotFound}" class="alert alert-danger alert-dismissible mx-5" role="alert">
@@ -404,7 +408,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div th:if="${alreadyIsMostOffer}" class="alert alert-danger alert-dismissible mx-5" role="alert">
-        <i class="fa-solid fa-triangle-exclamation"></i> <strong>Error! </strong><span>You already have the highest bid</span>
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <strong>Error! </strong><span>You already have the highest bid</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div th:if="${lowerOffer}" class="alert alert-danger alert-dismissible mx-5" role="alert">
@@ -415,7 +420,6 @@
         <i class="fa-solid fa-triangle-exclamation"></i> <strong>Error! </strong><span>Not found item</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
 
 
     <div class="card">
@@ -446,7 +450,9 @@
                     <div class="d-flex justify-content-center align-items-center text-center">
                         <h3 th:text="${item.getName()}"></h3>
                     </div>
-                    <i class="fa-solid fa-user-tie"></i> <span>Autor: <a href="#" data-bs-toggle="modal" data-bs-target="#autorModal">[[${item.getPerson().getUsername()}]]</a></span>
+<!--                    <i class="fa-solid fa-user-tie"></i> <span>Autor: <a href="#" data-bs-toggle="modal"-->
+<!--                                                                         data-bs-target="#autorModal">[[${item.getPerson().getUsername()}]]</a></span>-->
+                    <i class="fa-solid fa-user-tie"></i> <span>Autor: [[${item.getPerson().getUsername()}]]</span>
                     <br>
                     <i class="fa-solid fa-book-open"></i> <span>Descripción:</span>
                     <div class="content">
@@ -460,7 +466,7 @@
                         rounded-2" th:text="${item.getDescription()}"></p>
                     </div>
                     <span id="contdwn"></span>
-                    <br>
+                    <br id="contdwn-br">
 
                     <span id="last-offer"></span>
 
@@ -475,7 +481,8 @@
 
                     <th:block th:if="${person != null}">
                         <br>
-                        <span id="your-offer" th:if="${item.getOfferByPerson(person) != null}"><i class='fa-solid fa-money-bill-wave'></i>  Tu oferta: $[[${item.getOfferByPerson(person).getOffer()}]]</span>
+                        <span id="your-offer" th:if="${item.getOfferByPerson(person) != null}"><i
+                                class='fa-solid fa-money-bill-wave'></i>  Tu oferta: $[[${item.getOfferByPerson(person).getOffer()}]]</span>
 
                         <span id="your-offer-state"></span>
                     </th:block>
@@ -571,7 +578,7 @@
                                 <form id="offerForm" th:action="@{${'/item/'+item.getId()}+'/offer'}" method="post">
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label for="offer" class="col-form-label">Ingrese su oferta</label>
+                                            <label for="offer" class="col-form-label" id="offer-label">Ingrese su oferta</label>
                                             <input type="number" class="form-control" id="offer" th:value="${offer}"
                                                    name="offer">
                                         </div>
@@ -591,17 +598,20 @@
                         </div>
                     </div>
                     <!--                    Modal btn-->
-                    <th:block th:if="${item.isEnabled()}">
-                    <button th:if="${person != null}" class="btn btn-primary px-4"
-                            id="btnOffer">
-                        Ofertar
-                    </button>
-                    <a th:href="@{/login}" th:if="${person == null}">
-                        <button class="cart-btn btn btn-primary px-4">
-                            Iniciar sesión
+                    <section id="btn-section" hidden>
+                        <button th:if="${person != null}" class="btn btn-primary px-4 mb-6"
+                                id="btnOffer">
+                            Ofertar
                         </button>
-                    </a>
-                    </th:block>
+                        <a th:href="@{/login}" th:if="${person == null}">
+                            <button class="btn btn-primary px-4 mb-6">
+                                Iniciar sesión
+                            </button>
+                        </a>
+                    </section>
+                    <section id="message-finalized">
+
+                    </section>
                     <!--                    <button type="button" class="btn btn-outline-primary btn mt-1" id="btnOffer">Ofertar</button>-->
                 </div>
             </div>
@@ -722,6 +732,11 @@
     var countDownDateStart = /*[[${item.getStartDate().getTime()}]]*/ 0;
     var countDownDateFinish = /*[[${item.getFinishDate().getTime()}]]*/ 0;
 
+    function finishTime() {
+        countDownDateFinish = 0;
+    }
+
+
     // Update the count down every 1 second
     var x = setInterval(function () {
 
@@ -732,12 +747,21 @@
         var startDistance = countDownDateStart - now;
         var finishDistance = countDownDateFinish - now;
 
+
+        document.getElementById("message-finalized").setAttribute("hidden", '');
         // Display the result in the element with id="contdwn"
+
         if (startDistance < 0) {
             if (finishDistance < 0) {
                 clearInterval(x);
-                document.getElementById("contdwn").innerHTML = "<i class='fa-solid fa-hourglass-end'></i> Expired";
+                document.getElementById("contdwn").innerHTML = ""
+                document.getElementById("contdwn").setAttribute("hidden", '');
+                document.getElementById("contdwn-br").setAttribute("hidden", '');
+                document.getElementById("message-finalized").removeAttribute("hidden");
+                document.getElementById("message-finalized").innerHTML = "<h4 class='mb-6 shadow-sm border border-1 border-dark fw-bold text-center px-4 py-1 rounded rounded-2'>Subasta finalizada</h4>";
+                document.getElementById("btn-section").setAttribute("hidden", '');
             } else {
+                document.getElementById("btn-section").removeAttribute("hidden");
                 document.getElementById("contdwn").innerHTML = "<i class='fa-solid fa-hourglass-half'></i>  Expira en: " + formatTime(finishDistance);
             }
         } else {
@@ -786,13 +810,7 @@
 
         let p = /*[[${person != null ? person.getId() : null}]]*/ null;
         let i = /*[[${item.getId()}]]*/ null;
-        console.log('obj i:' + i);
         connect(this, p, i)
-
-
-        $(offerForm)[0].addEventListener('submit', new function (event) {
-            console.log(event);
-        });
 
     });
 
@@ -862,6 +880,12 @@
                 + "' class='rounded-circle participants-image' alt=''/><br> <div class='pl-lg-5 pl-md-3 pl-1 participants-name'>" + x.username
                 + "</div></td><td class='pt-4 mt-1'>$" + x.offer + "</td></tr>");
         }
+
+
+        let minNextOffer = [[${item.getMinNextOffer()}]];
+        let min = parseInt(minNextOffer)+parseInt(mostOffer.offer);
+        $("#offer").attr("min", ""+min);
+        $("#offer-label").html("Ingrese su oferta (Mínimo $"+min+")");
 
         let participantsCount = $("#participants-count");
         participantsCount.html(listParticipants.length + " participantes");

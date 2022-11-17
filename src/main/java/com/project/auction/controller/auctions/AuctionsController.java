@@ -6,6 +6,7 @@ import com.project.auction.exception.UnkownIdentifierException;
 import com.project.auction.model.Item;
 import com.project.auction.model.ItemImage;
 import com.project.auction.model.Person;
+import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.service.ItemService;
 import com.project.auction.service.PersonService;
 import com.project.auction.util.Utils;
@@ -22,9 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -41,22 +41,82 @@ public class AuctionsController {
     }
 
     @GetMapping
-    public String auctions(@RequestParam(name = "page", defaultValue = "1") int pageNo,
-                           @RequestParam(name = "sortField", defaultValue = "id") String sortField,
-                           @RequestParam(name = "sortDir", defaultValue = "asc") String sortDir,
-                           Model model, @AuthenticationPrincipal User user) {
+    public String auctions(Model model, @AuthenticationPrincipal User user) {
+        int pageNo = 1;
+        String sortByFilter = "most_recent";
+        boolean startedFilter = true;
+        boolean notStartedFilter = true;
+        boolean virtualPaymentFilter = true;
+        boolean physicalPaymentFilter = true;
+
+        Object objPageNo = model.getAttribute("currentPage");
+        Object objSortByFilter = model.getAttribute("sortByFilter");
+        Object objStartedFilter = model.getAttribute("startedFilter");
+        Object objNotStartedFilter = model.getAttribute("notStartedFilter");
+        Object objVirtualPaymentFilter = model.getAttribute("virtualPaymentFilter");
+        Object objPhysicalPaymentFilter = model.getAttribute("physicalPaymentFilter");
+
+        if (objPageNo != null) {
+            pageNo = (int) objPageNo;
+        }
+
+        if (objSortByFilter != null) {
+            sortByFilter = (String) objSortByFilter;
+        }
+
+
+        if (objStartedFilter != null) {
+            try {
+                startedFilter = (boolean) objStartedFilter;
+            } catch (Exception ignored) {
+            }
+        }
+        if (objNotStartedFilter != null) {
+            try {
+                notStartedFilter = (boolean) objNotStartedFilter;
+            } catch (Exception ignored) {
+            }
+        }
+        if (objVirtualPaymentFilter != null) {
+            try {
+                virtualPaymentFilter = (boolean) objVirtualPaymentFilter;
+            } catch (Exception ignored) {
+            }
+        }
+        if (objPhysicalPaymentFilter != null) {
+            try {
+                physicalPaymentFilter = (boolean) objPhysicalPaymentFilter;
+            } catch (Exception ignored) {
+            }
+        }
+
         int pageSize = 12;
-
-        Page<Item> page = itemService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        Page<Item> page = itemService.findPaginated(pageNo, pageSize, sortByFilter, startedFilter, notStartedFilter, virtualPaymentFilter, physicalPaymentFilter, true);
         List<Item> listItems = page.getContent();
+        if(pageNo > page.getTotalPages()) pageNo = page.getTotalPages();
 
+
+        int minViewPage = pageNo-2;
+        if(minViewPage < 1) minViewPage = 1;
+
+        int maxViewPage = pageNo+2;
+        if(maxViewPage > page.getTotalPages()) maxViewPage = page.getTotalPages();
+
+        if(maxViewPage-minViewPage < 4) minViewPage -= 1;
+        if(maxViewPage-minViewPage < 4) minViewPage -= 1;
+        if(minViewPage < 1) minViewPage = 1;
+
+        if(maxViewPage-minViewPage < 4) maxViewPage += 1;
+        if(maxViewPage-minViewPage < 4) maxViewPage += 1;
+        if(maxViewPage > page.getTotalPages()) maxViewPage = page.getTotalPages();
+
+
+
+        model.addAttribute("minViewPage", minViewPage);
+        model.addAttribute("maxViewPage", maxViewPage);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
         Person person = null;
         if (user != null) {
@@ -65,13 +125,53 @@ public class AuctionsController {
             } catch (UnkownIdentifierException ignored) {
             }
         }
+
         model.addAttribute("user", user);
         model.addAttribute("person", person);
 
         model.addAttribute("listItems", listItems);
+
+
+        model.addAttribute("sortByFilter", sortByFilter);
+        model.addAttribute("startedFilter", startedFilter);
+        model.addAttribute("notStartedFilter", notStartedFilter);
+        model.addAttribute("virtualPaymentFilter", virtualPaymentFilter);
+        model.addAttribute("physicalPaymentFilter", physicalPaymentFilter);
+
         return "auctions/listAuctions";
     }
 
+    @PostMapping()
+    public String auctionsFilter(@RequestParam(name = "a1") Optional<String> a1, @RequestParam(name = "b1") Optional<String> b1, @RequestParam(name = "b2") Optional<String> b2, @RequestParam(name = "c1") Optional<String> c1, @RequestParam(name = "c2") Optional<String> c2, Model model, RedirectAttributes redirectAttributes) {
+        String sortByFilter = (a1.orElse(null));
+        boolean startedFilter = (b1.map(s -> (s.equals("1"))).orElse(false));
+        boolean notStartedFilter = (b2.map(s -> (s.equals("1"))).orElse(false));
+        boolean virtualPaymentFilter = (c1.map(s -> (s.equals("1"))).orElse(false));
+        boolean physicalPaymentFilter = (c2.map(s -> (s.equals("1"))).orElse(false));
+
+        redirectAttributes.addFlashAttribute("sortByFilter", sortByFilter);
+        redirectAttributes.addFlashAttribute("startedFilter", startedFilter);
+        redirectAttributes.addFlashAttribute("notStartedFilter", notStartedFilter);
+        redirectAttributes.addFlashAttribute("virtualPaymentFilter", virtualPaymentFilter);
+        redirectAttributes.addFlashAttribute("physicalPaymentFilter", physicalPaymentFilter);
+        return "redirect:/auctions";
+    }
+
+    @GetMapping("/reset")
+    public String auctionsFilterReset(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("sortByFilter", null);
+        redirectAttributes.addFlashAttribute("startedFilter", 0);
+        redirectAttributes.addFlashAttribute("notStartedFilter", 0);
+        redirectAttributes.addFlashAttribute("virtualPaymentFilter", 0);
+        redirectAttributes.addFlashAttribute("physicalPaymentFilter", 0);
+        return "redirect:/auctions";
+    }
+
+    @GetMapping("{pageNo}")
+    public String auctionsFilterReset(@PathVariable int pageNo, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("currentPage", pageNo);
+        return "redirect:/auctions";
+    }
 
     @ModelAttribute("itemDto")
     public ItemDto itemDto() {
@@ -115,7 +215,7 @@ public class AuctionsController {
             }
         }
 
-        if(person == null) return "auctions/newAuction";
+        if (person == null) return "auctions/newAuction";
 
 
         try {
@@ -146,7 +246,7 @@ public class AuctionsController {
             itemDto.setPerson(person);
             itemDto.setFinalized(false);
             long id = itemService.save(itemDto);
-            return "redirect:/item/"+id;
+            return "redirect:/item/" + id;
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -171,12 +171,12 @@
                           font-weight: 400;
                           line-height: 25px;">
                             <p class="" style="max-width: 540px; max-height: 55px; overflow: auto">
-                                <b>Subasta ganada:</b> <a href="#" style="text-decoration: none">"Ferrari sin uso" (ID:3)</a><br>
+                                <b>Subasta ganada:</b> <a th:href="${itemURL}" style="text-decoration: none">"Ferrari sin uso" (ID:3)</a><br>
                             </p>
                             <p class="" style="max-width: 540px; max-height: 55px; overflow: auto">
-                                <b>Oferta:</b> $10000<br>
+                                <b>Tu oferta:</b> $[[${item.getOfferByPerson(person) != null ? item.getOfferByPerson(person).getOffer() : 0}]]<br>
                             </p>
-                            <p>Te contactará el subastador a través del correo '<b>subastador@gmail.com</b>'</p>
+                            <p>Te contactará el subastador a través del correo '<b>[[${item.getPerson().getEmail()}]]</b>'</p>
                         </td>
                     </tr>
                         <td style="

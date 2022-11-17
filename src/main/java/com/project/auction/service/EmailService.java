@@ -9,4 +9,5 @@ import java.io.FileNotFoundException;
 
 public interface EmailService {
      void sendMail(AbstractEmailContext email) throws MessagingException;
+    void sendMail(AbstractEmailContext email, String nameFile, byte[] fileAsBytes) throws MessagingException;
 }

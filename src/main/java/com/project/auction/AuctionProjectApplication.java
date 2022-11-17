@@ -70,6 +70,7 @@ public class AuctionProjectApplication {
                         if (distance < 0) {
                             itemService.setFinalized(item, true);
                             this.auctionsWSController.finalize(item);
+                            itemService.sendEmails(item);
                         }
                     }
                 } catch (Exception ex) {

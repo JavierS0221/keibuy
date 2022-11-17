@@ -7,7 +7,7 @@
     <th:block th:include="layout/template :: head"/>
 
     <style th:include="layout/loader :: style"></style>
-<!--    <style th:include="layout/chatLayout :: chat-style"></style>-->
+    <!--    <style th:include="layout/chatLayout :: chat-style"></style>-->
 
     <style>
         .slick-prev:before,
@@ -25,6 +25,87 @@
             margin-right: 1rem;
             margin-left: 1rem;
         }
+
+
+        .item.card {
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.3s all ease-in-out;
+            height: 390px;
+            overflow: auto;
+        }
+
+        .card:hover .text-colored, .card:hover .product-name {
+            color: #404eed;
+        }
+
+        .card.not-started:hover .text-colored, .card.not-started:hover .product-name {
+            color: #000000;
+        }
+
+        .text-colored {
+            width: 100%;
+        }
+
+        .item.card .product-name {
+            font-weight: 600;
+            height: 45px;
+            max-height: 45px;
+            max-width: 100%;
+            overflow: auto;
+        }
+
+        .card-body {
+            padding-bottom: 0;
+        }
+
+        .item.card .text-muted {
+            font-size: 0.82rem;
+        }
+
+        .card-img img {
+            width: inherit;
+            height: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .card-body .btn-group .btn {
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .card-body .btn-group > .btn-group:not(:last-child) > .btn,
+        .card-body .btn-group > .btn:not(:last-child):not(.dropdown-toggle) {
+            border-radius: 50%;
+            transition: ease-in all 0.4s;
+        }
+
+        .card-body input[type="radio"] {
+            visibility: hidden;
+        }
+
+        .card-body .btn:not(:disabled):not(.disabled).active::after,
+        .card-body .btn:not(:disabled):not(.disabled):active::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            top: 4px;
+            left: 4.2px;
+            background-color: #fff;
+            position: absolute;
+            transition: ease-in all 0.4s;
+        }
+
+        .card-body .btn.btn-light:not(:disabled):not(.disabled).active::after,
+        .card-body .btn.btn-light:not(:disabled):not(.disabled):active::after {
+            background-color: #000;
+        }
     </style>
 </head>
 <body class="position-relative bg-light" data-th-span="scroll" data-bs-target="#navbar-scrollspy">
@@ -39,52 +120,24 @@
 <div class="wrapper2">
     <div class="single-item">
         <div>
-            <div class="card m-auto" style="max-width: 300rem">
+            <div class="card m-auto container-fluid mw-100 overflow-hidden">
                 <img class="card-img-top"
-                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
-                     alt="Card image cap">
+                     th:src="@{/images/banner.jpg}"
+                     alt="Banner">
             </div>
         </div>
         <div>
-            <div class="card m-auto" style="max-width: 300rem">
+            <div class="card m-auto container-fluid mw-100 overflow-hidden">
                 <img class="card-img-top"
-                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
-                     alt="Card image cap">
+                     th:src="@{/images/banner.jpg}"
+                     alt="Banner">
             </div>
         </div>
         <div>
-            <div class="card m-auto" style="max-width: 300rem">
+            <div class="card m-auto container-fluid mw-100 overflow-hidden">
                 <img class="card-img-top"
-                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
-                     alt="Card image cap">
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top"
-                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
-                     alt="Card image cap">
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top"
-                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
-                     alt="Card image cap">
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top"
-                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
-                     alt="Card image cap">
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 300rem">
-                <img class="card-img-top"
-                     src="https://static-cdn.jtvnw.net/jtv_user_pictures/vegetta777-profile_banner-49a223dd6ab53aaf-480.jpeg"
-                     alt="Card image cap">
+                     th:src="@{/images/banner.jpg}"
+                     alt="Banner">
             </div>
         </div>
     </div>
@@ -93,354 +146,172 @@
 
 <!--Sección1-->
 <div class="wrapper">
-    <h4>Por cantidad de pujas</h4>
+    <h5 class="fw-bold text-center mt-4 mb-3"><u>Por oferta más alta</u></h5>
     <div class="your-class">
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <a th:href="@{/item}">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-                </a>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
+        <th:block th:each="item : ${itemListMostOffers}">
+            <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div mx-3">
+                <div class="item card d-flex flex-column align-items-center">
+                    <div class="product-name" th:text="${item.getName()}"></div>
+
+                    <div class="carousel slide carousel-fade" data-bs-ride="carousel"
+                         data-bs-interval="5000">
+                        <div class="carousel-inner">
+                            <th:block th:each="itemImage,i : ${item.getItemImages()}">
+                                <th:block th:if="${itemImage != null}">
+                                    <div class="carousel-item card-img"
+                                         th:classappend="${(i.index == 0 ? 'active' : '')}">
+                                        <img th:src="@{${itemImage.getId() != 0 ? '/image/item/'+ itemImage.getId() : '...'}}"
+                                             class="d-block w-100 deny-drag" alt="...">
+                                    </div>
+                                </th:block>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="mt-1">
+                            <small class="text-colored"
+                            ><i class="fa-solid fa-sack-dollar"></i>
+                                <b>Ultima oferta:</b></small
+                            ><br/>
+                            <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getMostOffer().getOffer()} + '$'">&nbsp&nbsp&nbsp
+                                0$</small>
+                        </div>
+                        <div class="mt-1">
+                            <small class="text-colored"
+                            ><i class="fa-solid fa-hourglass-start"></i>
+                                <b>Termina en:</b></small
+                            ><br/>
+                            <span class="finish-time d-none"
+                                  th:text="${item.getFinishDate().getTime()}"></span>
+                            <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getTimeToFinish()}">&nbsp&nbsp&nbsp
+                                0s</small>
+
+                        </div>
+                        <div class="mt-1 d-flex justify-content-center">
+                            <button class="btn btn-primary btn-sm text-center"
+                                    th:attr="onclick=|window.location.href = ('item/'+${item.getId()})|">Entrar
+                            </button>
+
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
+        </th:block>
     </div>
 </div>
 <!--Sección2-->
 <div class="wrapper">
-    <h4>Por cantidad pujada</h4>
+    <h5 class="fw-bold text-center mt-4 mb-3"><u>Por cantidad de participantes</u></h5>
     <div class="your-class">
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
+        <th:block th:each="item : ${itemListMostParticipants}">
+            <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div mx-3">
+                <div class="item card d-flex flex-column align-items-center">
+                    <div class="product-name" th:text="${item.getName()}"></div>
+
+                    <div class="carousel slide carousel-fade" data-bs-ride="carousel"
+                         data-bs-interval="5000">
+                        <div class="carousel-inner">
+                            <th:block th:each="itemImage,i : ${item.getItemImages()}">
+                                <th:block th:if="${itemImage != null}">
+                                    <div class="carousel-item card-img"
+                                         th:classappend="${(i.index == 0 ? 'active' : '')}">
+                                        <img th:src="@{${itemImage.getId() != 0 ? '/image/item/'+ itemImage.getId() : '...'}}"
+                                             class="d-block w-100 deny-drag" alt="...">
+                                    </div>
+                                </th:block>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+
+                        <div class="mt-1">
+                            <small class="text-colored"
+                            ><i class="fa-solid fa-user"></i>
+                                <b>Participantes:</b> </small
+                            ><small th:text="${item.getParticipants().size()}">0</small>
+                        </div>
+                        <div class="mt-1">
+                            <small class="text-colored"
+                            ><i class="fa-solid fa-hourglass-start"></i>
+                                <b>Termina en:</b></small
+                            ><br/>
+                            <span class="finish-time d-none"
+                                  th:text="${item.getFinishDate().getTime()}"></span>
+                            <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getTimeToFinish()}">&nbsp&nbsp&nbsp
+                                0s</small>
+
+                        </div>
+
+                        <div class="mt-1 d-flex justify-content-center">
+                            <button class="btn btn-primary btn-sm text-center"
+                                    th:attr="onclick=|window.location.href = ('item/'+${item.getId()})|">Entrar
+                            </button>
+
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
+        </th:block>
     </div>
 </div>
 
 <!--Sección3-->
 <div class="wrapper">
-    <h4>Mas visitadas</h4>
+    <h5 class="fw-bold text-center mt-4 mb-3"><u>Próximamente</u></h5>
     <div class="your-class">
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="card m-auto" style="max-width: 15rem">
-                <img class="card-img-top" src="https://picsum.photos/200" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <!--                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div>
+        <th:block th:each="item : ${itemListNotStarted}">
+            <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div mx-3">
+                <div class="item card d-flex flex-column align-items-center not-started">
+                    <div class="product-name" th:text="${item.getName()}"></div>
 
+                    <div class="carousel slide carousel-fade" data-bs-ride="carousel"
+                         data-bs-interval="5000">
+                        <div class="carousel-inner">
+                            <th:block th:each="itemImage,i : ${item.getItemImages()}">
+                                <th:block th:if="${itemImage != null}">
+                                    <div class="carousel-item card-img"
+                                         th:classappend="${(i.index == 0 ? 'active' : '')}">
+                                        <img th:src="@{${itemImage.getId() != 0 ? '/image/item/'+ itemImage.getId() : '...'}}"
+                                             class="d-block w-100 deny-drag" alt="...">
+                                    </div>
+                                </th:block>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="mt-1">
+                            <small class="text-colored"
+                            ><i class="fa-solid fa-sack-dollar"></i>
+                                <b>Oferta Inicial:</b></small
+                            ><br/>
+                            <small th:text="'&nbsp&nbsp&nbsp ' + ${item.getStartPrice()} + '$'">&nbsp&nbsp&nbsp
+                                0$</small>
+                        </div>
+                        <div class="mt-1">
+                            <small class="text-colored"
+                            ><i class="fa-solid fa-calendar"></i>
+                                <b>Inicia en:</b></small
+                            ><br/>
+                            <span class="start-time d-none"
+                                  th:text="${item.getStartDate().getTime()}"></span>
+                            <small class="start-cooldown"
+                                   th:text="'&nbsp&nbsp&nbsp ' + ${item.getTimeToStart()}">&nbsp&nbsp&nbsp
+                                0s</small>
+                        </div>
+                        <div class="mt-1 d-flex justify-content-center">
+                            <button class="btn btn-primary btn-sm text-center" th:attr="onclick=|window.location.href = ('item/'+${item.getId()})|">Entrar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
     </div>
-    <div class="text-center mt-5 text-muted">
-        Final Project 3BL 2022 &mdash; Team KeiBuy
-    </div>
+
+</div>
+<div class="text-center mt-5 text-muted">
+    Final Project 3BL 2022 &mdash; Team KeiBuy
+</div>
 </div>
 
 
@@ -477,7 +348,7 @@
             autoplay: true,
             autoplaySpeed: 8000,
             arrows: false,
-            dots: false,
+            dots: true,
             centerMode: false,
             infinite: false,
             speed: 300,
@@ -490,7 +361,7 @@
                         slidesToShow: 5,
                         slidesToScroll: 1,
                         infinite: false,
-                        dots: false,
+                        dots: true,
                     }
                 },
                 {
@@ -499,7 +370,7 @@
                         slidesToShow: 4,
                         slidesToScroll: 1,
                         infinite: false,
-                        dots: false,
+                        dots: true,
                     }
                 },
                 {
@@ -508,7 +379,7 @@
                         slidesToShow: 3,
                         slidesToScroll: 1,
                         infinite: false,
-                        dots: false,
+                        dots: true,
                     }
                 },
                 {
@@ -516,7 +387,7 @@
                     settings: {
                         slidesToShow: 2,
                         slidesToScroll: 1,
-                        dots: false,
+                        dots: true,
                     }
                 },
                 {
@@ -524,7 +395,7 @@
                     settings: {
                         slidesToShow: 1,
                         slidesToScroll: 1,
-                        dots: false,
+                        dots: true,
                     }
                 }
                 // You can unslick at a given breakpoint now by adding:

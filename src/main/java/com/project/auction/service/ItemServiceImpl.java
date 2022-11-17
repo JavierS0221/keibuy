@@ -1,27 +1,35 @@
 package com.project.auction.service;
 
 import com.project.auction.dto.ItemDto;
-import com.project.auction.email.context.AccountVerificationEmailContext;
-import com.project.auction.model.ItemImage;
+import com.project.auction.email.context.*;
 import com.project.auction.model.Person;
 import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.repository.ItemRepository;
 import com.project.auction.model.Item;
+import com.project.auction.util.AuctionOffersExporterExcel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import javax.annotation.Resource;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Value("${project.testing.mode}")
+    private boolean projectTestingMode;
+    @Resource
+    private EmailService emailService;
+
+    @Value("${site.base.url.https}")
+    private String baseURL;
 
     @Override
     @Transactional(readOnly = true)
@@ -80,12 +88,46 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<Item> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
-                Sort.by(sortField).descending();
+    public Page<Item> findPaginated(int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, boolean excludeFinalized) {
+        List<Item> itemList = this.listItems();
+        if (started && !notStarted)
+            itemList = itemList.stream().filter(Item::isEnabled).collect(Collectors.toList());
+        else if (!started && notStarted) {
+            itemList = itemList.stream().filter(Item::isInStandby).collect(Collectors.toList());
+        }
 
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-        return this.itemRepository.findAll(pageable);
+        if (virtualPayment && !physicalPayment)
+            itemList = itemList.stream().filter(Item::isVirtualPayment).collect(Collectors.toList());
+        else if (!virtualPayment && physicalPayment) {
+            itemList = itemList.stream().filter(Item::isPhysicalPayment).collect(Collectors.toList());
+        }
+
+        Comparator<Item> itemComparator = switch (sortBy) {
+            case "less_recent" -> (Comparator.comparingLong((Item o) -> o.getStartDate().getTime()));
+            case "highest_offer" ->
+                    ((o1, o2) -> Integer.compare((o2.getMostOffer() != null ? o2.getMostOffer().getOffer() : o2.getStartPrice()), (o1.getMostOffer() != null ? o1.getMostOffer().getOffer() :  o1.getStartPrice())));
+            case "lower_offer" ->
+                    (Comparator.comparingInt((Item o) -> (o.getMostOffer() != null ? o.getMostOffer().getOffer() : o.getStartPrice())));
+            default -> ((o1, o2) -> Long.compare(o2.getStartDate().getTime(), o1.getStartDate().getTime()));
+        };
+        itemList.sort(itemComparator);
+
+        if(excludeFinalized) {
+            itemList = itemList.stream().filter(item -> !item.isFinalized()).collect(Collectors.toList());
+        }
+
+        int start = (int) PageRequest.of(pageNo-1, pageSize).getOffset();
+        int end = Math.min((start + PageRequest.of(pageNo-1, pageSize).getPageSize()), itemList.size());
+        List<Item> newList;
+        try {
+            newList = itemList.subList(start, end);
+        } catch (Exception ignored) {
+            pageNo = 1;
+            start = (int) PageRequest.of((0), pageSize).getOffset();
+            end = Math.min((start + PageRequest.of((0), pageSize).getPageSize()), itemList.size());
+            newList = itemList.subList(start, end);
+        }
+        return new PageImpl<>(newList, PageRequest.of(pageNo-1, pageSize), itemList.size());
     }
 
     @Override
@@ -106,34 +148,74 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public void sendEmails(Item item) {
         item = this.getItem(item);
         if (item != null) {
             AuctionOffer mostOffer = item.getMostOffer();
-                if(mostOffer != null) {
 
-                    Person personWin = mostOffer.getPerson();
-
-                    for (Person person : item.getParticipants()) {
-                        if(person == personWin) continue;
-
-                        AccountVerificationEmailContext emailContext = new AccountVerificationEmailContext();
-                        emailContext.init(person);
-                        emailContext.setToken(secureToken.getToken());
-                        emailContext.buildVerificationUrl(baseURL, secureToken.getToken());
-
-                        if (!projectTestingMode) {
-                            try {
-                                emailService.sendMail(emailContext);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+            Person autor = item.getPerson();
+            if (autor != null) {
+                if (mostOffer != null) {
+                    AuctioneerParticipantsEmailContext emailContext = new AuctioneerParticipantsEmailContext();
+                    emailContext.init(autor, item);
+                    emailContext.buildItemUrl(baseURL, item.getId());
+                    if (!projectTestingMode) {
+                        try {
+                            AuctionOffersExporterExcel exporter = new AuctionOffersExporterExcel(item);
+                            emailService.sendMail(emailContext, "Auction-" + item.getId() + ".xlsx", exporter.export());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-
                     }
                 } else {
-                    // nadie participo
+                    AuctioneerEmailContext emailContext = new AuctioneerEmailContext();
+                    emailContext.init(item.getPerson(), item);
+                    emailContext.buildItemUrl(baseURL, item.getId());
+                    if (!projectTestingMode) {
+                        try {
+                            emailService.sendMail(emailContext);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
+            }
+
+            if (mostOffer != null) {
+
+                Person personWin = mostOffer.getPerson();
+
+                for (Person person : item.getParticipants()) {
+                    if (person == personWin) continue;
+
+                    PersonLostEmailContext emailContext = new PersonLostEmailContext();
+                    emailContext.init(person, item);
+                    emailContext.buildItemUrl(baseURL, item.getId());
+
+                    if (!projectTestingMode) {
+                        try {
+                            emailService.sendMail(emailContext);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+
+                PersonWinEmailContext emailContext = new PersonWinEmailContext();
+                emailContext.init(personWin, item);
+                emailContext.buildItemUrl(baseURL, item.getId());
+
+                if (!projectTestingMode) {
+                    try {
+                        emailService.sendMail(emailContext);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
         }
     }
 }

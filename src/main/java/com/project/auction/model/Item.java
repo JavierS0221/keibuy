@@ -87,6 +87,10 @@ public class Item {
         this.itemImages = newItemImages;
     }
 
+    public boolean isInStandby() {
+        Date currentDate = new Date();
+        return (currentDate.before(startDate) && !isFinalized);
+    }
     public boolean isEnabled() {
         Date currentDate = new Date();
         return (currentDate.after(startDate) && currentDate.before(finishDate)) && !isFinalized;

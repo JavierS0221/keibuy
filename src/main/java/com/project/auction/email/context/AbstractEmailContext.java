@@ -29,6 +29,11 @@ public abstract class AbstractEmailContext {
         // like setting up some base URL and context
     }
 
+    public <T, O> void init(T context, O obj){
+        //we can do any common configuration setup here
+        // like setting up some base URL and context
+    }
+
     public String getFrom() {
         return from;
     }

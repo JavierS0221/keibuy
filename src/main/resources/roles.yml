@@ -3,6 +3,11 @@ ROLE_USER:
   priority: 0
   color: '#6b6b6b'
 
+ROLE_AUCTIONEER:
+  has-expire: true
+  priority: 5
+  color: '#a86232'
+
 ROLE_VIP:
   has-expire: true
   priority: 10

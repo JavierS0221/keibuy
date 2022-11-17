@@ -2,27 +2,30 @@ package com.project.auction.email.context;
 
 import com.project.auction.model.Item;
 import com.project.auction.model.Person;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
-public class PersonWinEmailContext extends AbstractEmailContext {
+public class AuctioneerEmailContext extends AbstractEmailContext {
 
     @Override
+    @Transactional
     public <T, O> void init(T context, O obj){
         //we can do any common configuration setup here
         // like setting up some base URL and context
         Item item = (Item) obj;
         Person person = (Person) context;
         put("item", item);
-        put("person", person);
-        put("auctioneerEmail", item.getPerson().getEmail());
-        setTemplateLocation("emails/email-win");
-        setSubject("Win auction");
+        put("id", item.getId());
+        put("name", item.getName());
+
+        setTemplateLocation("emails/email-to-auctioneer");
+        setSubject("Your auction has finalized");
         setFrom("no-reply@keibuy.com");
         setTo(person.getEmail());
     }
 
     public void buildItemUrl(final String baseURL, final long id){
-        final String url = PersonWinEmailContext.getItemUrl(baseURL, id);
+        final String url = AuctioneerEmailContext.getItemUrl(baseURL, id);
         put("itemURL", url);
     }
 

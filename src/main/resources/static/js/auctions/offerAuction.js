@@ -72,8 +72,8 @@ function onFinalize(response) {
             } else {
                 winModal.show();
             }
-        } else {
-            console.log("- No gano nadie")
         }
+
+        finishTime();
     }
 }

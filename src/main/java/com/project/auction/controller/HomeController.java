@@ -4,9 +4,12 @@ import com.project.auction.dto.PersonDto;
 import com.project.auction.exception.UnkownIdentifierException;
 import com.project.auction.model.AvatarImage;
 import com.project.auction.model.Category;
+import com.project.auction.model.Item;
 import com.project.auction.model.Person;
+import com.project.auction.model.relation.AuctionOffer;
 import com.project.auction.model.relation.PersonRol;
 import com.project.auction.service.CategoryService;
+import com.project.auction.service.ItemService;
 import com.project.auction.service.PersonService;
 import com.project.auction.util.Utils;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -31,6 +36,9 @@ public class HomeController {
     private CategoryService categoryService;
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private ItemService itemService;
 
 
     @GetMapping("/")
@@ -48,10 +56,39 @@ public class HomeController {
         if (listTopCategories.size() > 10) {
             listTopCategories.subList(0, 11);
         }
+
+        List<Item> itemList = itemService.listItems();
+        itemList = itemList.stream().filter(item -> !item.isFinalized()).collect(Collectors.toList());
+
+        List<Item> itemListMostOffers = itemList.stream().filter(Item::isEnabled).filter(item -> item.getMostOffer() != null).collect(Collectors.toList());
+        if(itemListMostOffers.size() > 0) {
+            Comparator<Item> comparator = ((o1, o2) -> Integer.compare(o2.getMostOffer() != null ? o2.getMostOffer().getOffer() : 0, o1.getMostOffer() != null ? o1.getMostOffer().getOffer() : 0));
+            itemListMostOffers.sort(comparator);
+            itemListMostOffers = itemListMostOffers.subList(0, Math.min(10, itemListMostOffers.size()));
+        }
+
+        List<Item> itemListMostParticipants = itemList.stream().filter(Item::isEnabled).filter(item -> item.getParticipants().size() > 0).collect(Collectors.toList());
+        if(itemListMostParticipants.size() > 0) {
+            Comparator<Item> comparator = ((o1, o2) -> Integer.compare(o2.getParticipants().size(), o1.getParticipants().size()));
+            itemListMostParticipants.sort(comparator);
+            itemListMostParticipants = itemListMostParticipants.subList(0, Math.min(10, itemListMostParticipants.size()));
+        }
+
+        List<Item> itemListNotStarted = itemList.stream().filter(Item::isInStandby).collect(Collectors.toList());
+        if(itemListNotStarted.size() > 0) {
+            Comparator<Item> comparator = ((o1, o2) -> Integer.compare(o2.isInStandby() ? 1 : 0, o1.isInStandby() ? 1 : 0));
+            itemListNotStarted.sort(comparator);
+            itemListNotStarted = itemListNotStarted.subList(0, Math.min(10, itemListNotStarted.size()));
+        }
+
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("listTopCategories", listTopCategories);
         model.addAttribute("user", user);
         model.addAttribute("person", person);
+
+        model.addAttribute("itemListMostOffers", itemListMostOffers);
+        model.addAttribute("itemListMostParticipants", itemListMostParticipants);
+        model.addAttribute("itemListNotStarted", itemListNotStarted);
         return "index";
     }
 

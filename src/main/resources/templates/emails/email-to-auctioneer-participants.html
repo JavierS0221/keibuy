@@ -114,16 +114,6 @@
             color: #666
         }
 
-        .participants-image {
-            width: 40px;
-            height: 40px
-        }
-
-        .participants-name {
-            display: inline-block
-        }
-
-
         .participants-table tbody td:first-child {
             border-bottom-left-radius: 10px;
             border-top-left-radius: 10px
@@ -202,7 +192,7 @@
                           font-weight: 400;
                           line-height: 25px;">
                             <p class="" style="max-width: 540px; max-height: 55px; overflow: auto">
-                                <b>Subasta:</b> <a href="#" style="text-decoration: none">"Ferrari sin uso"
+                                <b>Subasta:</b> <a th:href="${itemURL}" style="text-decoration: none">"Ferrari sin uso"
                                 (ID:3)</a><br>
                             </p>
                             <p class="" style="max-width: 540px; max-height: 55px; overflow: auto">
@@ -222,66 +212,16 @@
                                     </tr>
                                     </thead>
                                     <tbody id="participants-table">
+                                    <th:block th:each="auctionOffer,i : ${item.getOffersInOrder()}">
                                     <tr style="border-width:1px; border-style:solid;">
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
-                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
-                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
-                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
-                                            </div>
+                                        <td style="margin-top: 1rem"><b>[[${i.getIndex()+1}]]</b></td>
+                                        <td style="padding-bottom: 0;">
+                                            [[${auctionOffer.getPerson().getUsername()}]]
                                         </td>
-                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                        <td style="padding-top: 0.75rem; max-width: 100px; overflow: auto; margin-top: 1rem">[[${auctionOffer.getPerson().getEmail()}]]</td>
+                                        <td style="margin-top: 1rem">$[[${auctionOffer.getOffer()}]]</td>
                                     </tr>
-                                    <tr style="border-width:1px; border-style:solid;">
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
-                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
-                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
-                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
-                                            </div>
-                                        </td>
-                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
-                                    </tr>
-                                    <tr style="border-width:1px; border-style:solid;">
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
-                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
-                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
-                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
-                                            </div>
-                                        </td>
-                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
-                                    </tr>
-                                    <tr style="border-width:1px; border-style:solid;">
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
-                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
-                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
-                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
-                                            </div>
-                                        </td>
-                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
-                                    </tr>
-                                    <tr style="border-width:1px; border-style:solid;">
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
-                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
-                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
-                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
-                                            </div>
-                                        </td>
-                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
-                                    </tr>
-                                    <tr style="border-width:1px; border-style:solid;">
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
-                                        <td style="padding-top: 0.5rem; padding-bottom: 0;">
-                                            <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
-                                            <div class="participants-name" style="margin-bottom: 10px">Usuario
-                                            </div>
-                                        </td>
-                                        <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
-                                        <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
-                                    </tr>
+                                    </th:block>
                                     </tbody>
                                 </table>
                             </div>
@@ -300,14 +240,13 @@
                                 </thead>
                                 <tbody id="table-win">
                                 <tr style="border-width:1px; border-style:solid;">
-                                    <td style="padding-top: 1.5rem; margin-top: 1rem"><b>1</b></td>
+                                    <td style="margin-top: 1rem"><b>1</b></td>
                                     <td style="padding-top: 0.5rem; padding-bottom: 0;">
-                                        <img class="participants-image" style="border-radius: 50%" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" alt=""/><br>
-                                        <div class="participants-name" style="margin-bottom: 10px">Usuario
-                                        </div>
+                                      [[${item.getMostOffer().getPerson().getUsername()}]]
+
                                     </td>
-                                    <td style="padding-top: 1.5rem; max-width: 100px; overflow: auto; margin-top: 1rem">javiers.v0221@gmail.com</td>
-                                    <td style="padding-top: 1.5rem; margin-top: 1rem">$1000</td>
+                                    <td style="padding-top: 0.75rem; max-width: 100px; overflow: auto; margin-top: 1rem">[[${item.getMostOffer().getPerson().getEmail()}]]</td>
+                                    <td style="margin-top: 1rem">$[[${item.getMostOffer().getOffer()}]]</td>
                                 </tr>
                                 </tbody>
                             </table>

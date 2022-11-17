@@ -16,7 +16,9 @@ public interface ItemService {
     public void delete(Item item);
     public Item getItem(ItemDto itemDto);
     public Item getItem(Item item);
-    public Page<Item> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
+
+    Page<Item> findPaginated(int pageNo, int pageSize, String sortBy, boolean started, boolean notStarted, boolean virtualPayment, boolean physicalPayment, boolean excludeFinalized);
+
     public Item getItemById(long id);
     public void setFinalized(Item item, boolean finalized);
     public void sendEmails(Item item);
