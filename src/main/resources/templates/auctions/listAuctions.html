@@ -46,7 +46,7 @@
                         id="filter-btn"
                 >
                     <span class="fas fa-angle-left" id="filter-angle"></span>
-                    <span id="btn-txt" class="">Hide filters</span>
+                    <span id="btn-txt" class="" th:text="#{hideFilters}">Hide filters</span>
                 </button>
                 <div class="ms-auto mt-3 me-2">
                     <nav aria-label="Page navigation example">
@@ -106,7 +106,7 @@
                         </div>
 
                         <div class="box border-bottom">
-                            <div class="box-label text-uppercase d-flex align-items-center">
+                            <div class="box-label text-uppercase d-flex align-items-center" th:text="#{sortBy}">
                                 <!-- Select Order -->
                                 Sort By
                                 <div class="m-auto">
@@ -129,7 +129,7 @@
                         </div>
 
                         <div class="box border-bottom">
-                            <div class="box-label text-uppercase d-flex align-items-center">
+                            <div class="box-label text-uppercase d-flex align-items-center" th:text="#{state}">
                                 State
                                 <button
                                         class="btn ms-auto"
@@ -160,7 +160,7 @@
                             </div>
                         </div>
                         <div class="box">
-                            <div class="box-label text-uppercase d-flex align-items-center">
+                            <div class="box-label text-uppercase d-flex align-items-center" th:text="#{paymentType}">
                                 Payment type
                                 <button
                                         class="btn ms-auto"

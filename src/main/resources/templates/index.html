@@ -146,7 +146,7 @@
 
 <!--Sección1-->
 <div class="wrapper">
-    <h5 class="fw-bold text-center mt-4 mb-3"><u>Por oferta más alta</u></h5>
+    <h5 class="fw-bold text-center mt-4 mb-3" th:text="#{byhighestbid}"><u>By highest bid</u></h5>
     <div class="your-class">
         <th:block th:each="item : ${itemListMostOffers}">
             <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div mx-3">
@@ -201,7 +201,7 @@
 </div>
 <!--Sección2-->
 <div class="wrapper">
-    <h5 class="fw-bold text-center mt-4 mb-3"><u>Por cantidad de participantes</u></h5>
+    <h5 class="fw-bold text-center mt-4 mb-3" th:text="#{bynumberofparticipants}"><u>By number of participants</u></h5>
     <div class="your-class">
         <th:block th:each="item : ${itemListMostParticipants}">
             <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div mx-3">
@@ -257,7 +257,7 @@
 
 <!--Sección3-->
 <div class="wrapper">
-    <h5 class="fw-bold text-center mt-4 mb-3"><u>Próximamente</u></h5>
+    <h5 class="fw-bold text-center mt-4 mb-3" th:text="#{comingsoon}"><u>Coming soon</u></h5>
     <div class="your-class">
         <th:block th:each="item : ${itemListNotStarted}">
             <div class="col-lg-3 col-md-6 mb-3 pe-0 item-div mx-3">
