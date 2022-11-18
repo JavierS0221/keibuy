@@ -172,7 +172,6 @@ public class MyAuctionsController {
     @PostMapping("/search")
     public String auctionsSearch(@Param("search") String search, Model model, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("searchKey", search);
-        System.out.println("clave:" + search);
         return "redirect:/myauctions";
     }
 

@@ -320,7 +320,6 @@ public class PersonServiceImpl implements PersonService {
 
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
         for (PersonRol personRol : person.getRoles()) {
-            System.out.println("Rol:"+personRol.getRol().getName());
             roles.add(new SimpleGrantedAuthority(personRol.getRol().getName()));
         }
 
