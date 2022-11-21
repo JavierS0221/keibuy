@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.project.auction</groupId>
 	<artifactId>keibuy</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>keibuy</name>
 	<description>Final class project 3ºBL</description>
 	<properties>
